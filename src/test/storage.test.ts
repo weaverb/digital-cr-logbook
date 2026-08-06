@@ -19,11 +19,9 @@ describe('Storage Library (Bound Book & Audit Engine)', () => {
     localStorage.clear();
   });
 
-  it('initializes default bound book records when localStorage is empty', () => {
+  it('initializes default bound book records as empty array when localStorage is empty', () => {
     const records = getBoundBookRecords();
-    expect(records.length).toBeGreaterThan(0);
-    expect(records[0].lineNumber).toBe(1);
-    expect(records[0].manufacturer).toBeDefined();
+    expect(records).toEqual([]);
   });
 
   it('persists and retrieves updated bound book records', () => {
@@ -71,7 +69,7 @@ describe('Storage Library (Bound Book & Audit Engine)', () => {
 
   it('manages maintenance records correctly', () => {
     const maint = getMaintenanceRecords();
-    expect(maint.length).toBeGreaterThan(0);
+    expect(maint).toEqual([]);
 
     const newMaint = saveMaintenanceRecord({
       firearmId: 'firearm-001',
@@ -89,7 +87,7 @@ describe('Storage Library (Bound Book & Audit Engine)', () => {
 
   it('manages range trip records correctly', () => {
     const range = getRangeRecords();
-    expect(range.length).toBeGreaterThan(0);
+    expect(range).toEqual([]);
 
     const newRange = saveRangeRecord({
       firearmId: 'firearm-001',
@@ -106,7 +104,7 @@ describe('Storage Library (Bound Book & Audit Engine)', () => {
 
   it('manages contacts rolodex correctly', () => {
     const contacts = getContacts();
-    expect(contacts.length).toBeGreaterThan(0);
+    expect(contacts).toEqual([]);
 
     const newContact = saveContact({
       category: 'Dealer',

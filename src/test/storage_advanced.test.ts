@@ -20,7 +20,7 @@ describe('Storage Library Advanced Coverage Suite', () => {
 
   it('verifies bound book records initialization', () => {
     const records = getBoundBookRecords();
-    expect(records.length).toBeGreaterThan(0);
+    expect(records).toEqual([]);
   });
 
   it('handles invalid JSON in localStorage gracefully with fallback defaults', () => {
@@ -30,7 +30,7 @@ describe('Storage Library Advanced Coverage Suite', () => {
     localStorage.setItem('cr_logbook_range_records_v1', 'INVALID_JSON{');
 
     const records = getBoundBookRecords();
-    expect(records.length).toBeGreaterThan(0);
+    expect(records).toEqual([]);
   });
 
   it('saves and filters range records for specific firearms', () => {
