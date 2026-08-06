@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-gunmetal: #0f172a;
+    --color-slate-dark: #1e293b;
+    --color-slate-border: #334155;
+    --color-tactical-amber: #f59e0b;
+    --color-tactical-cyan: #06b6d4;
+  }
+
+  body {
+    @apply bg-slate-950 text-slate-100 antialiased selection:bg-amber-500 selection:text-amber-950;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+}
+
+/* Custom scrollbars for high-density tables */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
