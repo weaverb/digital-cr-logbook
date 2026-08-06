@@ -41,18 +41,28 @@ To run or build the native desktop binary wrapper (`bun run tauri:dev` / `bun ru
 sudo dnf install -y pkg-config glib2-devel gtk3-devel webkit2gtk4.1-devel openssl-devel libsoup3-devel
 ```
 
-#### Bazzite / Fedora Silverblue / OSTree (Immutable OS):
-Bazzite uses an immutable system image. To build native C/GTK desktop applications on Bazzite, use **Distrobox** (pre-installed on Bazzite):
+#### Bazzite / Fedora Silverblue / OSTree (Immutable OS Setup):
+Bazzite uses an immutable system image. To run native Tauri GTK desktop builds on Bazzite, use **Distrobox** (pre-installed on Bazzite) with Rust, Bun, and GTK headers:
 
 ```bash
-# Create & enter dev container inside Bazzite
+# 1. Create and enter a fresh Fedora development container
 distrobox create -n dev --image fedora:latest
 distrobox enter dev
 
-# Install GTK dev libraries inside container
-sudo dnf install -y pkg-config glib2-devel gtk3-devel webkit2gtk4.1-devel openssl-devel libsoup3-devel
+# 2. Install GTK & C compiler toolchain inside Distrobox
+sudo dnf install -y gcc gcc-c++ make pkg-config glib2-devel gtk3-devel webkit2gtk4.1-devel openssl-devel libsoup3-devel curl git
 
-# Run Tauri desktop dev
+# 3. Install Rust toolchain inside Distrobox
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+source "$HOME/.cargo/env"
+
+# 4. Install Bun runtime inside Distrobox
+curl -fsSL https://bun.sh/install | bash
+source "$HOME/.bashrc"
+
+# 5. Navigate to project directory, install packages, and launch native desktop
+cd ~/github.com/weaverb/digital-cr-logbook
+bun install
 bun run tauri:dev
 ```
 
