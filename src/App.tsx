@@ -41,6 +41,7 @@ import { CommandPaletteModal } from './components/CommandPaletteModal';
 import { PDFExportDialogModal } from './components/PDFExportDialogModal';
 import { VaultHealthModal } from './components/VaultHealthModal';
 import { saveFileWithNativePicker } from './lib/fileSaveHelper';
+import { hotkeyLabel } from './lib/osHelper';
 import crMasterData from './data/cr_master_data.json';
 
 const crRecords = crMasterData as CRReferenceEntry[];
@@ -322,10 +323,10 @@ export function App() {
           <button 
             onClick={() => setIsCmdPaletteOpen(true)}
             className="flex items-center space-x-1.5 bg-slate-800/90 hover:bg-slate-800 text-slate-200 border border-slate-700/80 px-2 py-1.5 rounded text-xs font-mono transition-colors"
-            title="Global Command Palette (Cmd+K)"
+            title={`Global Command Palette (${hotkeyLabel})`}
           >
             <Command className="w-3.5 h-3.5 text-amber-400" />
-            <span>Cmd+K</span>
+            <span>{hotkeyLabel}</span>
           </button>
 
           <button 
