@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { X, Image as ImageIcon, Plus } from 'lucide-react';
 import type { BoundBookRecord, MediaAttachment } from '../types/logbook';
 import { getMediaAttachments, saveMediaAttachment } from '../lib/storage';
+import { useEscapeKey } from '../hooks/useEscapeKey';
 
 interface MediaGalleryModalProps {
   isOpen: boolean;
@@ -10,6 +11,7 @@ interface MediaGalleryModalProps {
 }
 
 export function MediaGalleryModal({ isOpen, record, onClose }: MediaGalleryModalProps) {
+  useEscapeKey(onClose, isOpen && !!record);
   const [, setAttachments] = useState<MediaAttachment[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [title, setTitle] = useState('');

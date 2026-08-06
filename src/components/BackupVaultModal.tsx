@@ -9,6 +9,7 @@ import {
   getMaintenanceRecords, 
   getRangeRecords 
 } from '../lib/storage';
+import { useEscapeKey } from '../hooks/useEscapeKey';
 
 interface BackupVaultModalProps {
   isOpen: boolean;
@@ -17,6 +18,7 @@ interface BackupVaultModalProps {
 }
 
 export function BackupVaultModal({ isOpen, onClose, onRestoreSuccess }: BackupVaultModalProps) {
+  useEscapeKey(onClose, isOpen);
   const [activeMode, setActiveMode] = useState<'backup' | 'restore'>('backup');
   
   // Seed phrase state for backup

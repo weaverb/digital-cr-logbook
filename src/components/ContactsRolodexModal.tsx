@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { X, Users, Plus, Building2, Phone, Mail, MapPin, Copy, Check } from 'lucide-react';
 import type { Contact } from '../types/logbook';
 import { getContacts, saveContact } from '../lib/storage';
+import { useEscapeKey } from '../hooks/useEscapeKey';
 
 interface ContactsRolodexModalProps {
   isOpen: boolean;
@@ -9,6 +10,7 @@ interface ContactsRolodexModalProps {
 }
 
 export function ContactsRolodexModal({ isOpen, onClose }: ContactsRolodexModalProps) {
+  useEscapeKey(onClose, isOpen);
   const [contacts, setContacts] = useState<Contact[]>(getContacts());
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');

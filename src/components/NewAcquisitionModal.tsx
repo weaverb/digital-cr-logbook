@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { X, Plus, ShieldCheck, Search, CheckCircle2 } from 'lucide-react';
 import type { BoundBookRecord, FirearmType, CRReferenceEntry } from '../types/logbook';
 import crMasterData from '../data/cr_master_data.json';
+import { useEscapeKey } from '../hooks/useEscapeKey';
 
 interface NewAcquisitionModalProps {
   isOpen: boolean;
@@ -12,6 +13,7 @@ interface NewAcquisitionModalProps {
 const crRecords = crMasterData as CRReferenceEntry[];
 
 export function NewAcquisitionModal({ isOpen, onClose, onSave }: NewAcquisitionModalProps) {
+  useEscapeKey(onClose, isOpen);
   const [manufacturer, setManufacturer] = useState('');
   const [importer, setImporter] = useState('');
   const [model, setModel] = useState('');

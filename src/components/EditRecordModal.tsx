@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { X, Edit3, ShieldAlert } from 'lucide-react';
 import type { BoundBookRecord, FirearmType } from '../types/logbook';
+import { useEscapeKey } from '../hooks/useEscapeKey';
 
 interface EditRecordModalProps {
   isOpen: boolean;
@@ -10,6 +11,7 @@ interface EditRecordModalProps {
 }
 
 export function EditRecordModal({ isOpen, record, onClose, onSave }: EditRecordModalProps) {
+  useEscapeKey(onClose, isOpen && !!record);
   const [manufacturer, setManufacturer] = useState('');
   const [importer, setImporter] = useState('');
   const [model, setModel] = useState('');
