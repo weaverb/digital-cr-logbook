@@ -1,3 +1,8 @@
+
+<a href="https://buymeacoffee.com/weaverb" target="_blank">
+  <img src=".github/imgs/blue-button.png" alt="Buy me a coffee" height="35">
+</a>
+
 # C&R Collector Digital Logbook
 
 A 100% offline, privacy-first, portable desktop bound book and collection management system custom-engineered for Federal Firearms License (FFL) **Type 03 Collectors of Curios and Relics**.
