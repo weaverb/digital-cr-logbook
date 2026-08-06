@@ -15,7 +15,8 @@ import {
   Sparkles,
   Users,
   Camera,
-  Activity
+  Activity,
+  Command
 } from 'lucide-react';
 import type { BoundBookRecord, CRReferenceEntry, MaintenanceRecord } from './types/logbook';
 import { 
@@ -36,7 +37,9 @@ import { BackupVaultModal } from './components/BackupVaultModal';
 import { ContactsRolodexModal } from './components/ContactsRolodexModal';
 import { MediaGalleryModal } from './components/MediaGalleryModal';
 import { AuditDashboardModal } from './components/AuditDashboardModal';
-import { generateBoundBookPDF } from './lib/pdfExporter';
+import { CommandPaletteModal } from './components/CommandPaletteModal';
+import { PDFExportDialogModal } from './components/PDFExportDialogModal';
+import { VaultHealthModal } from './components/VaultHealthModal';
 import crMasterData from './data/cr_master_data.json';
 
 const crRecords = crMasterData as CRReferenceEntry[];
@@ -64,6 +67,21 @@ export function App() {
   const [isContactsModalOpen, setIsContactsModalOpen] = useState(false);
   const [isMediaModalOpen, setIsMediaModalOpen] = useState(false);
   const [isDashboardModalOpen, setIsDashboardModalOpen] = useState(false);
+  const [isCmdPaletteOpen, setIsCmdPaletteOpen] = useState(false);
+  const [isPDFOptionsOpen, setIsPDFOptionsOpen] = useState(false);
+  const [isVaultHealthOpen, setIsVaultHealthOpen] = useState(false);
+
+  // Keyboard shortcut listener for Cmd+K / Ctrl+K
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setIsCmdPaletteOpen(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   // Quick Maintenance & Range Inputs for Selected Firearm
   const [newMaintType, setNewMaintType] = useState<MaintenanceRecord['type']>('Cleaning');
@@ -302,6 +320,15 @@ export function App() {
 
         <div className="flex items-center space-x-2">
           <button 
+            onClick={() => setIsCmdPaletteOpen(true)}
+            className="flex items-center space-x-1.5 bg-slate-800/90 hover:bg-slate-800 text-slate-200 border border-slate-700/80 px-2.5 py-1.5 rounded text-xs font-mono transition-colors"
+            title="Global Command Palette (Cmd+K)"
+          >
+            <Command className="w-3.5 h-3.5 text-amber-400" />
+            <span>Cmd+K</span>
+          </button>
+
+          <button 
             onClick={() => setIsDashboardModalOpen(true)}
             className="flex items-center space-x-1.5 bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700/80 px-3 py-1.5 rounded text-xs font-medium transition-colors"
           >
@@ -326,7 +353,7 @@ export function App() {
           </button>
 
           <button 
-            onClick={() => generateBoundBookPDF(records)}
+            onClick={() => setIsPDFOptionsOpen(true)}
             className="flex items-center space-x-1.5 bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700/80 px-3 py-1.5 rounded text-xs font-medium transition-colors"
           >
             <Download className="w-3.5 h-3.5 text-emerald-400" />
@@ -986,15 +1013,19 @@ export function App() {
       {/* Footer Status Bar */}
       <footer className="bg-slate-950 border-t border-slate-800/80 px-6 py-2.5 text-[11px] text-slate-500 flex items-center justify-between">
         <div className="flex items-center space-x-4">
-          <span className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-            SQLite WAL Mode: Active
-          </span>
+          <button 
+            onClick={() => setIsVaultHealthOpen(true)}
+            className="flex items-center gap-1.5 hover:text-emerald-400 transition-colors"
+            title="Click to run vault integrity diagnostics"
+          >
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            SQLite WAL Mode: Active (Click for Health Diagnostics)
+          </button>
           <span>•</span>
           <span>ATF Audit Log: Active ({auditLogs.length} Events)</span>
         </div>
         <div className="font-mono text-slate-400 flex items-center gap-3">
-          <span>Branch: main</span>
+          <span>Branch: feat/command-palette-and-advanced-exports</span>
           <span>•</span>
           <span>C&R Digital Logbook v1.0.0</span>
         </div>
@@ -1052,6 +1083,35 @@ export function App() {
         records={records}
         auditLogs={auditLogs}
         onClose={() => setIsDashboardModalOpen(false)}
+      />
+
+      <CommandPaletteModal
+        isOpen={isCmdPaletteOpen}
+        records={records}
+        onClose={() => setIsCmdPaletteOpen(false)}
+        onSelectRecord={(id) => {
+          setSelectedRecordId(id);
+          setActiveTab('boundbook');
+        }}
+        onOpenAcq={() => setIsAcqModalOpen(true)}
+        onOpenDashboard={() => setIsDashboardModalOpen(true)}
+        onOpenRolodex={() => setIsContactsModalOpen(true)}
+        onOpenAuditLogs={() => setIsAuditViewerOpen(true)}
+        onOpenPDF={() => setIsPDFOptionsOpen(true)}
+        onOpenVault={() => setIsVaultModalOpen(true)}
+      />
+
+      <PDFExportDialogModal
+        isOpen={isPDFOptionsOpen}
+        records={records}
+        onClose={() => setIsPDFOptionsOpen(false)}
+      />
+
+      <VaultHealthModal
+        isOpen={isVaultHealthOpen}
+        records={records}
+        auditLogs={auditLogs}
+        onClose={() => setIsVaultHealthOpen(false)}
       />
     </div>
   );
