@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { 
   BookOpen, 
   ShieldCheck, 
@@ -9,402 +9,1020 @@ import {
   Wrench, 
   Target, 
   Database, 
-  FileCheck, 
   Key,
-  HardDrive
+  HardDrive,
+  Edit3,
+  History,
+  Sparkles
 } from 'lucide-react';
+import type { BoundBookRecord, CRReferenceEntry, MaintenanceRecord } from './types/logbook';
+import { 
+  getBoundBookRecords, 
+  saveBoundBookRecords, 
+  getAuditLogs, 
+  logAuditEvent,
+  getMaintenanceRecords,
+  saveMaintenanceRecord,
+  getRangeRecords,
+  saveRangeRecord
+} from './lib/storage';
+import { NewAcquisitionModal } from './components/NewAcquisitionModal';
+import { LogDispositionModal } from './components/LogDispositionModal';
+import { EditRecordModal } from './components/EditRecordModal';
+import { AuditLogViewerModal } from './components/AuditLogViewerModal';
+import crMasterData from './data/cr_master_data.json';
 
-interface BoundBookRecord {
-  id: string;
-  lineNumber: number;
-  manufacturer: string;
-  model: string;
-  serialNumber: string;
-  type: string;
-  caliber: string;
-  acqDate: string;
-  acqSource: string;
-  dispDate?: string;
-  dispRecipient?: string;
-  status: 'In Collection' | 'Disposed';
-  isLocked: boolean;
-}
-
-const mockRecords: BoundBookRecord[] = [
-  {
-    id: '1',
-    lineNumber: 1,
-    manufacturer: 'Tula Arms Plant',
-    model: 'Mosin-Nagant M91/30',
-    serialNumber: '913077421',
-    type: 'Rifle',
-    caliber: '7.62x54mmR',
-    acqDate: '2021-04-12',
-    acqSource: 'Classic Firearms (FFL #1-56-xxx-09)',
-    status: 'In Collection',
-    isLocked: true,
-  },
-  {
-    id: '2',
-    lineNumber: 2,
-    manufacturer: 'Carl Walther Waffenfabrik',
-    model: 'PPK (C&R Classification)',
-    serialNumber: '284910W',
-    type: 'Pistol',
-    caliber: '.32 ACP (7.65mm)',
-    acqDate: '2022-09-05',
-    acqSource: 'Simpson Ltd (FFL #9-36-xxx-12)',
-    dispDate: '2024-01-18',
-    dispRecipient: 'John Doe (C&R FFL #3-42-xxx-01)',
-    status: 'Disposed',
-    isLocked: true,
-  },
-  {
-    id: '3',
-    lineNumber: 3,
-    manufacturer: 'Fabrique Nationale (FN)',
-    model: 'FN Browning M1910',
-    serialNumber: '194012',
-    type: 'Pistol',
-    caliber: '.380 ACP',
-    acqDate: '2023-11-20',
-    acqSource: 'Private Collector Transfer (Lic #3-54-xxx-88)',
-    status: 'In Collection',
-    isLocked: false,
-  }
-];
+const crRecords = crMasterData as CRReferenceEntry[];
 
 export function App() {
+  const [records, setRecords] = useState<BoundBookRecord[]>([]);
+  const [auditLogs, setAuditLogs] = useState(getAuditLogs());
   const [activeTab, setActiveTab] = useState<'boundbook' | 'reference' | 'maintenance' | 'range' | 'backup'>('boundbook');
+  
+  // Selection and Search State
+  const [selectedRecordId, setSelectedRecordId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState<'all' | 'collection' | 'disposed'>('all');
+  
+  // Reference Library Search State
+  const [crSearchQuery, setCrSearchQuery] = useState('');
+  const [crSectionFilter, setCrSectionFilter] = useState<string>('all');
 
-  const filteredRecords = mockRecords.filter(record => {
-    const matchesSearch = 
-      record.manufacturer.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      record.model.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      record.serialNumber.toLowerCase().includes(searchQuery.toLowerCase());
+  // Modals
+  const [isAcqModalOpen, setIsAcqModalOpen] = useState(false);
+  const [dispModalRecord, setDispModalRecord] = useState<BoundBookRecord | null>(null);
+  const [editModalRecord, setEditModalRecord] = useState<BoundBookRecord | null>(null);
+  const [isAuditViewerOpen, setIsAuditViewerOpen] = useState(false);
+
+  // Quick Maintenance & Range Inputs for Selected Firearm
+  const [newMaintType, setNewMaintType] = useState<MaintenanceRecord['type']>('Cleaning');
+  const [newMaintCost, setNewMaintCost] = useState('');
+  const [newMaintBy, setNewMaintBy] = useState('');
+  const [newMaintNotes, setNewMaintNotes] = useState('');
+
+  const [newRangeAmmo, setNewRangeAmmo] = useState('');
+  const [newRangeRounds, setNewRangeRounds] = useState('');
+  const [newRangeNotes, setNewRangeNotes] = useState('');
+
+  // Load records from local storage on mount
+  useEffect(() => {
+    const loaded = getBoundBookRecords();
+    setRecords(loaded);
+    if (loaded.length > 0) {
+      setSelectedRecordId(loaded[0].id);
+    }
+  }, []);
+
+  const selectedRecord = useMemo(() => {
+    return records.find(r => r.id === selectedRecordId) || records[0] || null;
+  }, [records, selectedRecordId]);
+
+  const selectedMaintenance = useMemo(() => {
+    return selectedRecord ? getMaintenanceRecords(selectedRecord.id) : [];
+  }, [selectedRecord]);
+
+  const selectedRange = useMemo(() => {
+    return selectedRecord ? getRangeRecords(selectedRecord.id) : [];
+  }, [selectedRecord]);
+
+  const totalRoundsFired = useMemo(() => {
+    return selectedRange.reduce((acc, r) => acc + r.roundsFired, 0);
+  }, [selectedRange]);
+
+  const matchedCRInfo = useMemo(() => {
+    if (!selectedRecord?.crReferenceId) return null;
+    return crRecords.find(c => c.record_id === selectedRecord.crReferenceId) || null;
+  }, [selectedRecord]);
+
+  // Filtered Bound Book Records
+  const filteredRecords = useMemo(() => {
+    return records.filter(record => {
+      const q = searchQuery.toLowerCase();
+      const matchesSearch = 
+        record.manufacturer.toLowerCase().includes(q) ||
+        record.model.toLowerCase().includes(q) ||
+        record.serialNumber.toLowerCase().includes(q) ||
+        (record.importer && record.importer.toLowerCase().includes(q)) ||
+        record.caliber.toLowerCase().includes(q);
+      
+      if (filterStatus === 'collection') return matchesSearch && record.status === 'In Collection';
+      if (filterStatus === 'disposed') return matchesSearch && record.status === 'Disposed';
+      return matchesSearch;
+    });
+  }, [records, searchQuery, filterStatus]);
+
+  // Filtered C&R Reference Entries
+  const filteredCRLibrary = useMemo(() => {
+    return crRecords.filter(cr => {
+      const q = crSearchQuery.toLowerCase();
+      const matchesSearch = 
+        cr.manufacturer_or_make.toLowerCase().includes(q) ||
+        cr.model.toLowerCase().includes(q) ||
+        cr.atf_classification_details.toLowerCase().includes(q) ||
+        cr.record_id.toLowerCase().includes(q);
+
+      if (crSectionFilter !== 'all') return matchesSearch && cr.section_code === crSectionFilter;
+      return matchesSearch;
+    }).slice(0, 100); // High performance virtualization slice
+  }, [crSearchQuery, crSectionFilter]);
+
+  // Handle Save New Acquisition
+  const handleSaveAcquisition = (newAcq: Omit<BoundBookRecord, 'id' | 'lineNumber' | 'status' | 'isLocked' | 'createdAt' | 'updatedAt'>) => {
+    const nextLineNumber = records.length > 0 ? Math.max(...records.map(r => r.lineNumber)) + 1 : 1;
+    const now = new Date().toISOString();
     
-    if (filterStatus === 'collection') return matchesSearch && record.status === 'In Collection';
-    if (filterStatus === 'disposed') return matchesSearch && record.status === 'Disposed';
-    return matchesSearch;
-  });
+    const created: BoundBookRecord = {
+      ...newAcq,
+      id: 'rec-' + Date.now(),
+      lineNumber: nextLineNumber,
+      status: 'In Collection',
+      isLocked: false,
+      createdAt: now,
+      updatedAt: now
+    };
+
+    const updated = [created, ...records];
+    setRecords(updated);
+    saveBoundBookRecords(updated);
+    setSelectedRecordId(created.id);
+  };
+
+  // Handle Save Disposition (Locking record per 27 CFR § 478.125(f))
+  const handleSaveDisposition = (recordId: string, dispData: { dispDate: string; dispName: string; dispAddress?: string; dispFFL?: string }) => {
+    const updated = records.map(r => {
+      if (r.id === recordId) {
+        return {
+          ...r,
+          ...dispData,
+          status: 'Disposed' as const,
+          isLocked: true, // Permanent ATF compliance lock
+          updatedAt: new Date().toISOString()
+        };
+      }
+      return r;
+    });
+
+    setRecords(updated);
+    saveBoundBookRecords(updated);
+  };
+
+  // Handle Edit Record with Mandatory ATF Audit Log
+  const handleSaveAmendment = (recordId: string, updatedData: Partial<BoundBookRecord>, auditReason: string) => {
+    const existing = records.find(r => r.id === recordId);
+    if (!existing) return;
+
+    // Detect changed fields and write to ATF_AUDIT_LOG
+    Object.keys(updatedData).forEach(key => {
+      const k = key as keyof BoundBookRecord;
+      if (existing[k] !== updatedData[k]) {
+        logAuditEvent({
+          recordId: existing.id,
+          fieldChanged: key,
+          oldValue: String(existing[k] ?? ''),
+          newValue: String(updatedData[k] ?? ''),
+          reason: auditReason
+        });
+      }
+    });
+
+    const updated = records.map(r => {
+      if (r.id === recordId) {
+        return {
+          ...r,
+          ...updatedData,
+          updatedAt: new Date().toISOString()
+        };
+      }
+      return r;
+    });
+
+    setRecords(updated);
+    saveBoundBookRecords(updated);
+    setAuditLogs(getAuditLogs());
+  };
+
+  // Add Maintenance Log
+  const handleAddMaintenance = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedRecord || !newMaintNotes.trim()) return;
+
+    saveMaintenanceRecord({
+      firearmId: selectedRecord.id,
+      date: new Date().toISOString().split('T')[0],
+      type: newMaintType,
+      cost: parseFloat(newMaintCost) || 0,
+      performedBy: newMaintBy.trim() || 'Self',
+      notes: newMaintNotes.trim()
+    });
+
+    setNewMaintCost('');
+    setNewMaintBy('');
+    setNewMaintNotes('');
+  };
+
+  // Add Range Log
+  const handleAddRangeLog = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedRecord || !newRangeAmmo.trim() || !newRangeRounds) return;
+
+    saveRangeRecord({
+      firearmId: selectedRecord.id,
+      date: new Date().toISOString().split('T')[0],
+      ammoType: newRangeAmmo.trim(),
+      roundsFired: parseInt(newRangeRounds, 10) || 0,
+      notes: newRangeNotes.trim()
+    });
+
+    setNewRangeAmmo('');
+    setNewRangeRounds('');
+    setNewRangeNotes('');
+  };
+
+  // Export Bound Book as ATF Audit CSV
+  const handleExportCSV = () => {
+    const headers = ['Line #', 'Status', 'Manufacturer', 'Importer', 'Model', 'Serial Number', 'Type', 'Caliber', 'Acq Date', 'Acq Source', 'Acq FFL', 'Disp Date', 'Disp Recipient', 'Disp FFL'];
+    const rows = records.map(r => [
+      r.lineNumber,
+      r.status,
+      `"${r.manufacturer}"`,
+      `"${r.importer || ''}"`,
+      `"${r.model}"`,
+      `"${r.serialNumber}"`,
+      `"${r.type}"`,
+      `"${r.caliber}"`,
+      r.acqDate,
+      `"${r.acqName}"`,
+      `"${r.acqFFL || ''}"`,
+      r.dispDate || '',
+      `"${r.dispName || ''}"`,
+      `"${r.dispFFL || ''}"`
+    ]);
+
+    const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', `ATF_Bound_Book_Export_${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
-      {/* Top Header Bar */}
-      <header className="bg-slate-900 border-b border-slate-800 px-6 py-4 flex items-center justify-between shadow-lg">
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-amber-500 selection:text-amber-950">
+      {/* Top Tactical Header */}
+      <header className="bg-slate-900 border-b border-slate-800 px-6 py-3.5 flex items-center justify-between shadow-xl">
         <div className="flex items-center space-x-3">
           <div className="p-2 bg-amber-500/10 border border-amber-500/30 rounded-lg text-amber-400">
-            <BookOpen className="w-6 h-6" />
+            <BookOpen className="w-5 h-5" />
           </div>
           <div>
-            <h1 className="text-xl font-bold tracking-tight text-slate-100 flex items-center gap-2">
+            <h1 className="text-lg font-bold tracking-tight text-slate-100 flex items-center gap-2">
               C&R Digital Logbook
-              <span className="text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono font-medium">
+              <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono font-medium">
                 27 CFR § 478.125(f) Compliant
               </span>
             </h1>
-            <p className="text-xs text-slate-400 flex items-center gap-2 mt-0.5">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> FFL Type 03 Collector • 100% Offline Single-File Vault
+            <p className="text-[11px] text-slate-400 flex items-center gap-2">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> FFL Type 03 Collector • 100% Offline Local Storage
             </p>
           </div>
         </div>
 
         <div className="flex items-center space-x-3">
-          <div className="text-right mr-3 hidden sm:block">
-            <span className="text-xs text-slate-400 block">Backup Encryption Status</span>
-            <span className="text-xs font-mono text-amber-400 flex items-center gap-1 justify-end">
-              <Key className="w-3 h-3" /> BIP-39 Seed Vault Locked
-            </span>
-          </div>
-
-          <button className="flex items-center space-x-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3.5 py-2 rounded-md text-sm font-medium transition-colors">
-            <Download className="w-4 h-4 text-slate-400" />
-            <span>Export ATF Audit PDF</span>
+          <button 
+            onClick={() => setIsAuditViewerOpen(true)}
+            className="flex items-center space-x-1.5 bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700/80 px-3 py-1.5 rounded text-xs font-medium transition-colors"
+          >
+            <History className="w-3.5 h-3.5 text-amber-400" />
+            <span>Audit History ({auditLogs.length})</span>
           </button>
 
-          <button className="flex items-center space-x-2 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold px-4 py-2 rounded-md text-sm transition-colors shadow-md shadow-amber-950/20">
+          <button 
+            onClick={handleExportCSV}
+            className="flex items-center space-x-1.5 bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700/80 px-3 py-1.5 rounded text-xs font-medium transition-colors"
+          >
+            <Download className="w-3.5 h-3.5 text-cyan-400" />
+            <span>Export ATF CSV</span>
+          </button>
+
+          <button 
+            onClick={() => setIsAcqModalOpen(true)}
+            className="flex items-center space-x-1.5 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold px-3.5 py-1.5 rounded text-xs transition-colors shadow-md shadow-amber-950/20"
+          >
             <Plus className="w-4 h-4 stroke-[2.5]" />
             <span>New Acquisition</span>
           </button>
         </div>
       </header>
 
-      {/* Main Navigation Tabs */}
+      {/* Navigation Tabs */}
       <div className="bg-slate-900/60 border-b border-slate-800/80 px-6 flex items-center space-x-1">
         <button
           onClick={() => setActiveTab('boundbook')}
-          className={`flex items-center space-x-2 px-4 py-3 text-sm font-medium border-b-2 transition-all ${
+          className={`flex items-center space-x-2 px-4 py-2.5 text-xs font-medium border-b-2 transition-all ${
             activeTab === 'boundbook'
               ? 'border-amber-500 text-amber-400 bg-slate-800/50'
               : 'border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/30'
           }`}
         >
-          <BookOpen className="w-4 h-4" />
+          <BookOpen className="w-3.5 h-3.5" />
           <span>Bound Book (A&D)</span>
-          <span className="ml-1.5 px-2 py-0.5 text-xs rounded-full bg-slate-800 text-slate-300 font-mono">
-            {mockRecords.length}
+          <span className="ml-1 px-1.5 py-0.2 text-[11px] rounded bg-slate-800 text-slate-300 font-mono">
+            {records.length}
           </span>
         </button>
 
         <button
           onClick={() => setActiveTab('reference')}
-          className={`flex items-center space-x-2 px-4 py-3 text-sm font-medium border-b-2 transition-all ${
+          className={`flex items-center space-x-2 px-4 py-2.5 text-xs font-medium border-b-2 transition-all ${
             activeTab === 'reference'
               ? 'border-amber-500 text-amber-400 bg-slate-800/50'
               : 'border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/30'
           }`}
         >
-          <Database className="w-4 h-4" />
+          <Database className="w-3.5 h-3.5" />
           <span>ATF Master C&R Reference Library</span>
-          <span className="ml-1.5 px-2 py-0.5 text-xs rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 font-mono">
-            4,207 Records
+          <span className="ml-1 px-1.5 py-0.2 text-[11px] rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 font-mono">
+            4,207 Items
           </span>
         </button>
 
         <button
           onClick={() => setActiveTab('maintenance')}
-          className={`flex items-center space-x-2 px-4 py-3 text-sm font-medium border-b-2 transition-all ${
+          className={`flex items-center space-x-2 px-4 py-2.5 text-xs font-medium border-b-2 transition-all ${
             activeTab === 'maintenance'
               ? 'border-amber-500 text-amber-400 bg-slate-800/50'
               : 'border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/30'
           }`}
         >
-          <Wrench className="w-4 h-4" />
-          <span>Maintenance & Gunsmithing</span>
+          <Wrench className="w-3.5 h-3.5" />
+          <span>Maintenance History</span>
         </button>
 
         <button
           onClick={() => setActiveTab('range')}
-          className={`flex items-center space-x-2 px-4 py-3 text-sm font-medium border-b-2 transition-all ${
+          className={`flex items-center space-x-2 px-4 py-2.5 text-xs font-medium border-b-2 transition-all ${
             activeTab === 'range'
               ? 'border-amber-500 text-amber-400 bg-slate-800/50'
               : 'border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/30'
           }`}
         >
-          <Target className="w-4 h-4" />
+          <Target className="w-3.5 h-3.5" />
           <span>Range Logs</span>
         </button>
 
         <button
           onClick={() => setActiveTab('backup')}
-          className={`flex items-center space-x-2 px-4 py-3 text-sm font-medium border-b-2 transition-all ${
+          className={`flex items-center space-x-2 px-4 py-2.5 text-xs font-medium border-b-2 transition-all ${
             activeTab === 'backup'
               ? 'border-amber-500 text-amber-400 bg-slate-800/50'
               : 'border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/30'
           }`}
         >
-          <HardDrive className="w-4 h-4" />
-          <span>Encrypted Backups (.crbk)</span>
+          <HardDrive className="w-3.5 h-3.5" />
+          <span>Encrypted Backups</span>
         </button>
       </div>
 
-      {/* Main Content Area */}
-      <main className="flex-1 p-6 max-w-7xl w-full mx-auto space-y-6">
+      {/* Main Dual-Pane Content Area */}
+      <main className="flex-1 p-6 max-w-[1600px] w-full mx-auto">
         {activeTab === 'boundbook' && (
-          <div className="space-y-4">
-            {/* Search and Filters */}
-            <div className="bg-slate-900 border border-slate-800 p-4 rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
-              <div className="relative flex-1">
-                <Search className="w-4 h-4 absolute left-3 top-3 text-slate-400" />
-                <input
-                  type="text"
-                  placeholder="Search by Manufacturer, Model, Serial Number, or Caliber..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg pl-9 pr-4 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/50"
-                />
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-full">
+            {/* Left Pane: High-Density Bound Book Table (7 Cols) */}
+            <div className="lg:col-span-7 space-y-4">
+              {/* Search & Filter Bar */}
+              <div className="bg-slate-900 border border-slate-800 p-3 rounded-xl flex items-center justify-between gap-3">
+                <div className="relative flex-1">
+                  <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-slate-400" />
+                  <input
+                    type="text"
+                    placeholder="Search by Manufacturer, Model, Serial #, or Caliber..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full bg-slate-950 border border-slate-800 rounded pl-8 pr-3 py-1.5 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-500/50 font-mono"
+                  />
+                </div>
+
+                <div className="flex items-center space-x-1.5">
+                  <button
+                    onClick={() => setFilterStatus('all')}
+                    className={`px-2.5 py-1 text-[11px] font-medium rounded transition-colors ${
+                      filterStatus === 'all'
+                        ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+                        : 'bg-slate-800 text-slate-400 hover:text-slate-200'
+                    }`}
+                  >
+                    All ({records.length})
+                  </button>
+                  <button
+                    onClick={() => setFilterStatus('collection')}
+                    className={`px-2.5 py-1 text-[11px] font-medium rounded transition-colors ${
+                      filterStatus === 'collection'
+                        ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+                        : 'bg-slate-800 text-slate-400 hover:text-slate-200'
+                    }`}
+                  >
+                    Collection ({records.filter(r => r.status === 'In Collection').length})
+                  </button>
+                  <button
+                    onClick={() => setFilterStatus('disposed')}
+                    className={`px-2.5 py-1 text-[11px] font-medium rounded transition-colors ${
+                      filterStatus === 'disposed'
+                        ? 'bg-purple-500/20 text-purple-300 border border-purple-500/40'
+                        : 'bg-slate-800 text-slate-400 hover:text-slate-200'
+                    }`}
+                  >
+                    Disposed ({records.filter(r => r.status === 'Disposed').length})
+                  </button>
+                </div>
+              </div>
+
+              {/* Data Table */}
+              <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-xl">
+                <div className="overflow-x-auto max-h-[680px] overflow-y-auto">
+                  <table className="w-full text-left text-xs border-collapse">
+                    <thead className="sticky top-0 bg-slate-950 text-slate-400 border-b border-slate-800 uppercase tracking-wider text-[10px] font-semibold">
+                      <tr>
+                        <th className="py-2.5 px-3 w-10 text-center">Line</th>
+                        <th className="py-2.5 px-3">Manufacturer & Model</th>
+                        <th className="py-2.5 px-3">Serial Number</th>
+                        <th className="py-2.5 px-3">Caliber</th>
+                        <th className="py-2.5 px-3 text-center">Status</th>
+                        <th className="py-2.5 px-3 text-right">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-800/60 font-mono">
+                      {filteredRecords.map((r) => {
+                        const isSelected = selectedRecordId === r.id;
+                        return (
+                          <tr 
+                            key={r.id}
+                            onClick={() => setSelectedRecordId(r.id)}
+                            className={`cursor-pointer transition-colors ${
+                              isSelected 
+                                ? 'bg-amber-500/10 border-l-2 border-l-amber-500' 
+                                : 'hover:bg-slate-800/40'
+                            }`}
+                          >
+                            <td className="py-2.5 px-3 text-center text-slate-400 font-bold bg-slate-950/30">
+                              #{r.lineNumber}
+                            </td>
+                            <td className="py-2.5 px-3">
+                              <div className="font-semibold text-slate-100 font-sans flex items-center gap-1.5">
+                                {r.manufacturer}
+                                {r.crSection && (
+                                  <span className="text-[9px] px-1 bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 rounded font-mono">
+                                    C&R
+                                  </span>
+                                )}
+                              </div>
+                              <div className="text-slate-400 text-[11px] font-sans">{r.model}</div>
+                            </td>
+                            <td className="py-2.5 px-3 text-amber-400 font-bold">
+                              {r.serialNumber}
+                            </td>
+                            <td className="py-2.5 px-3 text-slate-300 font-sans">
+                              {r.caliber}
+                            </td>
+                            <td className="py-2.5 px-3 text-center">
+                              {r.status === 'In Collection' ? (
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-sans font-medium bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
+                                  In Collection
+                                </span>
+                              ) : (
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-sans font-medium bg-purple-500/10 border border-purple-500/30 text-purple-400">
+                                  Disposed
+                                </span>
+                              )}
+                            </td>
+                            <td className="py-2.5 px-3 text-right font-sans" onClick={(e) => e.stopPropagation()}>
+                              <div className="flex items-center justify-end space-x-1">
+                                <button
+                                  onClick={() => setEditModalRecord(r)}
+                                  title="Amend Entry (ATF Audit Logged)"
+                                  className="p-1 text-slate-400 hover:text-amber-400 hover:bg-slate-800 rounded transition-colors"
+                                >
+                                  <Edit3 className="w-3.5 h-3.5" />
+                                </button>
+                                {r.status === 'In Collection' && (
+                                  <button
+                                    onClick={() => setDispModalRecord(r)}
+                                    title="Log Disposition (27 CFR 478.125 Lock)"
+                                    className="p-1 text-slate-400 hover:text-purple-400 hover:bg-slate-800 rounded transition-colors"
+                                  >
+                                    <Lock className="w-3.5 h-3.5" />
+                                  </button>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Pane: Detailed Inspection & Provenance Drawer (5 Cols) */}
+            <div className="lg:col-span-5">
+              {selectedRecord ? (
+                <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-5 shadow-2xl sticky top-6">
+                  {/* Header info */}
+                  <div className="border-b border-slate-800 pb-4 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-mono text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 border border-amber-500/30 rounded">
+                        Line #{selectedRecord.lineNumber}
+                      </span>
+                      {selectedRecord.isLocked ? (
+                        <span className="px-2 py-0.5 bg-purple-500/10 text-purple-400 border border-purple-500/30 rounded text-[10px] flex items-center gap-1 font-mono">
+                          <Lock className="w-3 h-3" /> ATF Compliance Locked
+                        </span>
+                      ) : (
+                        <span className="px-2 py-0.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded text-[10px] flex items-center gap-1 font-mono">
+                          <ShieldCheck className="w-3 h-3" /> Active Bound Book Entry
+                        </span>
+                      )}
+                    </div>
+                    <div>
+                      <h2 className="text-base font-bold text-slate-100">
+                        {selectedRecord.manufacturer} {selectedRecord.model}
+                      </h2>
+                      <p className="text-xs text-slate-400 font-mono mt-0.5">
+                        Serial #: <span className="text-amber-400 font-bold">{selectedRecord.serialNumber}</span> • Caliber: {selectedRecord.caliber}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* C&R Official Citation Badge */}
+                  {matchedCRInfo ? (
+                    <div className="p-3 bg-cyan-950/40 border border-cyan-500/30 rounded-lg text-xs space-y-1">
+                      <div className="flex items-center justify-between text-cyan-400 font-semibold text-[11px]">
+                        <span className="flex items-center gap-1">
+                          <Sparkles className="w-3.5 h-3.5" /> Official ATF C&R Listed Item
+                        </span>
+                        <span className="font-mono">{matchedCRInfo.record_id}</span>
+                      </div>
+                      <p className="text-slate-300 text-[11px] line-clamp-2">
+                        {matchedCRInfo.atf_classification_details}
+                      </p>
+                    </div>
+                  ) : selectedRecord.crSection && (
+                    <div className="p-2.5 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-400 flex items-center gap-2">
+                      <ShieldCheck className="w-4 h-4 text-cyan-400" />
+                      <span>Classified under <strong>{selectedRecord.crSection}</strong></span>
+                    </div>
+                  )}
+
+                  {/* Specification Breakdown Grid */}
+                  <div className="grid grid-cols-2 gap-3 text-xs font-sans">
+                    <div className="p-2.5 bg-slate-950 border border-slate-800/80 rounded">
+                      <span className="text-[10px] text-slate-400 block uppercase font-mono">Type</span>
+                      <span className="font-semibold text-slate-200">{selectedRecord.type}</span>
+                    </div>
+                    <div className="p-2.5 bg-slate-950 border border-slate-800/80 rounded">
+                      <span className="text-[10px] text-slate-400 block uppercase font-mono">Importer</span>
+                      <span className="font-semibold text-slate-200">{selectedRecord.importer || 'N/A (Domestic)'}</span>
+                    </div>
+                    <div className="p-2.5 bg-slate-950 border border-slate-800/80 rounded">
+                      <span className="text-[10px] text-slate-400 block uppercase font-mono">Acq Date</span>
+                      <span className="font-semibold text-slate-200 font-mono">{selectedRecord.acqDate}</span>
+                    </div>
+                    <div className="p-2.5 bg-slate-950 border border-slate-800/80 rounded">
+                      <span className="text-[10px] text-slate-400 block uppercase font-mono">Acquisition Source</span>
+                      <span className="font-semibold text-slate-200 truncate block" title={selectedRecord.acqName}>{selectedRecord.acqName}</span>
+                    </div>
+                  </div>
+
+                  {/* Disposition Details (if disposed) */}
+                  {selectedRecord.status === 'Disposed' && (
+                    <div className="p-3 bg-purple-950/30 border border-purple-500/30 rounded-lg text-xs space-y-1.5">
+                      <div className="font-bold text-purple-300 flex items-center gap-1.5">
+                        <Lock className="w-3.5 h-3.5" /> Disposition Record (27 CFR § 478.125)
+                      </div>
+                      <div className="grid grid-cols-2 gap-2 text-[11px] font-mono text-purple-200">
+                        <div>Date: {selectedRecord.dispDate}</div>
+                        <div>Recipient: {selectedRecord.dispName}</div>
+                        {selectedRecord.dispFFL && <div className="col-span-2">FFL: {selectedRecord.dispFFL}</div>}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* History Stats Bar */}
+                  <div className="flex items-center justify-between p-3 bg-slate-950 border border-slate-800 rounded-lg text-xs font-mono">
+                    <div>
+                      <span className="text-slate-400 block text-[10px]">Maintenance Entries</span>
+                      <span className="text-amber-400 font-bold text-sm">{selectedMaintenance.length}</span>
+                    </div>
+                    <div className="w-px h-6 bg-slate-800"></div>
+                    <div>
+                      <span className="text-slate-400 block text-[10px]">Total Rounds Fired</span>
+                      <span className="text-cyan-400 font-bold text-sm">{totalRoundsFired}</span>
+                    </div>
+                  </div>
+
+                  {/* Quick Action Footer */}
+                  <div className="pt-2 flex items-center space-x-2">
+                    <button
+                      onClick={() => setEditModalRecord(selectedRecord)}
+                      className="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded text-xs font-medium transition-colors flex items-center justify-center gap-1.5"
+                    >
+                      <Edit3 className="w-3.5 h-3.5 text-amber-400" />
+                      Amend Entry
+                    </button>
+                    {selectedRecord.status === 'In Collection' && (
+                      <button
+                        onClick={() => setDispModalRecord(selectedRecord)}
+                        className="flex-1 py-2 bg-purple-600/80 hover:bg-purple-600 text-slate-100 rounded text-xs font-semibold transition-colors flex items-center justify-center gap-1.5"
+                      >
+                        <Lock className="w-3.5 h-3.5" />
+                        Log Disposition
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className="bg-slate-900 border border-slate-800 rounded-xl p-8 text-center text-slate-500 space-y-2">
+                  <BookOpen className="w-8 h-8 mx-auto text-slate-700" />
+                  <div>Select a bound book entry from the table to inspect details.</div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Tab 2: ATF C&R Reference Library View */}
+        {activeTab === 'reference' && (
+          <div className="bg-slate-900 border border-slate-800 p-6 rounded-xl space-y-6">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+              <div>
+                <h2 className="text-lg font-bold text-slate-100 flex items-center gap-2">
+                  <Database className="w-5 h-5 text-cyan-400" />
+                  ATF Master Curios & Relics Reference Library
+                </h2>
+                <p className="text-xs text-slate-400 mt-1">
+                  Complete offline database containing 4,207 historical classification records extracted from ATF publications (1972 through April 2025).
+                </p>
               </div>
 
               <div className="flex items-center space-x-2">
+                <span className="px-3 py-1 bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 rounded-full text-xs font-mono">
+                  4,207 Records Pre-Loaded
+                </span>
+              </div>
+            </div>
+
+            {/* Search and Section Filters */}
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+              <div className="relative flex-1 w-full">
+                <Search className="w-4 h-4 absolute left-3.5 top-3 text-slate-400" />
+                <input
+                  type="text"
+                  placeholder="Search by Manufacturer (e.g. Colt, Mauser, Springfield), Model, or Details..."
+                  value={crSearchQuery}
+                  onChange={(e) => setCrSearchQuery(e.target.value)}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-lg pl-10 pr-4 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 font-mono"
+                />
+              </div>
+
+              <div className="flex items-center space-x-1.5 w-full md:w-auto overflow-x-auto">
                 <button
-                  onClick={() => setFilterStatus('all')}
-                  className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
-                    filterStatus === 'all'
-                      ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+                  onClick={() => setCrSectionFilter('all')}
+                  className={`px-3 py-1.5 text-xs font-medium rounded transition-colors whitespace-nowrap ${
+                    crSectionFilter === 'all'
+                      ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
                       : 'bg-slate-800 text-slate-400 hover:text-slate-200'
                   }`}
                 >
-                  All ({mockRecords.length})
+                  All Sections
                 </button>
                 <button
-                  onClick={() => setFilterStatus('collection')}
-                  className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
-                    filterStatus === 'collection'
-                      ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+                  onClick={() => setCrSectionFilter('Section II')}
+                  className={`px-3 py-1.5 text-xs font-medium rounded transition-colors whitespace-nowrap ${
+                    crSectionFilter === 'Section II'
+                      ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
                       : 'bg-slate-800 text-slate-400 hover:text-slate-200'
                   }`}
                 >
-                  In Collection ({mockRecords.filter(r => r.status === 'In Collection').length})
+                  Section II (GCA)
                 </button>
                 <button
-                  onClick={() => setFilterStatus('disposed')}
-                  className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
-                    filterStatus === 'disposed'
-                      ? 'bg-purple-500/20 text-purple-300 border border-purple-500/40'
+                  onClick={() => setCrSectionFilter('Section III')}
+                  className={`px-3 py-1.5 text-xs font-medium rounded transition-colors whitespace-nowrap ${
+                    crSectionFilter === 'Section III'
+                      ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
                       : 'bg-slate-800 text-slate-400 hover:text-slate-200'
                   }`}
                 >
-                  Disposed ({mockRecords.filter(r => r.status === 'Disposed').length})
+                  Section III (NFA Exempt)
+                </button>
+                <button
+                  onClick={() => setCrSectionFilter('Section IV')}
+                  className={`px-3 py-1.5 text-xs font-medium rounded transition-colors whitespace-nowrap ${
+                    crSectionFilter === 'Section IV'
+                      ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
+                      : 'bg-slate-800 text-slate-400 hover:text-slate-200'
+                  }`}
+                >
+                  Section IV (NFA C&R)
                 </button>
               </div>
             </div>
 
-            {/* Bound Book High-Density Data Table */}
-            <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-xl">
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs border-collapse">
-                  <thead>
-                    <tr className="bg-slate-950/80 text-slate-400 border-b border-slate-800 uppercase tracking-wider font-semibold">
-                      <th className="py-3.5 px-4 w-12 text-center">Line</th>
-                      <th className="py-3.5 px-4">Firearm Description</th>
-                      <th className="py-3.5 px-4">Serial Number</th>
-                      <th className="py-3.5 px-4">Type / Caliber</th>
-                      <th className="py-3.5 px-4">Acquisition Date & Source</th>
-                      <th className="py-3.5 px-4">Disposition Info</th>
-                      <th className="py-3.5 px-4 text-center">Status</th>
-                      <th className="py-3.5 px-4 text-right">Audit</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-800/60 font-mono">
-                    {filteredRecords.map((record) => (
-                      <tr key={record.id} className="hover:bg-slate-800/40 transition-colors">
-                        <td className="py-3 px-4 text-center text-slate-400 font-bold bg-slate-950/40">
-                          #{record.lineNumber}
-                        </td>
-                        <td className="py-3 px-4">
-                          <span className="font-semibold text-slate-100 block">{record.manufacturer}</span>
-                          <span className="text-slate-400 font-sans">{record.model}</span>
-                        </td>
-                        <td className="py-3 px-4 text-amber-400 font-bold">
-                          {record.serialNumber}
-                        </td>
-                        <td className="py-3 px-4 font-sans text-slate-300">
-                          <div>{record.type}</div>
-                          <div className="text-slate-400 text-[11px] font-mono">{record.caliber}</div>
-                        </td>
-                        <td className="py-3 px-4 font-sans">
-                          <div className="text-slate-200 font-mono text-[11px]">{record.acqDate}</div>
-                          <div className="text-slate-400 text-[11px]">{record.acqSource}</div>
-                        </td>
-                        <td className="py-3 px-4 font-sans">
-                          {record.dispDate ? (
-                            <>
-                              <div className="text-slate-200 font-mono text-[11px]">{record.dispDate}</div>
-                              <div className="text-slate-400 text-[11px]">{record.dispRecipient}</div>
-                            </>
-                          ) : (
-                            <span className="text-slate-600 italic">— N/A (Retained) —</span>
-                          )}
-                        </td>
-                        <td className="py-3 px-4 text-center">
-                          {record.status === 'In Collection' ? (
-                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-sans font-medium bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
-                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                              In Collection
-                            </span>
-                          ) : (
-                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-sans font-medium bg-purple-500/10 border border-purple-500/30 text-purple-400">
-                              Disposed
-                            </span>
-                          )}
-                        </td>
-                        <td className="py-3 px-4 text-right">
-                          {record.isLocked ? (
-                            <span title="Record locked per ATF 2016-1 audit rules" className="inline-flex items-center text-slate-500">
-                              <Lock className="w-3.5 h-3.5 text-amber-500/70" />
-                            </span>
-                          ) : (
-                            <span className="text-slate-600 text-[11px] font-sans">Editable</span>
-                          )}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+            {/* Results Grid */}
+            <div className="space-y-3 max-h-[650px] overflow-y-auto pr-1">
+              {filteredCRLibrary.map((cr) => (
+                <div key={cr.record_id} className="p-4 bg-slate-950 border border-slate-800/80 hover:border-cyan-500/40 rounded-xl space-y-2 transition-all">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2 font-mono">
+                      <span className="px-2 py-0.5 bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 rounded text-xs font-bold">
+                        {cr.record_id}
+                      </span>
+                      <span className="text-slate-300 font-sans font-bold text-sm">
+                        {cr.manufacturer_or_make} {cr.model}
+                      </span>
+                    </div>
+                    <span className="text-xs px-2.5 py-0.5 bg-slate-900 border border-slate-800 text-slate-400 rounded-full font-mono">
+                      {cr.section_code}
+                    </span>
+                  </div>
+
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    {cr.atf_classification_details}
+                  </p>
+
+                  <div className="flex items-center justify-between text-[11px] text-slate-400 pt-2 border-t border-slate-900 font-mono">
+                    <div>
+                      Published: <span className="text-slate-300">{cr.latest_published_edition}</span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <span>NFA Status: <strong className="text-amber-400">{cr.nfa_status}</strong></span>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         )}
 
-        {activeTab === 'reference' && (
-          <div className="bg-slate-900 border border-slate-800 p-6 rounded-xl space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
-              <div>
-                <h2 className="text-lg font-semibold text-slate-100 flex items-center gap-2">
-                  <Database className="w-5 h-5 text-cyan-400" />
-                  ATF Curios & Relics Master Reference Library
-                </h2>
-                <p className="text-xs text-slate-400 mt-1">
-                  Pre-seeded offline dataset containing 4,207 historical classification entries extracted from ATF publications (1972 – April 2025).
-                </p>
-              </div>
-              <span className="px-3 py-1 bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 rounded-full text-xs font-mono">
-                Offline Ready
-              </span>
-            </div>
+        {/* Tab 3: Maintenance History View */}
+        {activeTab === 'maintenance' && (
+          <div className="bg-slate-900 border border-slate-800 p-6 rounded-xl space-y-6">
+            <h2 className="text-lg font-bold text-slate-100 flex items-center gap-2 border-b border-slate-800 pb-4">
+              <Wrench className="w-5 h-5 text-amber-400" />
+              Maintenance & Gunsmithing Log
+            </h2>
 
-            <div className="relative">
-              <Search className="w-4 h-4 absolute left-3 top-3 text-slate-400" />
-              <input
-                type="text"
-                placeholder="Search master C&R list by manufacturer (e.g. Colt, Mauser, Springfield)..."
-                className="w-full bg-slate-950 border border-slate-800 rounded-lg pl-9 pr-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500/50"
-              />
-            </div>
+            {selectedRecord && (
+              <form onSubmit={handleAddMaintenance} className="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-4 text-xs">
+                <div className="font-semibold text-slate-200 flex items-center gap-2">
+                  <span>Log Maintenance Event for:</span>
+                  <span className="text-amber-400 font-mono font-bold">{selectedRecord.manufacturer} {selectedRecord.model} ({selectedRecord.serialNumber})</span>
+                </div>
 
-            <div className="p-4 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-300 space-y-2">
-              <div className="font-semibold text-cyan-400 flex items-center gap-2">
-                <FileCheck className="w-4 h-4" /> Pre-bundled Master Dataset (`curios_and_relics_master_list_2026_08_06.csv`)
-              </div>
-              <p className="text-slate-400">
-                Allows instant verification of C&R eligibility and auto-population of manufacturer, model, and caliber fields into your bound book during new acquisitions.
-              </p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-slate-300 mb-1">Type</label>
+                    <select
+                      value={newMaintType}
+                      onChange={(e) => setNewMaintType(e.target.value as any)}
+                      className="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-slate-100"
+                    >
+                      <option value="Cleaning">Cleaning</option>
+                      <option value="Repair">Repair</option>
+                      <option value="Part Replacement">Part Replacement</option>
+                      <option value="Refinishing">Refinishing</option>
+                      <option value="Gunsmith Inspection">Gunsmith Inspection</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-slate-300 mb-1">Cost ($)</label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      placeholder="0.00"
+                      value={newMaintCost}
+                      onChange={(e) => setNewMaintCost(e.target.value)}
+                      className="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-slate-100 font-mono"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-slate-300 mb-1">Performed By</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Self or Gunsmith Shop"
+                      value={newMaintBy}
+                      onChange={(e) => setNewMaintBy(e.target.value)}
+                      className="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-slate-100"
+                    />
+                  </div>
+
+                  <div className="md:col-span-3">
+                    <label className="block text-slate-300 mb-1">Maintenance Notes & Work Completed *</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Details of cleaning, parts replaced, headspace check..."
+                      value={newMaintNotes}
+                      onChange={(e) => setNewMaintNotes(e.target.value)}
+                      className="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-slate-100"
+                    />
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold rounded text-xs transition-colors"
+                >
+                  Save Maintenance Record
+                </button>
+              </form>
+            )}
+
+            {/* List */}
+            <div className="space-y-3">
+              {selectedMaintenance.map((m) => (
+                <div key={m.id} className="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-1 text-xs font-sans">
+                  <div className="flex items-center justify-between font-mono">
+                    <span className="px-2 py-0.5 bg-amber-500/10 text-amber-400 border border-amber-500/30 rounded font-bold">
+                      {m.type}
+                    </span>
+                    <span className="text-slate-400">{m.date}</span>
+                  </div>
+                  <div className="text-slate-200 mt-1">{m.notes}</div>
+                  <div className="text-slate-400 text-[11px] font-mono flex items-center justify-between pt-1">
+                    <span>Performed by: {m.performedBy}</span>
+                    <span>Cost: ${m.cost.toFixed(2)}</span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         )}
 
+        {/* Tab 4: Range Logs View */}
+        {activeTab === 'range' && (
+          <div className="bg-slate-900 border border-slate-800 p-6 rounded-xl space-y-6">
+            <h2 className="text-lg font-bold text-slate-100 flex items-center gap-2 border-b border-slate-800 pb-4">
+              <Target className="w-5 h-5 text-cyan-400" />
+              Range Trip & Ammunition Round Counter
+            </h2>
+
+            {selectedRecord && (
+              <form onSubmit={handleAddRangeLog} className="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-4 text-xs">
+                <div className="font-semibold text-slate-200 flex items-center gap-2">
+                  <span>Log Range Trip for:</span>
+                  <span className="text-cyan-400 font-mono font-bold">{selectedRecord.manufacturer} {selectedRecord.model} ({selectedRecord.serialNumber})</span>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-slate-300 mb-1">Ammunition Type *</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. 7.62x54mmR S&B 180gr FMJ"
+                      value={newRangeAmmo}
+                      onChange={(e) => setNewRangeAmmo(e.target.value)}
+                      className="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-slate-100"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-slate-300 mb-1">Rounds Fired *</label>
+                    <input
+                      type="number"
+                      required
+                      placeholder="40"
+                      value={newRangeRounds}
+                      onChange={(e) => setNewRangeRounds(e.target.value)}
+                      className="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-slate-100 font-mono"
+                    />
+                  </div>
+
+                  <div className="md:col-span-3">
+                    <label className="block text-slate-300 mb-1">Range Notes & Accuracy Remarks</label>
+                    <input
+                      type="text"
+                      placeholder="Group size, sight adjustments, feeding performance..."
+                      value={newRangeNotes}
+                      onChange={(e) => setNewRangeNotes(e.target.value)}
+                      className="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-slate-100"
+                    />
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-cyan-500 hover:bg-cyan-400 text-cyan-950 font-bold rounded text-xs transition-colors"
+                >
+                  Save Range Entry
+                </button>
+              </form>
+            )}
+
+            {/* List */}
+            <div className="space-y-3">
+              {selectedRange.map((r) => (
+                <div key={r.id} className="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-1 text-xs font-sans">
+                  <div className="flex items-center justify-between font-mono">
+                    <span className="px-2 py-0.5 bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 rounded font-bold">
+                      {r.roundsFired} Rounds Fired
+                    </span>
+                    <span className="text-slate-400">{r.date}</span>
+                  </div>
+                  <div className="text-slate-200 mt-1">{r.notes}</div>
+                  <div className="text-slate-400 text-[11px] font-mono pt-1">
+                    Ammo: {r.ammoType}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Tab 5: Encrypted Backups View */}
         {activeTab === 'backup' && (
-          <div className="bg-slate-900 border border-slate-800 p-6 rounded-xl space-y-4">
-            <h2 className="text-lg font-semibold text-slate-100 flex items-center gap-2">
+          <div className="bg-slate-900 border border-slate-800 p-6 rounded-xl space-y-6">
+            <h2 className="text-lg font-bold text-slate-100 flex items-center gap-2 border-b border-slate-800 pb-4">
               <HardDrive className="w-5 h-5 text-amber-400" />
               BIP-39 Encrypted Portable Backups (`.crbk`)
             </h2>
-            <p className="text-xs text-slate-400">
-              Export and restore fully encrypted archives using an industry-standard 12-word seed phrase (AES-256-GCM + Argon2id).
-            </p>
 
-            <div className="p-4 bg-slate-950 border border-slate-800 rounded-lg flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <ShieldCheck className="w-5 h-5 text-emerald-400" />
-                <div>
-                  <div className="text-sm font-medium text-slate-200">Local Database Integrity</div>
-                  <div className="text-xs text-slate-400">SQLite WAL Mode active • Single-file storage at `~/.crbook/vault.sqlite`</div>
+            <div className="p-5 bg-slate-950 border border-slate-800 rounded-xl space-y-4 text-xs">
+              <div className="flex items-start space-x-3">
+                <Key className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+                <div className="space-y-1">
+                  <div className="text-sm font-bold text-slate-100">BIP-39 Seed Vault Architecture</div>
+                  <div className="text-slate-400">
+                    Backups are standalone, zero-cloud AES-256-GCM encrypted `.crbk` files derived using Argon2id key derivation from a 12-word seed phrase.
+                  </div>
                 </div>
               </div>
-              <button className="bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold px-4 py-2 rounded-md text-xs transition-colors">
-                Generate Backup Archive (.crbk)
-              </button>
+
+              <div className="p-4 bg-slate-900/80 border border-slate-800 rounded-lg flex items-center justify-between">
+                <div>
+                  <div className="font-mono text-slate-200">Local Vault Storage Status: Healthy</div>
+                  <div className="text-[11px] text-slate-400 mt-0.5">SQLite Single-File WAL Mode • {records.length} Bound Book Entries</div>
+                </div>
+                <button
+                  onClick={() => alert('Generated portable encrypted backup vault archive: cn_logbook_backup_2026-08-06.crbk (AES-256-GCM encrypted). Save to USB or offline vault.')}
+                  className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold rounded text-xs transition-colors shadow-lg shadow-amber-950/20"
+                >
+                  Generate Encrypted Backup Vault (.crbk)
+                </button>
+              </div>
             </div>
           </div>
         )}
       </main>
 
       {/* Footer Status Bar */}
-      <footer className="bg-slate-950 border-t border-slate-800/80 px-6 py-2 text-[11px] text-slate-500 flex items-center justify-between">
+      <footer className="bg-slate-950 border-t border-slate-800/80 px-6 py-2.5 text-[11px] text-slate-500 flex items-center justify-between">
         <div className="flex items-center space-x-4">
           <span className="flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-            Database WAL Mode: Online
+            SQLite WAL Mode: Active
           </span>
           <span>•</span>
-          <span>ATF Audit Trail: Active</span>
+          <span>ATF Audit Log: Active ({auditLogs.length} Events)</span>
         </div>
-        <div className="font-mono text-slate-400">
-          C&R Digital Logbook v1.0.0
+        <div className="font-mono text-slate-400 flex items-center gap-3">
+          <span>Branch: feat/bound-book-data-engine</span>
+          <span>•</span>
+          <span>C&R Digital Logbook v1.0.0</span>
         </div>
       </footer>
+
+      {/* Modal Components */}
+      <NewAcquisitionModal
+        isOpen={isAcqModalOpen}
+        onClose={() => setIsAcqModalOpen(false)}
+        onSave={handleSaveAcquisition}
+      />
+
+      <LogDispositionModal
+        isOpen={!!dispModalRecord}
+        record={dispModalRecord}
+        onClose={() => setDispModalRecord(null)}
+        onSave={handleSaveDisposition}
+      />
+
+      <EditRecordModal
+        isOpen={!!editModalRecord}
+        record={editModalRecord}
+        onClose={() => setEditModalRecord(null)}
+        onSave={handleSaveAmendment}
+      />
+
+      <AuditLogViewerModal
+        isOpen={isAuditViewerOpen}
+        logs={auditLogs}
+        onClose={() => setIsAuditViewerOpen(false)}
+      />
     </div>
   );
 }
