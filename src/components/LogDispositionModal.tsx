@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { X, Lock, AlertTriangle } from 'lucide-react';
 import type { BoundBookRecord } from '../types/logbook';
+import { useEscapeKey } from '../hooks/useEscapeKey';
 
 interface LogDispositionModalProps {
   isOpen: boolean;
@@ -10,6 +11,7 @@ interface LogDispositionModalProps {
 }
 
 export function LogDispositionModal({ isOpen, record, onClose, onSave }: LogDispositionModalProps) {
+  useEscapeKey(onClose, isOpen && !!record);
   const [dispDate, setDispDate] = useState(new Date().toISOString().split('T')[0]);
   const [dispName, setDispName] = useState('');
   const [dispAddress, setDispAddress] = useState('');

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { 
   Search, 
   Plus, 
@@ -11,6 +11,7 @@ import {
   Command
 } from 'lucide-react';
 import type { BoundBookRecord } from '../types/logbook';
+import { useEscapeKey } from '../hooks/useEscapeKey';
 
 interface CommandPaletteModalProps {
   isOpen: boolean;
@@ -37,21 +38,8 @@ export function CommandPaletteModal({
   onOpenPDF,
   onOpenVault
 }: CommandPaletteModalProps) {
+  useEscapeKey(onClose, isOpen);
   const [query, setQuery] = useState('');
-
-  // Global hotkey listener (Ctrl+K / Cmd+K)
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault();
-        if (isOpen) {
-          onClose();
-        }
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
 
   const actionCommands = [
     { id: 'act-acq', title: 'Record New Firearm Acquisition', icon: Plus, category: 'Action', action: onOpenAcq },

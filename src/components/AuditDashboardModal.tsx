@@ -1,5 +1,6 @@
 import { X, ShieldCheck, BookOpen, Lock, FileText, CheckCircle2 } from 'lucide-react';
 import type { BoundBookRecord, AuditLogEntry } from '../types/logbook';
+import { useEscapeKey } from '../hooks/useEscapeKey';
 
 interface AuditDashboardModalProps {
   isOpen: boolean;
@@ -9,6 +10,7 @@ interface AuditDashboardModalProps {
 }
 
 export function AuditDashboardModal({ isOpen, records, auditLogs, onClose }: AuditDashboardModalProps) {
+  useEscapeKey(onClose, isOpen);
   if (!isOpen) return null;
 
   const totalFirearms = records.length;

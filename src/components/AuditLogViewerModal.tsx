@@ -1,5 +1,6 @@
 import { X, FileText, Clock, ShieldCheck } from 'lucide-react';
 import type { AuditLogEntry } from '../types/logbook';
+import { useEscapeKey } from '../hooks/useEscapeKey';
 
 interface AuditLogViewerModalProps {
   isOpen: boolean;
@@ -8,6 +9,7 @@ interface AuditLogViewerModalProps {
 }
 
 export function AuditLogViewerModal({ isOpen, logs, onClose }: AuditLogViewerModalProps) {
+  useEscapeKey(onClose, isOpen);
   if (!isOpen) return null;
 
   return (

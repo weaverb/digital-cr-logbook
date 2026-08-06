@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { X, Download, FileCheck, ShieldCheck } from 'lucide-react';
 import type { BoundBookRecord } from '../types/logbook';
 import { generateBoundBookPDF } from '../lib/pdfExporter';
+import { useEscapeKey } from '../hooks/useEscapeKey';
 
 interface PDFExportDialogModalProps {
   isOpen: boolean;
@@ -10,6 +11,7 @@ interface PDFExportDialogModalProps {
 }
 
 export function PDFExportDialogModal({ isOpen, records, onClose }: PDFExportDialogModalProps) {
+  useEscapeKey(onClose, isOpen);
   const [collectorName, setCollectorName] = useState('John Doe (Type 03 C&R FFL)');
   const [fflNumber, setFflNumber] = useState('3-42-xxx-01');
   const [filter, setFilter] = useState<'all' | 'collection' | 'disposed'>('all');

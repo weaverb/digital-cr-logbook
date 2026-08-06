@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { X, ShieldCheck, CheckCircle2, RefreshCw } from 'lucide-react';
 import type { BoundBookRecord, AuditLogEntry } from '../types/logbook';
+import { useEscapeKey } from '../hooks/useEscapeKey';
 
 interface VaultHealthModalProps {
   isOpen: boolean;
@@ -10,6 +11,7 @@ interface VaultHealthModalProps {
 }
 
 export function VaultHealthModal({ isOpen, records, auditLogs, onClose }: VaultHealthModalProps) {
+  useEscapeKey(onClose, isOpen);
   const [isRunningCheck, setIsRunningCheck] = useState(false);
   const [checkCompleted, setCheckCompleted] = useState(false);
 
