@@ -33,3 +33,29 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #475569;
 }
+
+/* Global Dark Theme Select & Option Dropdown Fix */
+select {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+  color-scheme: dark;
+}
+
+select option {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+  padding: 8px 12px;
+}
+
+select option:hover,
+select option:focus,
+select option:active,
+select option:checked {
+  background-color: #1e293b !important;
+  color: #f59e0b !important;
+}
+
+input[type="date"] {
+  color-scheme: dark;
+}

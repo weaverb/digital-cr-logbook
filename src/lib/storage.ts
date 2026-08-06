@@ -16,7 +16,8 @@ export function getBoundBookRecords(): BoundBookRecord[] {
     return defaultBoundBookRecords;
   }
   try {
-    return JSON.parse(data);
+    const parsed: BoundBookRecord[] = JSON.parse(data);
+    return parsed.sort((a, b) => a.lineNumber - b.lineNumber);
   } catch (e) {
     console.error('Failed to parse bound book records from storage', e);
     return defaultBoundBookRecords;
@@ -24,7 +25,8 @@ export function getBoundBookRecords(): BoundBookRecord[] {
 }
 
 export function saveBoundBookRecords(records: BoundBookRecord[]): void {
-  localStorage.setItem(BOUND_BOOK_KEY, JSON.stringify(records));
+  const sorted = [...records].sort((a, b) => a.lineNumber - b.lineNumber);
+  localStorage.setItem(BOUND_BOOK_KEY, JSON.stringify(sorted));
 }
 
 export function getAuditLogs(): AuditLogEntry[] {
