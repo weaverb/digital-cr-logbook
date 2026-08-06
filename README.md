@@ -94,16 +94,60 @@ bun run tauri:build
 ```txt
 digital-cr-logbook/
 ├── cr_list/
-│   └── curios_and_relics_master_list_2026_08_06.csv   # Pre-seeded 4,207 ATF C&R entries
+│   ├── curios_and_relics_master_list_2026_08_06.csv   # Pre-seeded 4,207 ATF C&R entries
+│   ├── generate_cr_csv.py                              # Master list extraction script
+│   └── README_CR_LIST.md                               # Dataset update guide
 ├── src/
+│   ├── components/                                     # Modals & UI Components
+│   │   ├── AuditDashboardModal.tsx                     # Live ATF compliance scorecard
+│   │   ├── AuditLogViewerModal.tsx                     # ATF_AUDIT_LOG history viewer
+│   │   ├── BackupVaultModal.tsx                        # BIP-39 encrypted vault backup & restore
+│   │   ├── CommandPaletteModal.tsx                     # Ctrl+K / Cmd+K global search & action launcher
+│   │   ├── ContactsRolodexModal.tsx                    # FFL Dealer & Collector directory
+│   │   ├── EditRecordModal.tsx                         # Record amendment with mandatory audit reason
+│   │   ├── LogDispositionModal.tsx                     # Disposition logging & 27 CFR locking
+│   │   ├── MediaGalleryModal.tsx                       # Receiver proof marks & scan attachment store
+│   │   ├── NewAcquisitionModal.tsx                     # Bound book entry with live C&R autocomplete
+│   │   ├── PDFExportDialogModal.tsx                    # Customizable printable ATF PDF options
+│   │   └── VaultHealthModal.tsx                        # SQLite WAL & line continuity diagnostics
+│   ├── data/
+│   │   └── cr_master_data.json                         # Pre-compiled 4,207 ATF C&R reference database
+│   ├── hooks/
+│   │   └── useEscapeKey.ts                             # Global ESC key modal dismissal hook
+│   ├── lib/
+│   │   ├── cryptoVault.ts                              # BIP-39 seed phrase key derivation & AES-256-GCM
+│   │   ├── fileSaveHelper.ts                           # Native OS location picker save wrapper
+│   │   ├── osHelper.ts                                 # OS platform detection (Ctrl+K vs Cmd+K)
+│   │   ├── pdfExporter.ts                              # 27 CFR § 478.125(f) printable PDF builder
+│   │   └── storage.ts                                  # LocalStorage & audit logging engine
+│   ├── types/
+│   │   └── logbook.ts                                  # TypeScript interfaces & domain models
 │   ├── App.tsx                                         # Dual-Pane Tactical Logbook UI
 │   ├── index.css                                       # Tailwind CSS v4 & custom tokens
 │   └── main.tsx
-├── PRODUCT.md                                         # Durable Product Context
-├── software_architecture_plan.md                      # Full System & Schema Architecture
+├── src-tauri/                                          # Tauri v2 Desktop Engine
+│   ├── capabilities/
+│   │   └── default.json                                # Native window permissions (dialog, fs)
+│   ├── icons/                                          # Desktop application icon set
+│   ├── src/
+│   │   ├── lib.rs                                      # Rust plugin initializer
+│   │   └── main.rs                                     # Desktop binary entrypoint
+│   ├── Cargo.toml                                      # Rust package manifest
+│   └── tauri.conf.json                                 # Desktop window & bundle configuration
+├── PRODUCT.md                                          # Durable Product Context
+├── software_architecture_plan.md                       # Full System & Schema Architecture
 ├── vite.config.ts
 └── package.json
 ```
+
+---
+
+## ⌨️ Keyboard Shortcuts
+
+| Shortcut | Action |
+| :--- | :--- |
+| **`Ctrl + K`** *(Linux / Windows)* / **`Cmd + K`** *(macOS)* | Open Global Command Palette & Instant Search |
+| **`ESC`** | Close any open modal |
 
 ---
 
@@ -120,3 +164,4 @@ This repository strictly enforces the following engineering guidelines:
 ## 🔒 License & Compliance
 
 Designed strictly for compliance with **27 CFR § 478.125(f)**. All user data, cryptographic keys, and bound book records remain 100% local on the user's hardware with zero network telemetry.
+
