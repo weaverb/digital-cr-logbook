@@ -165,3 +165,5 @@ This repository strictly enforces the following engineering guidelines:
 
 Designed strictly for compliance with **27 CFR § 478.125(f)**. All user data, cryptographic keys, and bound book records remain 100% local on the user's hardware with zero network telemetry.
 
+Licensed under the **PolyForm Noncommercial License 1.0.0** (`LICENSE`). You are free to copy, modify, distribute, and use this software for **personal, non-commercial purposes**. Commercial use, rental, or integration into paid services is strictly prohibited.
+
