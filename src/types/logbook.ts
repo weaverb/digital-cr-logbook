@@ -72,6 +72,27 @@ export interface BoundBookRecord {
   updatedAt: string;
 }
 
+export interface Contact {
+  id: string;
+  category: 'Dealer' | 'Manufacturer' | 'Gunsmith' | 'Collector' | 'Other';
+  name: string;
+  fflNumber?: string;
+  email?: string;
+  phone?: string;
+  address?: string;
+  notes?: string;
+}
+
+export interface MediaAttachment {
+  id: string;
+  firearmId: string;
+  title: string;
+  category: 'Proof Mark' | 'Serial Number' | 'Provenance Document' | 'Receipt' | 'General Photo';
+  dataUrl: string;
+  mimeType: string;
+  createdAt: string;
+}
+
 export interface CRReferenceEntry {
   record_id: string;
   section_code: string;

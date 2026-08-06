@@ -12,7 +12,10 @@ import {
   HardDrive,
   Edit3,
   History,
-  Sparkles
+  Sparkles,
+  Users,
+  Camera,
+  Activity
 } from 'lucide-react';
 import type { BoundBookRecord, CRReferenceEntry, MaintenanceRecord } from './types/logbook';
 import { 
@@ -30,6 +33,9 @@ import { LogDispositionModal } from './components/LogDispositionModal';
 import { EditRecordModal } from './components/EditRecordModal';
 import { AuditLogViewerModal } from './components/AuditLogViewerModal';
 import { BackupVaultModal } from './components/BackupVaultModal';
+import { ContactsRolodexModal } from './components/ContactsRolodexModal';
+import { MediaGalleryModal } from './components/MediaGalleryModal';
+import { AuditDashboardModal } from './components/AuditDashboardModal';
 import { generateBoundBookPDF } from './lib/pdfExporter';
 import crMasterData from './data/cr_master_data.json';
 
@@ -55,6 +61,9 @@ export function App() {
   const [editModalRecord, setEditModalRecord] = useState<BoundBookRecord | null>(null);
   const [isAuditViewerOpen, setIsAuditViewerOpen] = useState(false);
   const [isVaultModalOpen, setIsVaultModalOpen] = useState(false);
+  const [isContactsModalOpen, setIsContactsModalOpen] = useState(false);
+  const [isMediaModalOpen, setIsMediaModalOpen] = useState(false);
+  const [isDashboardModalOpen, setIsDashboardModalOpen] = useState(false);
 
   // Quick Maintenance & Range Inputs for Selected Firearm
   const [newMaintType, setNewMaintType] = useState<MaintenanceRecord['type']>('Cleaning');
@@ -291,7 +300,23 @@ export function App() {
           </div>
         </div>
 
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-2">
+          <button 
+            onClick={() => setIsDashboardModalOpen(true)}
+            className="flex items-center space-x-1.5 bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700/80 px-3 py-1.5 rounded text-xs font-medium transition-colors"
+          >
+            <Activity className="w-3.5 h-3.5 text-emerald-400" />
+            <span>Audit Dashboard</span>
+          </button>
+
+          <button 
+            onClick={() => setIsContactsModalOpen(true)}
+            className="flex items-center space-x-1.5 bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700/80 px-3 py-1.5 rounded text-xs font-medium transition-colors"
+          >
+            <Users className="w-3.5 h-3.5 text-amber-400" />
+            <span>FFL Rolodex</span>
+          </button>
+
           <button 
             onClick={() => setIsAuditViewerOpen(true)}
             className="flex items-center space-x-1.5 bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700/80 px-3 py-1.5 rounded text-xs font-medium transition-colors"
@@ -631,6 +656,13 @@ export function App() {
                   {/* Quick Action Footer */}
                   <div className="pt-2 flex items-center space-x-2">
                     <button
+                      onClick={() => setIsMediaModalOpen(true)}
+                      className="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded text-xs font-medium transition-colors flex items-center justify-center gap-1.5"
+                    >
+                      <Camera className="w-3.5 h-3.5 text-cyan-400" />
+                      Proof Marks & Scans
+                    </button>
+                    <button
                       onClick={() => setEditModalRecord(selectedRecord)}
                       className="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded text-xs font-medium transition-colors flex items-center justify-center gap-1.5"
                     >
@@ -962,7 +994,7 @@ export function App() {
           <span>ATF Audit Log: Active ({auditLogs.length} Events)</span>
         </div>
         <div className="font-mono text-slate-400 flex items-center gap-3">
-          <span>Branch: main</span>
+          <span>Branch: feat/contacts-media-and-analytics</span>
           <span>•</span>
           <span>C&R Digital Logbook v1.0.0</span>
         </div>
@@ -1002,6 +1034,24 @@ export function App() {
           setRecords(getBoundBookRecords());
           setAuditLogs(getAuditLogs());
         }}
+      />
+
+      <ContactsRolodexModal
+        isOpen={isContactsModalOpen}
+        onClose={() => setIsContactsModalOpen(false)}
+      />
+
+      <MediaGalleryModal
+        isOpen={isMediaModalOpen}
+        record={selectedRecord}
+        onClose={() => setIsMediaModalOpen(false)}
+      />
+
+      <AuditDashboardModal
+        isOpen={isDashboardModalOpen}
+        records={records}
+        auditLogs={auditLogs}
+        onClose={() => setIsDashboardModalOpen(false)}
       />
     </div>
   );

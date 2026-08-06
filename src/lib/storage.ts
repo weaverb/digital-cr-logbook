@@ -206,3 +206,87 @@ export function saveRangeRecord(record: Omit<RangeRecord, 'id'>): RangeRecord {
   localStorage.setItem(RANGE_KEY, JSON.stringify(updated));
   return newRecord;
 }
+
+const CONTACTS_KEY = 'cr_logbook_contacts_v1';
+const MEDIA_KEY = 'cr_logbook_media_attachments_v1';
+
+const defaultContacts: import('../types/logbook').Contact[] = [
+  {
+    id: 'cnt-001',
+    category: 'Dealer',
+    name: 'Classic Firearms',
+    fflNumber: '1-56-xxx-09',
+    email: 'sales@classicfirearms.com',
+    phone: '(704) 555-0192',
+    address: 'Monroe, NC',
+    notes: 'Primary C&R surplus distributor'
+  },
+  {
+    id: 'cnt-002',
+    category: 'Dealer',
+    name: 'Simpson Ltd',
+    fflNumber: '9-36-xxx-12',
+    email: 'info@simpsonltd.com',
+    phone: '(309) 342-5800',
+    address: 'Galesburg, IL',
+    notes: 'Collector firearm specialist'
+  },
+  {
+    id: 'cnt-003',
+    category: 'Collector',
+    name: 'Civilian Marksmanship Program (CMP)',
+    fflNumber: '6-63-xxx-44',
+    phone: '(256) 835-8455',
+    address: 'Anniston, AL',
+    notes: 'US Military surplus rifles'
+  }
+];
+
+export function getContacts(): import('../types/logbook').Contact[] {
+  const data = localStorage.getItem(CONTACTS_KEY);
+  if (!data) {
+    localStorage.setItem(CONTACTS_KEY, JSON.stringify(defaultContacts));
+    return defaultContacts;
+  }
+  try {
+    return JSON.parse(data);
+  } catch (e) {
+    return defaultContacts;
+  }
+}
+
+export function saveContact(contact: Omit<import('../types/logbook').Contact, 'id'>): import('../types/logbook').Contact {
+  const current = getContacts();
+  const newContact: import('../types/logbook').Contact = {
+    ...contact,
+    id: 'cnt-' + Date.now()
+  };
+  const updated = [newContact, ...current];
+  localStorage.setItem(CONTACTS_KEY, JSON.stringify(updated));
+  return newContact;
+}
+
+export function getMediaAttachments(firearmId?: string): import('../types/logbook').MediaAttachment[] {
+  const data = localStorage.getItem(MEDIA_KEY);
+  let attachments: import('../types/logbook').MediaAttachment[] = [];
+  if (data) {
+    try {
+      attachments = JSON.parse(data);
+    } catch (e) {
+      attachments = [];
+    }
+  }
+  return firearmId ? attachments.filter(a => a.firearmId === firearmId) : attachments;
+}
+
+export function saveMediaAttachment(attachment: Omit<import('../types/logbook').MediaAttachment, 'id' | 'createdAt'>): import('../types/logbook').MediaAttachment {
+  const current = getMediaAttachments();
+  const newAttachment: import('../types/logbook').MediaAttachment = {
+    ...attachment,
+    id: 'media-' + Date.now(),
+    createdAt: new Date().toISOString()
+  };
+  const updated = [newAttachment, ...current];
+  localStorage.setItem(MEDIA_KEY, JSON.stringify(updated));
+  return newAttachment;
+}
