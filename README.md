@@ -36,9 +36,24 @@ bun dev
 
 To run or build the native desktop binary wrapper (`bun run tauri:dev` / `bun run tauri:build`), install the required system libraries (`glib-2.0`, `gtk-3`, `webkit2gtk-4.1`, `pkg-config`):
 
-#### Fedora / RHEL / Silverblue:
+#### Fedora (Standard Workstation):
 ```bash
 sudo dnf install -y pkg-config glib2-devel gtk3-devel webkit2gtk4.1-devel openssl-devel libsoup3-devel
+```
+
+#### Bazzite / Fedora Silverblue / OSTree (Immutable OS):
+Bazzite uses an immutable system image. To build native C/GTK desktop applications on Bazzite, use **Distrobox** (pre-installed on Bazzite):
+
+```bash
+# Create & enter dev container inside Bazzite
+distrobox create -n dev --image fedora:latest
+distrobox enter dev
+
+# Install GTK dev libraries inside container
+sudo dnf install -y pkg-config glib2-devel gtk3-devel webkit2gtk4.1-devel openssl-devel libsoup3-devel
+
+# Run Tauri desktop dev
+bun run tauri:dev
 ```
 
 #### Debian / Ubuntu / Mint:
