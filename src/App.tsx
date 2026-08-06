@@ -352,21 +352,6 @@ export function App() {
         </button>
 
         <button
-          onClick={() => setActiveTab('reference')}
-          className={`flex items-center space-x-2 px-4 py-2.5 text-xs font-medium border-b-2 transition-all ${
-            activeTab === 'reference'
-              ? 'border-amber-500 text-amber-400 bg-slate-800/50'
-              : 'border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/30'
-          }`}
-        >
-          <Database className="w-3.5 h-3.5" />
-          <span>ATF Master C&R Reference Library</span>
-          <span className="ml-1 px-1.5 py-0.2 text-[11px] rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 font-mono">
-            4,207 Items
-          </span>
-        </button>
-
-        <button
           onClick={() => setActiveTab('maintenance')}
           className={`flex items-center space-x-2 px-4 py-2.5 text-xs font-medium border-b-2 transition-all ${
             activeTab === 'maintenance'
@@ -388,6 +373,21 @@ export function App() {
         >
           <Target className="w-3.5 h-3.5" />
           <span>Range Logs</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('reference')}
+          className={`flex items-center space-x-2 px-4 py-2.5 text-xs font-medium border-b-2 transition-all ${
+            activeTab === 'reference'
+              ? 'border-amber-500 text-amber-400 bg-slate-800/50'
+              : 'border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/30'
+          }`}
+        >
+          <Database className="w-3.5 h-3.5" />
+          <span>ATF Master C&R Reference Library</span>
+          <span className="ml-1 px-1.5 py-0.2 text-[11px] rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 font-mono">
+            4,207 Items
+          </span>
         </button>
       </div>
 
