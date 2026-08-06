@@ -9,7 +9,6 @@ import {
   Wrench, 
   Target, 
   Database, 
-  Key,
   HardDrive,
   Edit3,
   History,
@@ -39,7 +38,7 @@ const crRecords = crMasterData as CRReferenceEntry[];
 export function App() {
   const [records, setRecords] = useState<BoundBookRecord[]>([]);
   const [auditLogs, setAuditLogs] = useState(getAuditLogs());
-  const [activeTab, setActiveTab] = useState<'boundbook' | 'reference' | 'maintenance' | 'range' | 'backup'>('boundbook');
+  const [activeTab, setActiveTab] = useState<'boundbook' | 'reference' | 'maintenance' | 'range'>('boundbook');
   
   // Selection and Search State
   const [selectedRecordId, setSelectedRecordId] = useState<string | null>(null);
@@ -389,18 +388,6 @@ export function App() {
         >
           <Target className="w-3.5 h-3.5" />
           <span>Range Logs</span>
-        </button>
-
-        <button
-          onClick={() => setActiveTab('backup')}
-          className={`flex items-center space-x-2 px-4 py-2.5 text-xs font-medium border-b-2 transition-all ${
-            activeTab === 'backup'
-              ? 'border-amber-500 text-amber-400 bg-slate-800/50'
-              : 'border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/30'
-          }`}
-        >
-          <HardDrive className="w-3.5 h-3.5" />
-          <span>Encrypted Backups</span>
         </button>
       </div>
 
@@ -962,41 +949,6 @@ export function App() {
             </div>
           </div>
         )}
-
-        {/* Tab 5: Encrypted Backups View */}
-        {activeTab === 'backup' && (
-          <div className="bg-slate-900 border border-slate-800 p-6 rounded-xl space-y-6">
-            <h2 className="text-lg font-bold text-slate-100 flex items-center gap-2 border-b border-slate-800 pb-4">
-              <HardDrive className="w-5 h-5 text-amber-400" />
-              BIP-39 Encrypted Portable Backups (`.crbk`)
-            </h2>
-
-            <div className="p-5 bg-slate-950 border border-slate-800 rounded-xl space-y-4 text-xs">
-              <div className="flex items-start space-x-3">
-                <Key className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
-                <div className="space-y-1">
-                  <div className="text-sm font-bold text-slate-100">BIP-39 Seed Vault Architecture</div>
-                  <div className="text-slate-400">
-                    Backups are standalone, zero-cloud AES-256-GCM encrypted `.crbk` files derived using Argon2id key derivation from a 12-word seed phrase.
-                  </div>
-                </div>
-              </div>
-
-              <div className="p-4 bg-slate-900/80 border border-slate-800 rounded-lg flex items-center justify-between">
-                <div>
-                  <div className="font-mono text-slate-200">Local Vault Storage Status: Healthy</div>
-                  <div className="text-[11px] text-slate-400 mt-0.5">SQLite Single-File WAL Mode • {records.length} Bound Book Entries</div>
-                </div>
-                <button
-                  onClick={() => alert('Generated portable encrypted backup vault archive: cn_logbook_backup_2026-08-06.crbk (AES-256-GCM encrypted). Save to USB or offline vault.')}
-                  className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold rounded text-xs transition-colors shadow-lg shadow-amber-950/20"
-                >
-                  Generate Encrypted Backup Vault (.crbk)
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
       </main>
 
       {/* Footer Status Bar */}
@@ -1010,7 +962,7 @@ export function App() {
           <span>ATF Audit Log: Active ({auditLogs.length} Events)</span>
         </div>
         <div className="font-mono text-slate-400 flex items-center gap-3">
-          <span>Branch: feat/pdf-export-and-vault</span>
+          <span>Branch: fix/remove-redundant-backup-tab</span>
           <span>•</span>
           <span>C&R Digital Logbook v1.0.0</span>
         </div>
