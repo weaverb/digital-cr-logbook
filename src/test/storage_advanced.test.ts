@@ -1,16 +1,10 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { 
   getBoundBookRecords, 
-  saveBoundBookRecords, 
-  logAuditEvent,
   getMaintenanceRecords,
   saveMaintenanceRecord,
   getRangeRecords,
-  saveRangeRecord,
-  getContacts,
-  saveContact,
-  getMediaAttachments,
-  saveMediaAttachment
+  saveRangeRecord
 } from '../lib/storage';
 
 describe('Storage Library Advanced Coverage Suite', () => {

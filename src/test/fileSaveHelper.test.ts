@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { saveFileWithNativePicker } from '../lib/fileSaveHelper';
 
 describe('fileSaveHelper Utility', () => {

@@ -1,7 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { 
   generate12WordSeed, 
-  deriveKeyFromSeed, 
   createEncryptedVaultArchive, 
   decryptVaultArchive 
 } from '../lib/cryptoVault';
