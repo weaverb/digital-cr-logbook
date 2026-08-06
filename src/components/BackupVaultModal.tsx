@@ -63,10 +63,38 @@ export function BackupVaultModal({ isOpen, onClose, onRestoreSuccess }: BackupVa
       };
 
       const blob = await createEncryptedVaultArchive(payload, seedWords);
+      const fileName = `cnr_logbook_encrypted_vault_${new Date().toISOString().split('T')[0]}.crbk`;
+
+      // Prompt user with OS Native Location Picker if supported (File System Access API)
+      if ('showSaveFilePicker' in window) {
+        try {
+          const handle = await (window as any).showSaveFilePicker({
+            suggestedName: fileName,
+            types: [
+              {
+                description: 'Encrypted Logbook Backup Vault (.crbk)',
+                accept: { 'application/octet-stream': ['.crbk'] }
+              }
+            ]
+          });
+          const writable = await handle.createWritable();
+          await writable.write(blob);
+          await writable.close();
+          setIsProcessing(false);
+          return;
+        } catch (err: any) {
+          if (err.name === 'AbortError') {
+            setIsProcessing(false);
+            return; // User cancelled location picker dialog
+          }
+        }
+      }
+
+      // Fallback for browsers/environments without File System Access API
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `cnr_logbook_encrypted_vault_${new Date().toISOString().split('T')[0]}.crbk`;
+      a.download = fileName;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
