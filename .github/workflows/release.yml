@@ -7,7 +7,6 @@ on:
 
 permissions:
   contents: write
-  dispatches: write
 
 jobs:
   test-and-validate:
