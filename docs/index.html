@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C&R Digital Logbook - Collector User Guide & FAQ</title>
+  <meta name="description" content="Official 27 CFR § 478.125(f) Compliant C&R Collector Digital Logbook User Guide and FAQ. 100% Offline, Privacy-First Firearm Bound Book Application.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            gunmetal: {
+              950: '#090D16',
+              900: '#0F172A',
+              800: '#1E293B',
+              700: '#334155'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #090D16; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+  </style>
+</head>
+<body class="bg-gunmetal-950 text-slate-100 font-sans antialiased min-h-screen flex flex-col selection:bg-amber-500 selection:text-amber-950">
+
+  <!-- Top Announcement Banner -->
+  <div class="bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 text-amber-950 py-2 px-4 text-center text-xs md:text-sm font-bold tracking-wide flex items-center justify-center gap-2 shadow-md">
+    <i data-lucide="shield-check" class="w-4 h-4 shrink-0"></i>
+    <span>100% Offline & Private: Your firearm records never leave your computer. Zero cloud storage.</span>
+  </div>
+
+  <!-- Main Navigation Bar -->
+  <header class="sticky top-0 z-40 bg-gunmetal-900/90 backdrop-blur-md border-b border-slate-800/80 px-4 md:px-8 py-3.5 flex items-center justify-between shadow-xl">
+    <div class="flex items-center space-x-3">
+      <div class="p-2 bg-amber-500/10 border border-amber-500/30 rounded-lg text-amber-400">
+        <i data-lucide="book-open" class="w-6 h-6"></i>
+      </div>
+      <div>
+        <a href="#hero" class="text-lg md:text-xl font-bold tracking-tight text-slate-100 flex items-center gap-2 hover:text-amber-400 transition-colors">
+          C&R Digital Logbook
+          <span class="text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono font-medium hidden sm:inline-block">
+            User Guide & FAQ
+          </span>
+        </a>
+        <p class="text-xs text-slate-400">27 CFR § 478.125(f) Compliant Type 03 Collector Help System</p>
+      </div>
+    </div>
+
+    <!-- Quick Navigation Links -->
+    <nav class="hidden lg:flex items-center space-x-6 text-sm font-medium text-slate-300">
+      <a href="#quick-start" class="hover:text-amber-400 transition-colors flex items-center gap-1.5"><i data-lucide="rocket" class="w-4 h-4"></i> Quick Start</a>
+      <a href="#installation" class="hover:text-amber-400 transition-colors flex items-center gap-1.5"><i data-lucide="download" class="w-4 h-4"></i> Installation</a>
+      <a href="#features" class="hover:text-amber-400 transition-colors flex items-center gap-1.5"><i data-lucide="layers" class="w-4 h-4"></i> How to Use</a>
+      <a href="#backups" class="hover:text-amber-400 transition-colors flex items-center gap-1.5"><i data-lucide="shield" class="w-4 h-4"></i> Backups</a>
+      <a href="#faq" class="hover:text-amber-400 transition-colors flex items-center gap-1.5"><i data-lucide="help-circle" class="w-4 h-4"></i> FAQ</a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="hero" class="relative py-16 md:py-24 px-4 md:px-8 max-w-6xl mx-auto text-center space-y-6">
+    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs md:text-sm font-medium">
+      <i data-lucide="shield-alert" class="w-4 h-4"></i> Designed Specifically for FFL Type 03 Curio & Relic Collectors
+    </div>
+
+    <h1 class="text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-100 leading-tight">
+      Simple, Secure & Legally Compliant <br class="hidden md:inline">
+      <span class="bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 bg-clip-text text-transparent">Digital Bound Book Guide</span>
+    </h1>
+
+    <p class="text-base md:text-xl text-slate-300 max-w-3xl mx-auto font-normal leading-relaxed">
+      Welcome to the official collector documentation! Whether you are setting up your logbook for the first time, logging a new rifle or handgun, or preparing for an official ATF inspection, this guide will walk you through every step in plain, easy-to-understand language.
+    </p>
+
+    <!-- Visual Search Bar for FAQ -->
+    <div class="max-w-2xl mx-auto pt-4">
+      <div class="relative flex items-center">
+        <i data-lucide="search" class="w-5 h-5 absolute left-4 text-amber-400 pointer-events-none"></i>
+        <input 
+          type="text" 
+          id="faqSearchInput"
+          placeholder="Search documentation (e.g. 'how to print', 'backup', 'ATF inspection')..." 
+          class="w-full bg-gunmetal-900 border border-slate-700/80 rounded-xl pl-12 pr-4 py-3.5 text-slate-100 placeholder-slate-400 text-sm md:text-base focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 shadow-xl transition-all"
+        >
+      </div>
+    </div>
+  </section>
+
+  <!-- Key Assurance Banner for Older Collectors -->
+  <section class="bg-gunmetal-900/60 border-y border-slate-800 py-10 px-4 md:px-8">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+      
+      <div class="p-6 bg-gunmetal-800/80 border border-slate-700/60 rounded-xl space-y-3 shadow-lg">
+        <div class="w-10 h-10 bg-emerald-500/10 border border-emerald-500/30 rounded-lg flex items-center justify-center text-emerald-400">
+          <i data-lucide="wifi-off" class="w-5 h-5"></i>
+        </div>
+        <h3 class="text-lg font-bold text-slate-100">100% Offline & Private</h3>
+        <p class="text-sm text-slate-300 leading-relaxed">
+          No internet connection is ever required. Your firearm serial numbers, prices, and collector details remain safely on your personal computer.
+        </p>
+      </div>
+
+      <div class="p-6 bg-gunmetal-800/80 border border-slate-700/60 rounded-xl space-y-3 shadow-lg">
+        <div class="w-10 h-10 bg-amber-500/10 border border-amber-500/30 rounded-lg flex items-center justify-center text-amber-400">
+          <i data-lucide="file-check" class="w-5 h-5"></i>
+        </div>
+        <h3 class="text-lg font-bold text-slate-100">ATF 27 CFR § 478.125(f)</h3>
+        <p class="text-sm text-slate-300 leading-relaxed">
+          Strictly compliant with federal regulations. Generates clean, official printable Bound Book reports matching ATF 2016-1 requirements.
+        </p>
+      </div>
+
+      <div class="p-6 bg-gunmetal-800/80 border border-slate-700/60 rounded-xl space-y-3 shadow-lg">
+        <div class="w-10 h-10 bg-cyan-500/10 border border-cyan-500/30 rounded-lg flex items-center justify-center text-cyan-400">
+          <i data-lucide="database" class="w-5 h-5"></i>
+        </div>
+        <h3 class="text-lg font-bold text-slate-100">4,207 Pre-Loaded C&R Items</h3>
+        <p class="text-sm text-slate-300 leading-relaxed">
+          Includes the complete ATF Curios and Relics master list pre-installed. Typing a firearm auto-fills official C&R classifications automatically.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Step-by-Step Installation Guide -->
+  <section id="installation" class="py-16 px-4 md:px-8 max-w-6xl mx-auto space-y-8">
+    <div class="text-center space-y-2">
+      <h2 class="text-2xl md:text-4xl font-extrabold text-slate-100 flex items-center justify-center gap-3">
+        <i data-lucide="download" class="w-8 h-8 text-amber-400"></i>
+        How to Install the Application
+      </h2>
+      <p class="text-sm md:text-base text-slate-400">Choose your operating system below for simple step-by-step instructions.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      
+      <!-- Windows Installation Card -->
+      <div class="bg-gunmetal-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between shadow-xl space-y-4 hover:border-slate-700 transition-all">
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold font-mono px-3 py-1 bg-amber-500/10 text-amber-400 border border-amber-500/30 rounded-full">Windows (10 / 11)</span>
+            <i data-lucide="monitor" class="w-6 h-6 text-slate-400"></i>
+          </div>
+          <h3 class="text-xl font-bold text-slate-100">Windows Installation</h3>
+          <ol class="text-sm text-slate-300 space-y-2.5 list-decimal list-inside">
+            <li>Download the <strong>`.msi`</strong> or <strong>`.exe`</strong> installer from the GitHub Release page.</li>
+            <li>Double-click the downloaded file in your <strong>Downloads</strong> folder.</li>
+            <li>If Windows SmartScreen appears, click <strong>"More info"</strong> then <strong>"Run anyway"</strong>.</li>
+            <li>Click <strong>Finish</strong> and launch <strong>C&R Digital Logbook</strong> from your Desktop or Start Menu.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- macOS Installation Card -->
+      <div class="bg-gunmetal-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between shadow-xl space-y-4 hover:border-slate-700 transition-all">
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold font-mono px-3 py-1 bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 rounded-full">macOS (Apple & Intel)</span>
+            <i data-lucide="laptop" class="w-6 h-6 text-slate-400"></i>
+          </div>
+          <h3 class="text-xl font-bold text-slate-100">Mac Installation</h3>
+          <ol class="text-sm text-slate-300 space-y-2.5 list-decimal list-inside">
+            <li>Download the <strong>`.dmg`</strong> installer file.</li>
+            <li>Double-click the <strong>`.dmg`</strong> file to open the installer window.</li>
+            <li>Drag the <strong>C&R Digital Logbook</strong> icon into your <strong>Applications</strong> folder.</li>
+            <li>Open Applications and double-click to launch.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- Linux Installation Card -->
+      <div class="bg-gunmetal-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between shadow-xl space-y-4 hover:border-slate-700 transition-all">
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold font-mono px-3 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded-full">Linux / Bazzite</span>
+            <i data-lucide="terminal" class="w-6 h-6 text-slate-400"></i>
+          </div>
+          <h3 class="text-xl font-bold text-slate-100">Linux / AppImage</h3>
+          <ol class="text-sm text-slate-300 space-y-2.5 list-decimal list-inside">
+            <li>Download the standalone <strong>`.AppImage`</strong> or <strong>`.deb`</strong> package.</li>
+            <li>Right-click the `.AppImage`, select <strong>Properties -> Permissions</strong>, and check <strong>"Allow executing file as program"</strong>.</li>
+            <li>Double-click to run immediately without installation.</li>
+          </ol>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- How to Use / Core Workflows Section -->
+  <section id="features" class="py-16 px-4 md:px-8 max-w-6xl mx-auto space-y-12">
+    <div class="text-center space-y-2">
+      <h2 class="text-2xl md:text-4xl font-extrabold text-slate-100 flex items-center justify-center gap-3">
+        <i data-lucide="layers" class="w-8 h-8 text-amber-400"></i>
+        How to Use Your Logbook
+      </h2>
+      <p class="text-sm md:text-base text-slate-400">Detailed visual walkthroughs for everyday firearm logging tasks.</p>
+    </div>
+
+    <!-- Workflow 1: Logging an Acquisition -->
+    <div class="bg-gunmetal-900 border border-slate-800 rounded-2xl p-6 md:p-8 space-y-6 shadow-xl">
+      <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
+        <div class="p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-amber-400">
+          <i data-lucide="plus-circle" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h3 class="text-xl md:text-2xl font-bold text-slate-100">1. Logging a New Firearm Acquisition</h3>
+          <p class="text-xs md:text-sm text-slate-400">Pursuant to 27 CFR § 478.125(f), record firearms within 7 days of receipt.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="space-y-2 bg-gunmetal-950 p-4 border border-slate-800 rounded-xl">
+          <span class="text-xs font-bold font-mono text-amber-400">STEP 1</span>
+          <h4 class="font-bold text-slate-200">Click "+ New Acquisition"</h4>
+          <p class="text-xs text-slate-400">Click the amber button at the top right of your screen or press <kbd class="px-1.5 py-0.5 bg-slate-800 rounded border border-slate-700 text-slate-200 font-mono text-[10px]">Ctrl + K</kbd> / <kbd class="px-1.5 py-0.5 bg-slate-800 rounded border border-slate-700 text-slate-200 font-mono text-[10px]">Cmd + K</kbd>.</p>
+        </div>
+
+        <div class="space-y-2 bg-gunmetal-950 p-4 border border-slate-800 rounded-xl">
+          <span class="text-xs font-bold font-mono text-amber-400">STEP 2</span>
+          <h4 class="font-bold text-slate-200">Use C&R Autocomplete</h4>
+          <p class="text-xs text-slate-400">Type the Manufacturer or Model. Click the autocomplete dropdown to auto-fill official C&R specifications and section citations.</p>
+        </div>
+
+        <div class="space-y-2 bg-gunmetal-950 p-4 border border-slate-800 rounded-xl">
+          <span class="text-xs font-bold font-mono text-amber-400">STEP 3</span>
+          <h4 class="font-bold text-slate-200">Save Entry</h4>
+          <p class="text-xs text-slate-400">Enter the Serial Number, Caliber, Acquisition Date, and Seller/Transferor Name and click <strong>"Save Acquisition Record"</strong>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Workflow 2: Logging a Disposition -->
+    <div class="bg-gunmetal-900 border border-slate-800 rounded-2xl p-6 md:p-8 space-y-6 shadow-xl">
+      <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
+        <div class="p-3 bg-purple-500/10 border border-purple-500/30 rounded-xl text-purple-400">
+          <i data-lucide="lock" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h3 class="text-xl md:text-2xl font-bold text-slate-100">2. Transferring or Disposing a Firearm</h3>
+          <p class="text-xs md:text-sm text-slate-400">When selling or transferring a C&R firearm to another collector or FFL dealer.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="space-y-2 bg-gunmetal-950 p-4 border border-slate-800 rounded-xl">
+          <span class="text-xs font-bold font-mono text-purple-400">STEP 1</span>
+          <h4 class="font-bold text-slate-200">Select the Firearm</h4>
+          <p class="text-xs text-slate-400">Click on the firearm row in your Bound Book table to open the right-hand Inspection Drawer.</p>
+        </div>
+
+        <div class="space-y-2 bg-gunmetal-950 p-4 border border-slate-800 rounded-xl">
+          <span class="text-xs font-bold font-mono text-purple-400">STEP 2</span>
+          <h4 class="font-bold text-slate-200">Click "Log Disposition"</h4>
+          <p class="text-xs text-slate-400">Click the purple <strong>"Log Disposition"</strong> button at the bottom of the inspection panel.</p>
+        </div>
+
+        <div class="space-y-2 bg-gunmetal-950 p-4 border border-slate-800 rounded-xl">
+          <span class="text-xs font-bold font-mono text-purple-400">STEP 3</span>
+          <h4 class="font-bold text-slate-200">Enter Buyer Details</h4>
+          <p class="text-xs text-slate-400">Enter the Buyer's Name, Address, FFL Number (if applicable), and Transfer Date. The record will be permanently locked against non-audit edits.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Workflow 3: Printing ATF Bound Book PDF -->
+    <div class="bg-gunmetal-900 border border-slate-800 rounded-2xl p-6 md:p-8 space-y-6 shadow-xl">
+      <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
+        <div class="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-emerald-400">
+          <i data-lucide="printer" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h3 class="text-xl md:text-2xl font-bold text-slate-100">3. Printing Bound Book for ATF Inspection</h3>
+          <p class="text-xs md:text-sm text-slate-400">Generate a clean, official PDF matching ATF Ruling 2016-1 table formats.</p>
+        </div>
+      </div>
+
+      <div class="space-y-3 text-sm text-slate-300 leading-relaxed">
+        <p>1. Click the <strong>"Print PDF"</strong> button in the top action header bar.</p>
+        <p>2. Enter your <strong>Licensee/Collector Name</strong> and <strong>FFL License Number</strong>.</p>
+        <p>3. Click <strong>"Download Printable PDF"</strong>. Your operating system's native save dialog will open allowing you to choose where to save your PDF (or print directly).</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Encrypted Backup Vault Section -->
+  <section id="backups" class="bg-gunmetal-900/60 border-y border-slate-800 py-16 px-4 md:px-8">
+    <div class="max-w-6xl mx-auto space-y-8">
+      <div class="text-center space-y-2">
+        <h2 class="text-2xl md:text-4xl font-extrabold text-slate-100 flex items-center justify-center gap-3">
+          <i data-lucide="shield" class="w-8 h-8 text-amber-400"></i>
+          Encrypted Backup Vault & Seed Phrase Guide
+        </h2>
+        <p class="text-sm md:text-base text-slate-400">Protect your collection records against computer hardware failures.</p>
+      </div>
+
+      <div class="bg-gunmetal-900 border border-slate-800 rounded-2xl p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 shadow-xl">
+        
+        <!-- Left: Seed Phrase Explanation -->
+        <div class="space-y-4">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono">
+            BIP-39 AES-256-GCM Vault
+          </div>
+          <h3 class="text-xl font-bold text-slate-100">What is a 12-Word Seed Phrase?</h3>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            Think of your 12-word seed phrase like a digital combination lock for a safe. When you generate a backup, the application creates a 12-word phrase (e.g. <em>"alpha bravo charlie delta..."</em>).
+          </p>
+          <div class="p-4 bg-gunmetal-950 border border-amber-500/30 rounded-xl space-y-2 text-xs text-amber-300 font-mono">
+            <p class="font-bold flex items-center gap-1.5"><i data-lucide="alert-triangle" class="w-4 h-4"></i> IMPORTANT SAFEGUARD:</p>
+            <p>Write your 12 words down on a piece of paper and keep them in a safe place. Anyone with your 12 words can restore your backup vault file.</p>
+          </div>
+        </div>
+
+        <!-- Right: Step-by-Step Backup -->
+        <div class="space-y-4">
+          <h3 class="text-xl font-bold text-slate-100">How to Create an Encrypted Backup (`.crbk`)</h3>
+          <ol class="text-sm text-slate-300 space-y-3 list-decimal list-inside">
+            <li>Click <strong>"Vault (.crbk)"</strong> in the top action bar.</li>
+            <li>Click <strong>"Generate New 12-Word Seed Phrase"</strong>.</li>
+            <li>Write down the 12 words in exact order on paper.</li>
+            <li>Click <strong>"Download Encrypted Archive"</strong> and save your `.crbk` backup file to a USB flash drive or external drive.</li>
+          </ol>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Dynamic FAQ Section -->
+  <section id="faq" class="py-16 px-4 md:px-8 max-w-5xl mx-auto space-y-8">
+    <div class="text-center space-y-2">
+      <h2 class="text-2xl md:text-4xl font-extrabold text-slate-100 flex items-center justify-center gap-3">
+        <i data-lucide="help-circle" class="w-8 h-8 text-amber-400"></i>
+        Frequently Asked Questions (FAQ)
+      </h2>
+      <p class="text-sm md:text-base text-slate-400">Clear answers to common questions for Type 03 collectors.</p>
+    </div>
+
+    <!-- FAQ Search Input Filter -->
+    <div class="relative">
+      <i data-lucide="search" class="w-5 h-5 absolute left-4 top-3.5 text-slate-400"></i>
+      <input 
+        type="text" 
+        id="faqFilter" 
+        placeholder="Filter FAQ questions (e.g. 'privacy', 'ATF inspection', 'computer crash')..." 
+        class="w-full bg-gunmetal-900 border border-slate-800 rounded-xl pl-12 pr-4 py-3 text-slate-100 text-sm focus:outline-none focus:border-amber-500/50"
+      >
+    </div>
+
+    <!-- FAQ Accordions Container -->
+    <div class="space-y-4" id="faqAccordionContainer">
+      
+      <!-- FAQ 1 -->
+      <div class="faq-item bg-gunmetal-900 border border-slate-800 rounded-xl overflow-hidden shadow-lg transition-all" data-keywords="offline internet privacy cloud server security data">
+        <button class="w-full p-5 text-left flex items-center justify-between font-bold text-slate-100 text-base md:text-lg focus:outline-none hover:bg-slate-800/50 transition-colors" onclick="toggleFaq(this)">
+          <span class="flex items-center gap-3">
+            <i data-lucide="wifi-off" class="w-5 h-5 text-emerald-400 shrink-0"></i>
+            Does this application send my firearm data to any online server or cloud?
+          </span>
+          <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform faq-icon"></i>
+        </button>
+        <div class="faq-answer hidden px-5 pb-5 pt-1 text-sm text-slate-300 border-t border-slate-800/60 leading-relaxed">
+          <strong class="text-emerald-400">No, absolutely not.</strong> The C&R Digital Logbook operates 100% offline. All of your firearm serial numbers, prices, seller addresses, and audit records remain stored exclusively on your computer's local hard drive. There are zero remote tracking scripts, external database connections, or cloud synchronization routines.
+        </div>
+      </div>
+
+      <!-- FAQ 2 -->
+      <div class="faq-item bg-gunmetal-900 border border-slate-800 rounded-xl overflow-hidden shadow-lg transition-all" data-keywords="atf compliance ruling 2016-1 2021r-05f 27 cfr 478.125 inspection bound book">
+        <button class="w-full p-5 text-left flex items-center justify-between font-bold text-slate-100 text-base md:text-lg focus:outline-none hover:bg-slate-800/50 transition-colors" onclick="toggleFaq(this)">
+          <span class="flex items-center gap-3">
+            <i data-lucide="shield-check" class="w-5 h-5 text-amber-400 shrink-0"></i>
+            Is this digital logbook compliant with ATF 27 CFR § 478.125(f)?
+          </span>
+          <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform faq-icon"></i>
+        </button>
+        <div class="faq-answer hidden px-5 pb-5 pt-1 text-sm text-slate-300 border-t border-slate-800/60 leading-relaxed">
+          <strong class="text-amber-400">Yes.</strong> The software adheres strictly to 27 CFR § 478.125(f) and ATF Ruling 2016-1 / 2021R-05F guidelines. It features an immutable audit log (`ATF_AUDIT_LOG`), mandatory change reason prompts for any entry corrections, auto-incrementing line numbers, and locked disposition records.
+        </div>
+      </div>
+
+      <!-- FAQ 3 -->
+      <div class="faq-item bg-gunmetal-900 border border-slate-800 rounded-xl overflow-hidden shadow-lg transition-all" data-keywords="print pdf export atf inspection audit paper copy">
+        <button class="w-full p-5 text-left flex items-center justify-between font-bold text-slate-100 text-base md:text-lg focus:outline-none hover:bg-slate-800/50 transition-colors" onclick="toggleFaq(this)">
+          <span class="flex items-center gap-3">
+            <i data-lucide="printer" class="w-5 h-5 text-cyan-400 shrink-0"></i>
+            How do I print my bound book for an official ATF compliance audit?
+          </span>
+          <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform faq-icon"></i>
+        </button>
+        <div class="faq-answer hidden px-5 pb-5 pt-1 text-sm text-slate-300 border-t border-slate-800/60 leading-relaxed">
+          Click the <strong>"Print PDF"</strong> button in the top navigation bar. Enter your Licensee Name and FFL Number, and click <strong>"Download Printable PDF"</strong>. Your system file picker will open allowing you to save or print a clean landscape PDF formatted specifically to ATF inspection standards.
+        </div>
+      </div>
+
+      <!-- FAQ 4 -->
+      <div class="faq-item bg-gunmetal-900 border border-slate-800 rounded-xl overflow-hidden shadow-lg transition-all" data-keywords="computer crash hard drive failure restore backup seed phrase crbk usb">
+        <button class="w-full p-5 text-left flex items-center justify-between font-bold text-slate-100 text-base md:text-lg focus:outline-none hover:bg-slate-800/50 transition-colors" onclick="toggleFaq(this)">
+          <span class="flex items-center gap-3">
+            <i data-lucide="hard-drive" class="w-5 h-5 text-amber-400 shrink-0"></i>
+            What happens if my computer crashes or breaks?
+          </span>
+          <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform faq-icon"></i>
+        </button>
+        <div class="faq-answer hidden px-5 pb-5 pt-1 text-sm text-slate-300 border-t border-slate-800/60 leading-relaxed">
+          If you have created an encrypted backup (`.crbk`) file onto a USB flash drive or external drive, you can install the application on a new computer, select <strong>"Vault (.crbk)" -> "Restore from Backup"</strong>, enter your 12-word seed phrase, and all your records will be restored instantly!
+        </div>
+      </div>
+
+      <!-- FAQ 5 -->
+      <div class="faq-item bg-gunmetal-900 border border-slate-800 rounded-xl overflow-hidden shadow-lg transition-all" data-keywords="search shortcut command palette ctrl+k cmd+k find">
+        <button class="w-full p-5 text-left flex items-center justify-between font-bold text-slate-100 text-base md:text-lg focus:outline-none hover:bg-slate-800/50 transition-colors" onclick="toggleFaq(this)">
+          <span class="flex items-center gap-3">
+            <i data-lucide="command" class="w-5 h-5 text-amber-400 shrink-0"></i>
+            How do I quickly search across all 4,207 C&R firearms or my bound book?
+          </span>
+          <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform faq-icon"></i>
+        </button>
+        <div class="faq-answer hidden px-5 pb-5 pt-1 text-sm text-slate-300 border-t border-slate-800/60 leading-relaxed">
+          Press <kbd class="px-2 py-0.5 bg-slate-800 border border-slate-700 rounded text-xs font-mono text-slate-200">Ctrl + K</kbd> (Windows/Linux) or <kbd class="px-2 py-0.5 bg-slate-800 border border-slate-700 rounded text-xs font-mono text-slate-200">Cmd + K</kbd> (Mac) anywhere in the application to open the Global Command Palette & Instant Search. Type any Manufacturer, Model, or Serial Number to find records instantly.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer Section -->
+  <footer class="mt-auto bg-gunmetal-900 border-t border-slate-800 py-8 px-4 text-center text-xs text-slate-400 space-y-2">
+    <div class="flex items-center justify-center gap-2">
+      <i data-lucide="book-open" class="w-4 h-4 text-amber-400"></i>
+      <span class="font-bold text-slate-200">C&R Collector Digital Logbook</span>
+    </div>
+    <p>Licensed under the PolyForm Noncommercial License 1.0.0. Designed for Type 03 FFL Collectors.</p>
+    <p class="text-slate-500">27 CFR § 478.125(f) & ATF Ruling 2016-1 Compliant Architecture.</p>
+  </footer>
+
+  <!-- Interactive FAQ & Search Script -->
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // Toggle FAQ Accordion
+    function toggleFaq(button) {
+      const answer = button.nextElementSibling;
+      const icon = button.querySelector('.faq-icon');
+      const isHidden = answer.classList.contains('hidden');
+
+      // Close all answers
+      document.querySelectorAll('.faq-answer').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.faq-icon').forEach(el => el.style.transform = 'rotate(0deg)');
+
+      if (isHidden) {
+        answer.classList.remove('hidden');
+        icon.style.transform = 'rotate(180deg)';
+      }
+    }
+
+    // Filter FAQ questions live
+    function filterFaqs(query) {
+      const q = query.toLowerCase().trim();
+      const items = document.querySelectorAll('.faq-item');
+
+      items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        const keywords = item.getAttribute('data-keywords') || '';
+        if (q === '' || text.includes(q) || keywords.includes(q)) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    document.getElementById('faqSearchInput').addEventListener('input', (e) => {
+      filterFaqs(e.target.value);
+      if (e.target.value.trim() !== '') {
+        document.getElementById('faq').scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+
+    document.getElementById('faqFilter').addEventListener('input', (e) => {
+      filterFaqs(e.target.value);
+    });
+  </script>
+</body>
+</html>
