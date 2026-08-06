@@ -55,7 +55,6 @@ describe('Storage Library (Bound Book & Audit Engine)', () => {
     const initialLogs = getAuditLogs();
     logAuditEvent({
       recordId: 'rec-001',
-      tableName: 'bound_book_records',
       fieldChanged: 'serialNumber',
       oldValue: 'OLD123',
       newValue: 'NEW123',

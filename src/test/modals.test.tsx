@@ -1,6 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
-import React from 'react';
+import { render, screen } from '@testing-library/react';
 
 import { AuditDashboardModal } from '../components/AuditDashboardModal';
 import { AuditLogViewerModal } from '../components/AuditLogViewerModal';
@@ -74,10 +73,12 @@ describe('Modals & Tactical UI Dialogs', () => {
         onClose={vi.fn()}
         records={[mockRecord]}
         onSelectRecord={vi.fn()}
-        onOpenAcqModal={vi.fn()}
-        onOpenExportPDF={vi.fn()}
-        onOpenVault={vi.fn()}
+        onOpenAcq={vi.fn()}
+        onOpenDashboard={vi.fn()}
         onOpenRolodex={vi.fn()}
+        onOpenAuditLogs={vi.fn()}
+        onOpenPDF={vi.fn()}
+        onOpenVault={vi.fn()}
       />
     );
     expect(screen.getByPlaceholderText(/Type a command or search firearms/i)).toBeInTheDocument();

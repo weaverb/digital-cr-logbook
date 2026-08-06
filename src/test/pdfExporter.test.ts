@@ -25,8 +25,7 @@ describe('PDF Bound Book Exporter Subsystem', () => {
     expect(() => {
       generateBoundBookPDF(mockRecords, {
         collectorName: 'John Doe',
-        fflNumber: '9-99-999-03-9X-99999',
-        filterStatus: 'all'
+        fflNumber: '9-99-999-03-9X-99999'
       });
     }).not.toThrow();
   });
