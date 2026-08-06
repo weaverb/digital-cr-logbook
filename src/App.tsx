@@ -30,6 +30,8 @@ import { NewAcquisitionModal } from './components/NewAcquisitionModal';
 import { LogDispositionModal } from './components/LogDispositionModal';
 import { EditRecordModal } from './components/EditRecordModal';
 import { AuditLogViewerModal } from './components/AuditLogViewerModal';
+import { BackupVaultModal } from './components/BackupVaultModal';
+import { generateBoundBookPDF } from './lib/pdfExporter';
 import crMasterData from './data/cr_master_data.json';
 
 const crRecords = crMasterData as CRReferenceEntry[];
@@ -53,6 +55,7 @@ export function App() {
   const [dispModalRecord, setDispModalRecord] = useState<BoundBookRecord | null>(null);
   const [editModalRecord, setEditModalRecord] = useState<BoundBookRecord | null>(null);
   const [isAuditViewerOpen, setIsAuditViewerOpen] = useState(false);
+  const [isVaultModalOpen, setIsVaultModalOpen] = useState(false);
 
   // Quick Maintenance & Range Inputs for Selected Firearm
   const [newMaintType, setNewMaintType] = useState<MaintenanceRecord['type']>('Cleaning');
@@ -295,7 +298,15 @@ export function App() {
             className="flex items-center space-x-1.5 bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700/80 px-3 py-1.5 rounded text-xs font-medium transition-colors"
           >
             <History className="w-3.5 h-3.5 text-amber-400" />
-            <span>Audit History ({auditLogs.length})</span>
+            <span>Audit Logs ({auditLogs.length})</span>
+          </button>
+
+          <button 
+            onClick={() => generateBoundBookPDF(records)}
+            className="flex items-center space-x-1.5 bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700/80 px-3 py-1.5 rounded text-xs font-medium transition-colors"
+          >
+            <Download className="w-3.5 h-3.5 text-emerald-400" />
+            <span>Printable ATF PDF</span>
           </button>
 
           <button 
@@ -303,7 +314,15 @@ export function App() {
             className="flex items-center space-x-1.5 bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700/80 px-3 py-1.5 rounded text-xs font-medium transition-colors"
           >
             <Download className="w-3.5 h-3.5 text-cyan-400" />
-            <span>Export ATF CSV</span>
+            <span>Export CSV</span>
+          </button>
+
+          <button 
+            onClick={() => setIsVaultModalOpen(true)}
+            className="flex items-center space-x-1.5 bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700/80 px-3 py-1.5 rounded text-xs font-medium transition-colors"
+          >
+            <HardDrive className="w-3.5 h-3.5 text-amber-400" />
+            <span>Encrypted Vault (.crbk)</span>
           </button>
 
           <button 
@@ -634,7 +653,7 @@ export function App() {
                     {selectedRecord.status === 'In Collection' && (
                       <button
                         onClick={() => setDispModalRecord(selectedRecord)}
-                        className="flex-1 py-2 bg-purple-600/80 hover:bg-purple-600 text-slate-100 rounded text-xs font-semibold transition-colors flex items-center justify-center gap-1.5"
+                        className="flex-1 py-2 bg-purple-400 hover:bg-purple-300 text-purple-950 font-bold rounded text-xs transition-colors flex items-center justify-center gap-1.5"
                       >
                         <Lock className="w-3.5 h-3.5" />
                         Log Disposition
@@ -991,7 +1010,7 @@ export function App() {
           <span>ATF Audit Log: Active ({auditLogs.length} Events)</span>
         </div>
         <div className="font-mono text-slate-400 flex items-center gap-3">
-          <span>Branch: feat/bound-book-data-engine</span>
+          <span>Branch: feat/pdf-export-and-vault</span>
           <span>•</span>
           <span>C&R Digital Logbook v1.0.0</span>
         </div>
@@ -1022,6 +1041,15 @@ export function App() {
         isOpen={isAuditViewerOpen}
         logs={auditLogs}
         onClose={() => setIsAuditViewerOpen(false)}
+      />
+
+      <BackupVaultModal
+        isOpen={isVaultModalOpen}
+        onClose={() => setIsVaultModalOpen(false)}
+        onRestoreSuccess={() => {
+          setRecords(getBoundBookRecords());
+          setAuditLogs(getAuditLogs());
+        }}
       />
     </div>
   );
