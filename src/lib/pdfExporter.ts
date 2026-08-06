@@ -1,6 +1,7 @@
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import type { BoundBookRecord } from '../types/logbook';
+import { saveFileWithNativePicker } from './fileSaveHelper';
 
 export interface PDFExportOptions {
   collectorName?: string;
@@ -116,6 +117,8 @@ export function generateBoundBookPDF(records: BoundBookRecord[], options: PDFExp
     }
   });
 
-  // Trigger Save/Download
-  doc.save(`ATF_Bound_Book_${printDate.replace(/ /g, '_')}.pdf`);
+  // Generate ArrayBuffer and prompt with Native OS File Picker
+  const pdfBlob = doc.output('blob');
+  const fileName = `ATF_Bound_Book_${printDate.replace(/ /g, '_')}.pdf`;
+  saveFileWithNativePicker(pdfBlob, fileName, 'ATF Bound Book Printable PDF (.pdf)', 'pdf');
 }
