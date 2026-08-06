@@ -18,28 +18,48 @@ Pursuant to **27 CFR § 478.125(f)** and **ATF Rulings 2016-1 / 2021R-05F**, col
 
 ## 🚀 Getting Started
 
-### Prerequisites
+### Mode 1: Web Application Mode (Recommended for Instant Dev)
 
-Make sure [Bun](https://bun.sh/) is installed:
-
-```bash
-bun --version
-```
-
-### Installation & Local Development
+Web mode requires **no system libraries or C compilers**.
 
 ```bash
 # Install dependencies with Bun
 bun install
 
-# Start Vite development server
+# Start Vite web server (Instant)
 bun dev
+```
 
-# Build production bundle
-bun run build
+---
 
-# Run Oxlint linter
-bun run lint
+### Mode 2: Native Desktop App Mode (Tauri v2 + Rust)
+
+To run or build the native desktop binary wrapper (`bun run tauri:dev` / `bun run tauri:build`), install the required system libraries (`glib-2.0`, `gtk-3`, `webkit2gtk-4.1`, `pkg-config`):
+
+#### Fedora / RHEL / Silverblue:
+```bash
+sudo dnf install -y pkg-config glib2-devel gtk3-devel webkit2gtk4.1-devel openssl-devel libsoup3-devel
+```
+
+#### Debian / Ubuntu / Mint:
+```bash
+sudo apt update
+sudo apt install -y build-essential pkg-config libglib2.0-dev libgtk-3-dev libwebkit2gtk-4.1-dev libssl-dev libsoup-3.0-dev
+```
+
+#### Arch Linux / Manjaro:
+```bash
+sudo pacman -S --needed base-devel pkgconf glib2 gtk3 webkit2gtk-4.1 openssl libsoup3
+```
+
+Then run:
+
+```bash
+# Launch Native Desktop Window
+bun run tauri:dev
+
+# Build Standalone Linux Executable / AppImage
+bun run tauri:build
 ```
 
 ---
