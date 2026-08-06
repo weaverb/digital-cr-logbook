@@ -1,5 +1,5 @@
-import { useState, useMemo } from 'react';
-import { X, Plus, ShieldCheck, Search, CheckCircle2 } from 'lucide-react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
+import { X, Plus, ShieldCheck, Search, CheckCircle2, RotateCcw } from 'lucide-react';
 import type { BoundBookRecord, FirearmType, CRReferenceEntry } from '../types/logbook';
 import crMasterData from '../data/cr_master_data.json';
 import { useEscapeKey } from '../hooks/useEscapeKey';
@@ -13,7 +13,6 @@ interface NewAcquisitionModalProps {
 const crRecords = crMasterData as CRReferenceEntry[];
 
 export function NewAcquisitionModal({ isOpen, onClose, onSave }: NewAcquisitionModalProps) {
-  useEscapeKey(onClose, isOpen);
   const [manufacturer, setManufacturer] = useState('');
   const [importer, setImporter] = useState('');
   const [model, setModel] = useState('');
@@ -30,6 +29,37 @@ export function NewAcquisitionModal({ isOpen, onClose, onSave }: NewAcquisitionM
   const [selectedCR, setSelectedCR] = useState<CRReferenceEntry | null>(null);
   const [crSearchQuery, setCrSearchQuery] = useState('');
   const [showCrPicker, setShowCrPicker] = useState(false);
+
+  const resetForm = useCallback(() => {
+    setManufacturer('');
+    setImporter('');
+    setModel('');
+    setSerialNumber('');
+    setType('Rifle');
+    setCaliber('');
+    setAcqDate(new Date().toISOString().split('T')[0]);
+    setAcqName('');
+    setAcqAddress('');
+    setAcqFFL('');
+    setNotes('');
+    setSelectedCR(null);
+    setCrSearchQuery('');
+    setShowCrPicker(false);
+  }, []);
+
+  const handleClose = useCallback(() => {
+    resetForm();
+    onClose();
+  }, [onClose, resetForm]);
+
+  useEscapeKey(handleClose, isOpen);
+
+  // Automatically reset form whenever modal closes or opens fresh
+  useEffect(() => {
+    if (!isOpen) {
+      resetForm();
+    }
+  }, [isOpen, resetForm]);
 
   const filteredCRs = useMemo(() => {
     if (!crSearchQuery.trim()) return crRecords.slice(0, 10);
@@ -74,7 +104,7 @@ export function NewAcquisitionModal({ isOpen, onClose, onSave }: NewAcquisitionM
       notes: notes.trim() || undefined
     });
 
-    onClose();
+    handleClose();
   };
 
   return (
@@ -92,7 +122,7 @@ export function NewAcquisitionModal({ isOpen, onClose, onSave }: NewAcquisitionM
             </p>
           </div>
           <button 
-            onClick={onClose}
+            onClick={handleClose}
             className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors"
           >
             <X className="w-5 h-5" />
@@ -156,6 +186,45 @@ export function NewAcquisitionModal({ isOpen, onClose, onSave }: NewAcquisitionM
                 </div>
               </div>
             )}
+
+            {/* Selected C&R Reference Verification Box */}
+            {selectedCR && (
+              <div className="p-3.5 bg-cyan-950/40 border border-cyan-500/40 rounded-lg space-y-2 text-xs">
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-cyan-300 flex items-center gap-1.5">
+                    <CheckCircle2 className="w-4 h-4 text-cyan-400" />
+                    Matched C&R Entry Verification: {selectedCR.record_id}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedCR(null)}
+                    className="text-[11px] text-slate-400 hover:text-rose-400 underline font-mono flex items-center gap-1"
+                  >
+                    <RotateCcw className="w-3 h-3" />
+                    Clear / Re-select
+                  </button>
+                </div>
+                <p className="text-slate-300 font-sans leading-relaxed">{selectedCR.atf_classification_details}</p>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 pt-1 font-mono text-[11px]">
+                  <div className="bg-slate-900/90 p-2 rounded border border-slate-800">
+                    <span className="text-slate-400 block text-[10px]">MANUFACTURER</span>
+                    <span className="text-cyan-300 font-semibold">{selectedCR.manufacturer_or_make || 'N/A'}</span>
+                  </div>
+                  <div className="bg-slate-900/90 p-2 rounded border border-slate-800">
+                    <span className="text-slate-400 block text-[10px]">MODEL</span>
+                    <span className="text-cyan-300 font-semibold">{selectedCR.model || 'N/A'}</span>
+                  </div>
+                  <div className="bg-slate-900/90 p-2 rounded border border-slate-800">
+                    <span className="text-slate-400 block text-[10px]">CALIBER</span>
+                    <span className="text-cyan-300 font-semibold">{selectedCR.caliber_or_gauge || 'N/A'}</span>
+                  </div>
+                  <div className="bg-slate-900/90 p-2 rounded border border-slate-800">
+                    <span className="text-slate-400 block text-[10px]">SECTION</span>
+                    <span className="text-cyan-300 font-semibold">{selectedCR.section_code}</span>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Firearm Description Fields */}
@@ -216,7 +285,7 @@ export function NewAcquisitionModal({ isOpen, onClose, onSave }: NewAcquisitionM
                 <select
                   value={type}
                   onChange={(e) => setType(e.target.value as FirearmType)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-slate-100 focus:outline-none focus:border-amber-500/50"
+                  className="w-full bg-slate-950 text-slate-100 border border-slate-800 rounded px-3 py-2 focus:outline-none focus:border-amber-500/50 font-medium"
                 >
                   <option value="Rifle">Rifle</option>
                   <option value="Pistol">Pistol</option>
@@ -311,7 +380,7 @@ export function NewAcquisitionModal({ isOpen, onClose, onSave }: NewAcquisitionM
           <div className="pt-4 border-t border-slate-800 flex items-center justify-end space-x-3">
             <button
               type="button"
-              onClick={onClose}
+              onClick={handleClose}
               className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded font-medium text-xs transition-colors"
             >
               Cancel

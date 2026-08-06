@@ -172,7 +172,7 @@ export function App() {
       updatedAt: now
     };
 
-    const updated = [created, ...records];
+    const updated = [...records, created].sort((a, b) => a.lineNumber - b.lineNumber);
     setRecords(updated);
     saveBoundBookRecords(updated);
     setSelectedRecordId(created.id);
