@@ -297,27 +297,31 @@ export function App() {
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-amber-500 selection:text-amber-950">
       {/* Top Tactical Header */}
       <header className="bg-slate-900 border-b border-slate-800 px-6 py-3.5 flex items-center justify-between shadow-xl">
-        <div className="flex items-center space-x-3">
+        {/* Title Area */}
+        <div className="flex items-center space-x-3 shrink-0">
           <div className="p-2 bg-amber-500/10 border border-amber-500/30 rounded-lg text-amber-400">
             <BookOpen className="w-5 h-5" />
           </div>
           <div>
-            <h1 className="text-lg font-bold tracking-tight text-slate-100 flex items-center gap-2">
-              C&R Digital Logbook
-              <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono font-medium">
-                27 CFR § 478.125(f) Compliant
+            <div className="flex items-center gap-2">
+              <h1 className="text-base font-bold tracking-tight text-slate-100">
+                C&R Digital Logbook
+              </h1>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono font-medium">
+                27 CFR § 478.125(f)
               </span>
-            </h1>
-            <p className="text-[11px] text-slate-400 flex items-center gap-2">
+            </div>
+            <p className="text-[11px] text-slate-400 flex items-center gap-1.5 mt-0.5 font-sans">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> FFL Type 03 Collector • 100% Offline Local Storage
             </p>
           </div>
         </div>
 
-        <div className="flex items-center space-x-2">
+        {/* Action Buttons Bar */}
+        <div className="flex items-center flex-wrap gap-2 justify-end">
           <button 
             onClick={() => setIsCmdPaletteOpen(true)}
-            className="flex items-center space-x-1.5 bg-slate-800/90 hover:bg-slate-800 text-slate-200 border border-slate-700/80 px-2.5 py-1.5 rounded text-xs font-mono transition-colors"
+            className="flex items-center space-x-1.5 bg-slate-800/90 hover:bg-slate-800 text-slate-200 border border-slate-700/80 px-2 py-1.5 rounded text-xs font-mono transition-colors"
             title="Global Command Palette (Cmd+K)"
           >
             <Command className="w-3.5 h-3.5 text-amber-400" />
@@ -326,7 +330,7 @@ export function App() {
 
           <button 
             onClick={() => setIsDashboardModalOpen(true)}
-            className="flex items-center space-x-1.5 bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700/80 px-3 py-1.5 rounded text-xs font-medium transition-colors"
+            className="flex items-center space-x-1.5 bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700/80 px-2.5 py-1.5 rounded text-xs font-medium transition-colors"
           >
             <Activity className="w-3.5 h-3.5 text-emerald-400" />
             <span>Audit Dashboard</span>
@@ -334,7 +338,7 @@ export function App() {
 
           <button 
             onClick={() => setIsContactsModalOpen(true)}
-            className="flex items-center space-x-1.5 bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700/80 px-3 py-1.5 rounded text-xs font-medium transition-colors"
+            className="flex items-center space-x-1.5 bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700/80 px-2.5 py-1.5 rounded text-xs font-medium transition-colors"
           >
             <Users className="w-3.5 h-3.5 text-amber-400" />
             <span>FFL Rolodex</span>
@@ -342,39 +346,43 @@ export function App() {
 
           <button 
             onClick={() => setIsAuditViewerOpen(true)}
-            className="flex items-center space-x-1.5 bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700/80 px-3 py-1.5 rounded text-xs font-medium transition-colors"
+            className="flex items-center space-x-1.5 bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700/80 px-2.5 py-1.5 rounded text-xs font-medium transition-colors"
           >
             <History className="w-3.5 h-3.5 text-amber-400" />
             <span>Audit Logs ({auditLogs.length})</span>
           </button>
 
-          <button 
-            onClick={() => setIsPDFOptionsOpen(true)}
-            className="flex items-center space-x-1.5 bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700/80 px-3 py-1.5 rounded text-xs font-medium transition-colors"
-          >
-            <Download className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Printable ATF PDF</span>
-          </button>
-
-          <button 
-            onClick={handleExportCSV}
-            className="flex items-center space-x-1.5 bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700/80 px-3 py-1.5 rounded text-xs font-medium transition-colors"
-          >
-            <Download className="w-3.5 h-3.5 text-cyan-400" />
-            <span>Export CSV</span>
-          </button>
-
-          <button 
-            onClick={() => setIsVaultModalOpen(true)}
-            className="flex items-center space-x-1.5 bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700/80 px-3 py-1.5 rounded text-xs font-medium transition-colors"
-          >
-            <HardDrive className="w-3.5 h-3.5 text-amber-400" />
-            <span>Encrypted Vault (.crbk)</span>
-          </button>
+          {/* Export Actions Group */}
+          <div className="flex items-center border border-slate-700/80 rounded bg-slate-800/60 p-0.5 space-x-0.5">
+            <button 
+              onClick={() => setIsPDFOptionsOpen(true)}
+              className="flex items-center space-x-1 px-2 py-1 text-slate-300 hover:text-slate-100 hover:bg-slate-700/80 rounded text-xs font-medium transition-colors"
+              title="Printable ATF PDF"
+            >
+              <Download className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Print PDF</span>
+            </button>
+            <button 
+              onClick={handleExportCSV}
+              className="flex items-center space-x-1 px-2 py-1 text-slate-300 hover:text-slate-100 hover:bg-slate-700/80 rounded text-xs font-medium transition-colors"
+              title="Export CSV"
+            >
+              <Download className="w-3.5 h-3.5 text-cyan-400" />
+              <span>CSV</span>
+            </button>
+            <button 
+              onClick={() => setIsVaultModalOpen(true)}
+              className="flex items-center space-x-1 px-2 py-1 text-slate-300 hover:text-slate-100 hover:bg-slate-700/80 rounded text-xs font-medium transition-colors"
+              title="Encrypted Vault (.crbk)"
+            >
+              <HardDrive className="w-3.5 h-3.5 text-amber-400" />
+              <span>Vault (.crbk)</span>
+            </button>
+          </div>
 
           <button 
             onClick={() => setIsAcqModalOpen(true)}
-            className="flex items-center space-x-1.5 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold px-3.5 py-1.5 rounded text-xs transition-colors shadow-md shadow-amber-950/20"
+            className="flex items-center space-x-1.5 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold px-3 py-1.5 rounded text-xs transition-colors shadow-md shadow-amber-950/20 shrink-0"
           >
             <Plus className="w-4 h-4 stroke-[2.5]" />
             <span>New Acquisition</span>
