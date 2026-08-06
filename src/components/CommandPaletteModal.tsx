@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import type { BoundBookRecord } from '../types/logbook';
 import { useEscapeKey } from '../hooks/useEscapeKey';
+import { hotkeyLabel } from '../lib/osHelper';
 
 interface CommandPaletteModalProps {
   isOpen: boolean;
@@ -145,7 +146,7 @@ export function CommandPaletteModal({
         {/* Footer */}
         <div className="px-4 py-2 bg-slate-950 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-500 font-mono">
           <span className="flex items-center gap-1">
-            <Command className="w-3 h-3 text-slate-400" /> Global Palette Active
+            <Command className="w-3 h-3 text-slate-400" /> Global Palette Active ({hotkeyLabel})
           </span>
           <span>Press ESC to exit</span>
         </div>
