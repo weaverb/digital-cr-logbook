@@ -1025,7 +1025,7 @@ export function App() {
           <span>ATF Audit Log: Active ({auditLogs.length} Events)</span>
         </div>
         <div className="font-mono text-slate-400 flex items-center gap-3">
-          <span>Branch: feat/command-palette-and-advanced-exports</span>
+          <span>Branch: main</span>
           <span>•</span>
           <span>C&R Digital Logbook v1.0.0</span>
         </div>
