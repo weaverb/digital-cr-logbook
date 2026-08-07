@@ -159,19 +159,12 @@ jobs:
             fs.writeFileSync(changelogPath, changelog);
 
             console.log(`Automated release version: v${nextVersion} (Date: ${dateStr})`);
+            const delim = `EOF_RELEASE_${Date.now()}`;
             fs.appendFileSync(process.env.GITHUB_OUTPUT, `version=${nextVersion}\n`);
             fs.appendFileSync(process.env.GITHUB_OUTPUT, `tag_name=v${nextVersion}\n`);
+            fs.appendFileSync(process.env.GITHUB_OUTPUT, `release_notes<<${delim}\n${newReleaseMd.trim()}\n${delim}\n`);
             fs.writeFileSync("release_notes.md", newReleaseMd.trim());
           '
-
-      - name: Save Release Notes Output
-        id: changelog
-        run: |
-          {
-            echo 'release_notes<<EOF'
-            cat release_notes.md
-            echo 'EOF'
-          } >> $GITHUB_OUTPUT
 
       - name: Commit & Push Version Bump & CHANGELOG.md
         run: |
