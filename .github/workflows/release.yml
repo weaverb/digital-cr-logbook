@@ -11,7 +11,6 @@ on:
       - 'bun.lock'
       - 'vite.config.ts'
       - 'tsconfig*.json'
-      - '.github/workflows/release.yml'
   workflow_dispatch:
 
 permissions:
