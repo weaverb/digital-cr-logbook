@@ -88,22 +88,18 @@ jobs:
 
               if (/BREAKING CHANGE|!:/.test(msg)) {
                 isMajor = true;
-              }
-              
-              if (/^feat(\([^\)]+\))?:/.test(msg) || /\bfeat\b/.test(msg)) {
+              } else if (/^feat(\([^\)]+\))?:/.test(msg)) {
                 isMinor = true;
                 added.push(msg.replace(/^feat(\([^\)]+\))?:\s*/, ""));
-              } else if (/^fix(\([^\)]+\))?:/.test(msg) || /\bfix\b/.test(msg)) {
+              } else if (/^fix(\([^\)]+\))?:/.test(msg)) {
                 isPatch = true;
                 fixed.push(msg.replace(/^fix(\([^\)]+\))?:\s*/, ""));
-              } else if (/^(perf|refactor|style|docs)(\([^\)]+\))?:/.test(msg)) {
+              } else if (/^perf(\([^\)]+\))?:/.test(msg)) {
                 isPatch = true;
-                changed.push(msg.replace(/^(perf|refactor|style|docs)(\([^\)]+\))?:\s*/, ""));
+                changed.push(msg.replace(/^perf(\([^\)]+\))?:\s*/, ""));
               } else if (/^security(\([^\)]+\))?:/.test(msg)) {
                 isPatch = true;
                 security.push(msg.replace(/^security(\([^\)]+\))?:\s*/, ""));
-              } else {
-                changed.push(msg);
               }
             }
 
@@ -117,64 +113,56 @@ jobs:
               major += 1; minor = 0; patch = 0;
             } else if (isMinor) {
               minor += 1; patch = 0;
-            } else if (isPatch || commits.length > 0) {
+            } else if (isPatch) {
               patch += 1;
             }
 
             const nextVersion = `${major}.${minor}.${patch}`;
             const dateStr = new Date().toISOString().split("T")[0];
 
-            pkg.version = nextVersion;
-            fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + "\n");
+            // Only update files if an actual version bump occurred
+            if (nextVersion !== baseTag) {
+              pkg.version = nextVersion;
+              fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + "\n");
 
-            try {
-              const tauriConf = JSON.parse(fs.readFileSync(tauriConfPath, "utf8"));
-              tauriConf.version = nextVersion;
-              fs.writeFileSync(tauriConfPath, JSON.stringify(tauriConf, null, 2) + "\n");
-            } catch (e) {}
+              try {
+                const tauriConf = JSON.parse(fs.readFileSync(tauriConfPath, "utf8"));
+                tauriConf.version = nextVersion;
+                fs.writeFileSync(tauriConfPath, JSON.stringify(tauriConf, null, 2) + "\n");
+              } catch (e) {}
 
-            let newReleaseMd = `\n## [${nextVersion}] - ${dateStr}\n`;
-            if (added.length > 0) {
-              newReleaseMd += `\n### Added\n` + added.map(i => `- ${i}`).join("\n") + `\n`;
-            }
-            if (changed.length > 0) {
-              newReleaseMd += `\n### Changed\n` + changed.map(i => `- ${i}`).join("\n") + `\n`;
-            }
-            if (fixed.length > 0) {
-              newReleaseMd += `\n### Fixed\n` + fixed.map(i => `- ${i}`).join("\n") + `\n`;
-            }
-            if (security.length > 0) {
-              newReleaseMd += `\n### Security\n` + security.map(i => `- ${i}`).join("\n") + `\n`;
-            }
-            if (added.length === 0 && changed.length === 0 && fixed.length === 0 && security.length === 0) {
-              newReleaseMd += `\n### Changed\n- Maintenance updates and enhancements for release v${nextVersion}.\n`;
-            }
+              let newReleaseMd = `\n## [${nextVersion}] - ${dateStr}\n`;
+              if (added.length > 0) {
+                newReleaseMd += `\n### Added\n` + added.map(i => `- ${i}`).join("\n") + `\n`;
+              }
+              if (changed.length > 0) {
+                newReleaseMd += `\n### Changed\n` + changed.map(i => `- ${i}`).join("\n") + `\n`;
+              }
+              if (fixed.length > 0) {
+                newReleaseMd += `\n### Fixed\n` + fixed.map(i => `- ${i}`).join("\n") + `\n`;
+              }
+              if (security.length > 0) {
+                newReleaseMd += `\n### Security\n` + security.map(i => `- ${i}`).join("\n") + `\n`;
+              }
 
-            let changelog = fs.readFileSync(changelogPath, "utf8");
-            if (changelog.includes("## [Unreleased]")) {
-              changelog = changelog.replace("## [Unreleased]", "## [Unreleased]\n" + newReleaseMd);
+              let changelog = fs.readFileSync(changelogPath, "utf8");
+              if (changelog.includes("## [Unreleased]")) {
+                changelog = changelog.replace("## [Unreleased]", "## [Unreleased]\n" + newReleaseMd);
+              } else {
+                changelog = changelog + "\n" + newReleaseMd;
+              }
+              fs.writeFileSync(changelogPath, changelog);
+              fs.writeFileSync("release_notes.md", newReleaseMd.trim());
             } else {
-              changelog = changelog + "\n" + newReleaseMd;
+              fs.writeFileSync("release_notes.md", `Release v${nextVersion}`);
             }
-            fs.writeFileSync(changelogPath, changelog);
 
             console.log(`Automated release version: v${nextVersion} (Date: ${dateStr})`);
             const delim = `EOF_RELEASE_${Date.now()}`;
             fs.appendFileSync(process.env.GITHUB_OUTPUT, `version=${nextVersion}\n`);
             fs.appendFileSync(process.env.GITHUB_OUTPUT, `tag_name=v${nextVersion}\n`);
-            fs.appendFileSync(process.env.GITHUB_OUTPUT, `release_notes<<${delim}\n${newReleaseMd.trim()}\n${delim}\n`);
-            fs.writeFileSync("release_notes.md", newReleaseMd.trim());
+            fs.appendFileSync(process.env.GITHUB_OUTPUT, `release_notes<<${delim}\n${(fs.readFileSync("release_notes.md", "utf8")).trim()}\n${delim}\n`);
           '
-
-      - name: Commit & Push Version Bump & CHANGELOG.md
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add package.json src-tauri/tauri.conf.json CHANGELOG.md
-          if ! git diff --cached --quiet; then
-            git commit -m "chore(release): bump version to v${{ steps.version.outputs.version }} and update CHANGELOG [skip ci]"
-            git push
-          fi
 
   build-tauri-executables:
     name: Build Portable Desktop (${{ matrix.platform.name }})
