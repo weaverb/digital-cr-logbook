@@ -225,13 +225,15 @@ jobs:
       - name: Prepare Staged Executable Assets
         shell: bash
         run: |
+          VERSION="${{ needs.test-and-validate.outputs.version }}"
           mkdir -p staged-assets
           if [ "${{ matrix.platform.name }}" = "linux" ]; then
-            find src-tauri/target/release/bundle -type f \( -name "*.AppImage" -o -name "*.deb" -o -name "*.tar.gz" \) -exec cp {} staged-assets/ \;
+            find src-tauri/target/release/bundle -type f -name "*.AppImage" -exec cp {} staged-assets/Digital-CR-Logbook-v${VERSION}-x86_64.AppImage \;
+            find src-tauri/target/release/bundle -type f -name "*.deb" -exec cp {} staged-assets/Digital-CR-Logbook-v${VERSION}-amd64.deb \;
           elif [ "${{ matrix.platform.name }}" = "macos" ]; then
-            find src-tauri/target/release/bundle -type f \( -name "*.dmg" -o -name "*.app.tar.gz" -o -name "*.zip" \) -exec cp {} staged-assets/ \;
+            find src-tauri/target/release/bundle -type f -name "*.dmg" -exec cp {} staged-assets/Digital-CR-Logbook-v${VERSION}-x64.dmg \;
           elif [ "${{ matrix.platform.name }}" = "windows" ]; then
-            find src-tauri/target/release/bundle -type f \( -name "*.msi" -o -name "*.exe" -o -name "*.zip" \) -exec cp {} staged-assets/ \;
+            find src-tauri/target/release/bundle -type f \( -name "*.exe" -o -name "*.msi" \) -exec cp {} staged-assets/Digital-CR-Logbook-v${VERSION}-x64-setup.exe \;
           fi
           echo "Staged executable files:"
           ls -lh staged-assets/

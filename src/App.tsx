@@ -16,8 +16,10 @@ import {
   Users,
   Camera,
   Activity,
-  Command
+  Command,
+  Tag
 } from 'lucide-react';
+import { APP_VERSION } from './lib/version';
 import type { BoundBookRecord, CRReferenceEntry, MaintenanceRecord } from './types/logbook';
 import { 
   getBoundBookRecords, 
@@ -1017,7 +1019,11 @@ export function App() {
 
       {/* Footer Status Bar */}
       <footer className="bg-slate-950 border-t border-slate-800/80 px-6 py-2.5 text-[11px] text-slate-500 flex items-center justify-between">
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-3">
+          <span className="px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/30 text-amber-400 font-mono font-bold text-xs flex items-center gap-1">
+            <Tag className="w-3 h-3" /> v{APP_VERSION}
+          </span>
+          <span>•</span>
           <button 
             onClick={() => setIsVaultHealthOpen(true)}
             className="flex items-center gap-1.5 hover:text-emerald-400 transition-colors"
@@ -1030,9 +1036,9 @@ export function App() {
           <span>ATF Audit Log: Active ({auditLogs.length} Events)</span>
         </div>
         <div className="font-mono text-slate-400 flex items-center gap-3">
-          <span>Branch: main</span>
+          <span>27 CFR § 478.125(f) Compliant</span>
           <span>•</span>
-          <span>C&R Digital Logbook v1.0.0</span>
+          <span>Offline Bound Book</span>
         </div>
       </footer>
 
