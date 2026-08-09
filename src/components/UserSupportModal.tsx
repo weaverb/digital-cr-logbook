@@ -7,7 +7,8 @@ import {
   Check, 
   ExternalLink, 
   ShieldCheck, 
-  Camera 
+  Camera,
+  Info
 } from 'lucide-react';
 import { APP_VERSION } from '../lib/version';
 import { useEscapeKey } from '../hooks/useEscapeKey';
@@ -36,8 +37,10 @@ export function UserSupportModal({ isOpen, onClose }: UserSupportModalProps) {
   const supportEmail = 'cr-logbook-support.vocalist722@passmail.net';
   const githubIssueUrl = 'https://github.com/weaverb/digital-cr-logbook/issues/new?template=support_request.yml';
 
+  const userAgentString = typeof window !== 'undefined' && window.navigator ? window.navigator.userAgent : 'Desktop Client';
+
   const systemDetailsText = `C&R Collector Digital Logbook Version: v${APP_VERSION}
-Environment: ${typeof window !== 'undefined' && window.navigator ? window.navigator.userAgent : 'Desktop Client'}
+Environment / OS: ${userAgentString}
 Timestamp: ${new Date().toISOString()}`;
 
   const handleCopySysInfo = () => {
@@ -92,6 +95,40 @@ Timestamp: ${new Date().toISOString()}`;
           </div>
         </div>
 
+        {/* Dedicated System & Diagnostic Information Section */}
+        <div className="p-5 bg-gunmetal-950 border border-slate-800 rounded-2xl space-y-3.5 shadow-lg">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center space-x-2.5">
+              <div className="p-2 bg-cyan-500/10 border border-cyan-500/30 rounded-lg text-cyan-400">
+                <Info className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-base font-bold text-slate-100">System & Diagnostic Information</h3>
+                <p className="text-xs text-slate-400">Copy this details block to include with either GitHub Issue or Email support.</p>
+              </div>
+            </div>
+            <button
+              onClick={handleCopySysInfo}
+              className="px-3.5 py-2 bg-cyan-500 hover:bg-cyan-400 text-cyan-950 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-md shrink-0"
+              title="Copy system details to clipboard"
+            >
+              {copiedSysInfo ? <Check className="w-4 h-4 text-cyan-950" /> : <Copy className="w-4 h-4 text-cyan-950" />}
+              {copiedSysInfo ? 'Copied to Clipboard!' : 'Copy System Info'}
+            </button>
+          </div>
+
+          {/* Live Data Preview Box */}
+          <div className="space-y-1.5">
+            <div className="flex items-center justify-between text-[11px] font-mono text-slate-400">
+              <span>Exact System Info to be Copied:</span>
+              <span className="text-emerald-400 font-sans">✓ No serial numbers or logbook records included</span>
+            </div>
+            <pre className="p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-mono text-slate-300 leading-relaxed overflow-x-auto selection:bg-slate-700 selection:text-slate-100">
+{systemDetailsText}
+            </pre>
+          </div>
+        </div>
+
         {/* Support Option 1: GitHub Issue */}
         <div className="p-5 bg-gunmetal-950 border border-slate-800 rounded-2xl space-y-4 shadow-lg hover:border-slate-700 transition-colors">
           <div className="flex items-center justify-between">
@@ -107,19 +144,10 @@ Timestamp: ${new Date().toISOString()}`;
           </div>
 
           <p className="text-xs text-slate-300 leading-relaxed">
-            Submit a structured issue on our official GitHub repository. You can describe the issue, copy your system info, and attach screenshots.
+            Submit a structured issue on our official GitHub repository. Paste your copied system info, describe the issue, and attach screenshots.
           </p>
 
-          <div className="flex flex-wrap items-center gap-3 pt-1">
-            <button
-              onClick={handleCopySysInfo}
-              className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors"
-              title="Copy version & system info to clipboard"
-            >
-              {copiedSysInfo ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4 text-slate-400" />}
-              {copiedSysInfo ? 'Copied to Clipboard!' : 'Copy System Info'}
-            </button>
-
+          <div className="flex items-center justify-end pt-1">
             <a
               href={githubIssueUrl}
               target="_blank"
