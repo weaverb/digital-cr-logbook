@@ -17,7 +17,8 @@ import {
   Camera,
   Activity,
   Command,
-  Tag
+  Tag,
+  HelpCircle
 } from 'lucide-react';
 import { APP_VERSION } from './lib/version';
 import type { BoundBookRecord, CRReferenceEntry, MaintenanceRecord } from './types/logbook';
@@ -42,6 +43,7 @@ import { AuditDashboardModal } from './components/AuditDashboardModal';
 import { CommandPaletteModal } from './components/CommandPaletteModal';
 import { PDFExportDialogModal } from './components/PDFExportDialogModal';
 import { VaultHealthModal } from './components/VaultHealthModal';
+import { UserSupportModal } from './components/UserSupportModal';
 import { saveFileWithNativePicker } from './lib/fileSaveHelper';
 import { hotkeyLabel } from './lib/osHelper';
 import crMasterData from './data/cr_master_data.json';
@@ -74,6 +76,7 @@ export function App() {
   const [isCmdPaletteOpen, setIsCmdPaletteOpen] = useState(false);
   const [isPDFOptionsOpen, setIsPDFOptionsOpen] = useState(false);
   const [isVaultHealthOpen, setIsVaultHealthOpen] = useState(false);
+  const [isSupportModalOpen, setIsSupportModalOpen] = useState(false);
 
   // Keyboard shortcut listener for Cmd+K / Ctrl+K
   useEffect(() => {
@@ -1023,6 +1026,13 @@ export function App() {
           <span className="px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/30 text-amber-400 font-mono font-bold text-xs flex items-center gap-1">
             <Tag className="w-3 h-3" /> v{APP_VERSION}
           </span>
+          <button
+            onClick={() => setIsSupportModalOpen(true)}
+            className="px-2 py-0.5 rounded bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-400 font-mono font-bold text-xs flex items-center gap-1 transition-colors"
+            title="Open User Support & Assistance"
+          >
+            <HelpCircle className="w-3 h-3" /> Support
+          </button>
           <span>•</span>
           <button 
             onClick={() => setIsVaultHealthOpen(true)}
@@ -1123,6 +1133,11 @@ export function App() {
         records={records}
         auditLogs={auditLogs}
         onClose={() => setIsVaultHealthOpen(false)}
+      />
+
+      <UserSupportModal
+        isOpen={isSupportModalOpen}
+        onClose={() => setIsSupportModalOpen(false)}
       />
     </div>
   );

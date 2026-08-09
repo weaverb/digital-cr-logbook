@@ -1,0 +1,63 @@
+name: User Support & Bug Report
+description: Submit a support request or bug report for C&R Digital Logbook
+title: "[Support]: "
+labels: ["support", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to report an issue or request support for the C&R Digital Logbook!
+        Please fill out as much information as possible below.
+
+  - type: input
+    id: version
+    attributes:
+      label: Application Version
+      description: What version of C&R Digital Logbook are you running? (e.g. v1.0.0 - visible in the bottom-left corner of the app)
+      placeholder: "e.g. v1.0.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating System
+      description: What operating system are you running the application on?
+      options:
+        - Windows 11
+        - Windows 10
+        - macOS (Apple Silicon / M1 / M2 / M3 / M4)
+        - macOS (Intel)
+        - Linux (AppImage)
+        - Linux (Debian / Ubuntu .deb)
+        - Linux (Fedora / Bazzite / Other)
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: Please describe the steps to reproduce the issue or error.
+      placeholder: |
+        1. Open Bound Book table
+        2. Click '+ New Acquisition'
+        3. Enter firearm details...
+        4. See error...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected_vs_actual
+    attributes:
+      label: Expected vs Actual Behavior
+      description: What did you expect to happen, and what actually happened?
+      placeholder: "Expected entry to save cleanly, but received an error message..."
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ### 📷 Screenshots & Attachments
+        Please attach any relevant screenshots by dragging and dropping image files (`.png`, `.jpg`) directly into the comment box below.
