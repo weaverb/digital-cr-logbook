@@ -138,9 +138,14 @@ Timestamp: ${new Date().toISOString()}`;
               </div>
               <h3 className="text-base font-bold text-slate-100">Option 1: Submit a GitHub Issue (Recommended)</h3>
             </div>
-            <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 bg-purple-500/10 text-purple-400 border border-purple-500/30 rounded-full">
-              Bug Reports & Feature Requests
-            </span>
+            <div className="flex items-center gap-1.5 shrink-0">
+              <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 bg-purple-500/10 text-purple-400 border border-purple-500/30 rounded-full whitespace-nowrap">
+                Bug Reports
+              </span>
+              <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 bg-purple-500/10 text-purple-400 border border-purple-500/30 rounded-full whitespace-nowrap">
+                Feature Requests
+              </span>
+            </div>
           </div>
 
           <p className="text-xs text-slate-300 leading-relaxed">
