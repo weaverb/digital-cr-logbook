@@ -1,6 +1,7 @@
 import { X, ShieldCheck, BookOpen, Lock, FileText, CheckCircle2 } from 'lucide-react';
 import type { BoundBookRecord, AuditLogEntry } from '../types/logbook';
 import { useEscapeKey } from '../hooks/useEscapeKey';
+import { CfrLink, AtfRulingLink } from '../lib/legalLinks';
 
 interface AuditDashboardModalProps {
   isOpen: boolean;
@@ -29,7 +30,7 @@ export function AuditDashboardModal({ isOpen, records, auditLogs, onClose }: Aud
               ATF Bound Book & Compliance Audit Dashboard
             </h2>
             <p className="text-xs text-slate-400 mt-0.5">
-              Live collection health metrics, 27 CFR § 478.125(f) compliance check, and audit trail analytics.
+              Live collection health metrics, <CfrLink className="underline hover:text-emerald-300 transition-colors" /> compliance check, and audit trail analytics.
             </p>
           </div>
           <button 
@@ -86,7 +87,7 @@ export function AuditDashboardModal({ isOpen, records, auditLogs, onClose }: Aud
             <div className="flex items-center justify-between">
               <div className="font-bold text-emerald-400 text-sm flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                ATF Ruling 2016-1 Compliance Scorecard: 100% PASS
+                <AtfRulingLink text="ATF Ruling 2016-1" className="underline hover:text-emerald-300 transition-colors font-bold" /> Compliance Scorecard: 100% PASS
               </div>
               <span className="px-2.5 py-0.5 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded-full font-mono text-[11px]">
                 Inspection Ready

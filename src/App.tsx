@@ -21,6 +21,7 @@ import {
   HelpCircle
 } from 'lucide-react';
 import { APP_VERSION } from './lib/version';
+import { CfrLink } from './lib/legalLinks';
 import type { BoundBookRecord, CRReferenceEntry, MaintenanceRecord } from './types/logbook';
 import { 
   getBoundBookRecords, 
@@ -314,7 +315,7 @@ export function App() {
                 C&R Digital Logbook
               </h1>
               <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono font-medium">
-                27 CFR § 478.125(f)
+                <CfrLink text="27 CFR § 478.125(f)" className="hover:text-emerald-300 transition-colors" />
               </span>
             </div>
             <p className="text-[11px] text-slate-400 flex items-center gap-1.5 mt-0.5 font-sans">
@@ -1046,7 +1047,7 @@ export function App() {
           <span>ATF Audit Log: Active ({auditLogs.length} Events)</span>
         </div>
         <div className="font-mono text-slate-400 flex items-center gap-3">
-          <span>27 CFR § 478.125(f) Compliant</span>
+          <span><CfrLink text="27 CFR § 478.125(f) Compliant" className="hover:text-slate-200 transition-colors" /></span>
           <span>•</span>
           <span>Offline Bound Book</span>
         </div>

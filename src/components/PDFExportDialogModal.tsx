@@ -3,6 +3,7 @@ import { X, Download, FileCheck, ShieldCheck } from 'lucide-react';
 import type { BoundBookRecord } from '../types/logbook';
 import { generateBoundBookPDF } from '../lib/pdfExporter';
 import { useEscapeKey } from '../hooks/useEscapeKey';
+import { CfrLink, AtfRulingLink } from '../lib/legalLinks';
 
 interface PDFExportDialogModalProps {
   isOpen: boolean;
@@ -39,7 +40,7 @@ export function PDFExportDialogModal({ isOpen, records, onClose }: PDFExportDial
               Generate ATF Printable Bound Book PDF
             </h2>
             <p className="text-xs text-slate-400 mt-0.5">
-              27 CFR § 478.125(f) & ATF Ruling 2016-1 Inspection Format
+              <CfrLink className="underline hover:text-emerald-300 transition-colors" /> & <AtfRulingLink className="underline hover:text-emerald-300 transition-colors" /> Inspection Format
             </p>
           </div>
           <button 

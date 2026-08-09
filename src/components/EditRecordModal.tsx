@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { X, Edit3, ShieldAlert } from 'lucide-react';
 import type { BoundBookRecord, FirearmType } from '../types/logbook';
 import { useEscapeKey } from '../hooks/useEscapeKey';
+import { AtfRulingLink } from '../lib/legalLinks';
 
 interface EditRecordModalProps {
   isOpen: boolean;
@@ -83,7 +84,7 @@ export function EditRecordModal({ isOpen, record, onClose, onSave }: EditRecordM
               Amend Bound Book Entry #{record.lineNumber}
             </h2>
             <p className="text-xs text-slate-400 mt-0.5">
-              ATF 2016-1 compliant record editing with immutable audit trail.
+              ATF <AtfRulingLink text="Ruling 2016-1" className="underline hover:text-amber-400 transition-colors" /> compliant record editing with immutable audit trail.
             </p>
           </div>
           <button 
