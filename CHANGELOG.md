@@ -1,5 +1,3 @@
-## [1.2.0](https://github.com/weaverb/digital-cr-logbook/compare/v1.1.0...v1.2.0) (2026-08-10)
-
 # Changelog
 
 All notable changes to this project will be documented in this file.
@@ -12,10 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.1.1] - 2026-08-10
 
 ### Fixed
-- **GitHub Release Notes Parity**: Refactored release workflow script to extract the exact markdown section for `[${nextVersion}]` directly from `CHANGELOG.md` for GitHub Releases notes.
-- **GitHub Pages Download Links**: Resolved 404 errors on direct download buttons by updating links to target `v1.1.1` release assets and automating URL updates on future releases.
+- **Release Pipeline Order of Operations**: Restructured workflow to pre-synchronize `package.json`, `src-tauri/tauri.conf.json`, and `docs/index.html` with target release version before Tauri desktop binary compilation begins.
+- **GitHub Release Notes Parity**: Refactored release workflow script to extract the exact markdown section directly from `CHANGELOG.md` for GitHub Releases notes.
+- **GitHub Pages Download Links**: Resolved 404 errors on direct download buttons by updating links to target `v1.1.1` release assets.
 
 ### Added
+- **Automated Pipeline Upgrade**: Migrated release automation to `semantic-release` and `conventional-changelog` plugins.
 - **AGENTS.md Specification**: Defined open agent guidance requiring Pull Requests for all AI code modifications and prohibiting direct pushes to `main`.
 - **Bonus Collector Features Section**: Added documentation section covering Maintenance Log, Range & Ammo Log, and FFL Rolodex.
 
