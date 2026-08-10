@@ -7,17 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.1] - 2026-08-10
+
+### Fixed
+- **GitHub Release Notes Parity**: Refactored release workflow script to extract the exact markdown section for `[${nextVersion}]` directly from `CHANGELOG.md` for GitHub Releases notes.
+- **GitHub Pages Download Links**: Resolved 404 errors on direct download buttons by updating links to target `v1.1.1` release assets and automating URL updates on future releases.
+
+### Added
+- **AGENTS.md Specification**: Defined open agent guidance requiring Pull Requests for all AI code modifications and prohibiting direct pushes to `main`.
+- **Bonus Collector Features Section**: Added documentation section covering Maintenance Log, Range & Ammo Log, and FFL Rolodex.
+
 ## [1.1.0] - 2026-08-10
 
 ### Added
-- add user support modal, bottom-left support button, and GitHub Issue Form template
-- display dynamic app version in bottom-left status bar and embed version numbers in release asset filenames
+- **User Support Subsystem**: Added User Support modal, status bar help button, and structured GitHub Issue Form template.
+- **Dynamic Version Display**: Rendered amber version badge (`v1.1.0`) in status bar footer and enabled versioned release asset filenames.
+- **DRY Legal Regulation Links**: Centralized eCFR and ATF Ruling 2016-1 hyperlinks in `src/lib/legalLinks.tsx`.
 
 ### Fixed
-- handle branch protection push restriction gracefully in release workflow
-- restrict SemVer version bumps strictly to application code changes and omit direct git push to protected main
-- fix multiline GITHUB_OUTPUT delimiter syntax for release notes
-
+- **Release Workflow Optimization**: Restricted release workflow triggers strictly to application code changes and handled branch protection rules.
 
 ## [1.0.0] - 2026-08-06
 
