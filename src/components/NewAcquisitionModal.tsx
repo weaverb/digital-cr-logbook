@@ -3,6 +3,7 @@ import { X, Plus, ShieldCheck, Search, CheckCircle2, RotateCcw } from 'lucide-re
 import type { BoundBookRecord, FirearmType, CRReferenceEntry } from '../types/logbook';
 import crMasterData from '../data/cr_master_data.json';
 import { useEscapeKey } from '../hooks/useEscapeKey';
+import { CfrLink } from '../lib/legalLinks';
 
 interface NewAcquisitionModalProps {
   isOpen: boolean;
@@ -118,7 +119,7 @@ export function NewAcquisitionModal({ isOpen, onClose, onSave }: NewAcquisitionM
               Record Firearm Acquisition
             </h2>
             <p className="text-xs text-slate-400 mt-0.5">
-              Enter mandatory acquisition details pursuant to 27 CFR § 478.125(f).
+              Enter mandatory acquisition details pursuant to <CfrLink className="underline hover:text-amber-400 transition-colors" />.
             </p>
           </div>
           <button 

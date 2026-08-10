@@ -130,6 +130,15 @@ jobs:
                 fs.writeFileSync(tauriConfPath, JSON.stringify(tauriConf, null, 2) + "\n");
               } catch (e) {}
 
+              try {
+                const docsPath = "./docs/index.html";
+                if (fs.existsSync(docsPath)) {
+                  let docsContent = fs.readFileSync(docsPath, "utf8");
+                  docsContent = docsContent.replace(/Digital-CR-Logbook-v\d+\.\d+\.\d+/g, `Digital-CR-Logbook-v${nextVersion}`);
+                  fs.writeFileSync(docsPath, docsContent);
+                }
+              } catch (e) {}
+
               let newReleaseMd = `\n## [${nextVersion}] - ${dateStr}\n`;
               if (added.length > 0) {
                 newReleaseMd += `\n### Added\n` + added.map(i => `- ${i}`).join("\n") + `\n`;
@@ -163,11 +172,11 @@ jobs:
             fs.appendFileSync(process.env.GITHUB_OUTPUT, `release_notes<<${delim}\n${(fs.readFileSync("release_notes.md", "utf8")).trim()}\n${delim}\n`);
           '
 
-      - name: Commit & Push Version Bump & CHANGELOG.md
+      - name: Commit & Push Version Bump & CHANGELOG.md & documentation links
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add package.json src-tauri/tauri.conf.json CHANGELOG.md
+          git add package.json src-tauri/tauri.conf.json CHANGELOG.md docs/index.html
           if ! git diff --cached --quiet; then
             git commit -m "chore(release): bump version to v${{ steps.version.outputs.version }} and update CHANGELOG [skip ci]"
             git push
@@ -225,13 +234,15 @@ jobs:
       - name: Prepare Staged Executable Assets
         shell: bash
         run: |
+          VERSION="${{ needs.test-and-validate.outputs.version }}"
           mkdir -p staged-assets
           if [ "${{ matrix.platform.name }}" = "linux" ]; then
-            find src-tauri/target/release/bundle -type f \( -name "*.AppImage" -o -name "*.deb" -o -name "*.tar.gz" \) -exec cp {} staged-assets/ \;
+            find src-tauri/target/release/bundle -type f -name "*.AppImage" -exec cp {} staged-assets/Digital-CR-Logbook-v${VERSION}-x86_64.AppImage \;
+            find src-tauri/target/release/bundle -type f -name "*.deb" -exec cp {} staged-assets/Digital-CR-Logbook-v${VERSION}-amd64.deb \;
           elif [ "${{ matrix.platform.name }}" = "macos" ]; then
-            find src-tauri/target/release/bundle -type f \( -name "*.dmg" -o -name "*.app.tar.gz" -o -name "*.zip" \) -exec cp {} staged-assets/ \;
+            find src-tauri/target/release/bundle -type f -name "*.dmg" -exec cp {} staged-assets/Digital-CR-Logbook-v${VERSION}-x64.dmg \;
           elif [ "${{ matrix.platform.name }}" = "windows" ]; then
-            find src-tauri/target/release/bundle -type f \( -name "*.msi" -o -name "*.exe" -o -name "*.zip" \) -exec cp {} staged-assets/ \;
+            find src-tauri/target/release/bundle -type f \( -name "*.exe" -o -name "*.msi" \) -exec cp {} staged-assets/Digital-CR-Logbook-v${VERSION}-x64-setup.exe \;
           fi
           echo "Staged executable files:"
           ls -lh staged-assets/

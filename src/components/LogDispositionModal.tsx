@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { X, Lock, AlertTriangle } from 'lucide-react';
 import type { BoundBookRecord } from '../types/logbook';
 import { useEscapeKey } from '../hooks/useEscapeKey';
+import { CfrLink } from '../lib/legalLinks';
 
 interface LogDispositionModalProps {
   isOpen: boolean;
@@ -62,7 +63,7 @@ export function LogDispositionModal({ isOpen, record, onClose, onSave }: LogDisp
         <div className="p-4 bg-purple-500/10 border-b border-purple-500/30 flex items-start space-x-3 text-xs">
           <AlertTriangle className="w-5 h-5 text-purple-400 shrink-0 mt-0.5" />
           <div className="text-purple-200 space-y-1">
-            <div className="font-semibold">ATF 27 CFR § 478.125(f) Compliance Lock</div>
+            <div className="font-semibold">ATF <CfrLink text="27 CFR § 478.125(f)" className="underline hover:text-purple-300 transition-colors" /> Compliance Lock</div>
             <div className="text-[11px] text-purple-300">
               Recording a disposition marks this firearm as transferred out of your collection. Once saved, this record will be permanently locked against deletion to satisfy ATF audit regulations.
             </div>

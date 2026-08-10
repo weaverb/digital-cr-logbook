@@ -1,6 +1,7 @@
 import { X, FileText, Clock, ShieldCheck } from 'lucide-react';
 import type { AuditLogEntry } from '../types/logbook';
 import { useEscapeKey } from '../hooks/useEscapeKey';
+import { AtfRulingLink } from '../lib/legalLinks';
 
 interface AuditLogViewerModalProps {
   isOpen: boolean;
@@ -23,7 +24,7 @@ export function AuditLogViewerModal({ isOpen, logs, onClose }: AuditLogViewerMod
               ATF Compliance Audit Log (`ATF_AUDIT_LOG`)
             </h2>
             <p className="text-xs text-slate-400 mt-0.5">
-              Immutable log of record amendments per ATF Ruling 2016-1.
+              Immutable log of record amendments per <AtfRulingLink className="underline hover:text-amber-400 transition-colors" />.
             </p>
           </div>
           <button 

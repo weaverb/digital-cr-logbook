@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { X, ShieldCheck, CheckCircle2, RefreshCw } from 'lucide-react';
 import type { BoundBookRecord, AuditLogEntry } from '../types/logbook';
 import { useEscapeKey } from '../hooks/useEscapeKey';
+import { CfrLink } from '../lib/legalLinks';
 
 interface VaultHealthModalProps {
   isOpen: boolean;
@@ -77,7 +78,7 @@ export function VaultHealthModal({ isOpen, records, auditLogs, onClose }: VaultH
               )}
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-slate-300">Disposition Lock Rule (27 CFR 478.125):</span>
+              <span className="text-slate-300">Disposition Lock Rule (<CfrLink text="27 CFR § 478.125" className="underline hover:text-emerald-400 transition-colors" />):</span>
               {allLockedValid ? (
                 <span className="text-emerald-400 font-bold">PASS (100% Compliant)</span>
               ) : (
