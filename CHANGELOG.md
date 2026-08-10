@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-08-10
+
+### Added
+- add user support modal, bottom-left support button, and GitHub Issue Form template
+- display dynamic app version in bottom-left status bar and embed version numbers in release asset filenames
+
+### Fixed
+- handle branch protection push restriction gracefully in release workflow
+- restrict SemVer version bumps strictly to application code changes and omit direct git push to protected main
+- fix multiline GITHUB_OUTPUT delimiter syntax for release notes
+
+
 ## [1.0.0] - 2026-08-06
 
 ### Added
