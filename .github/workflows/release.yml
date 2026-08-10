@@ -15,15 +15,13 @@ on:
 
 permissions:
   contents: write
+  issues: write
+  pull-requests: write
 
 jobs:
   test-and-validate:
-    name: Run Automated Tests, Bump Version & Update CHANGELOG
+    name: Run Automated Tests
     runs-on: ubuntu-22.04
-    outputs:
-      version: ${{ steps.version.outputs.version }}
-      tag_name: ${{ steps.version.outputs.tag_name }}
-      release_notes: ${{ steps.changelog.outputs.release_notes }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -40,161 +38,6 @@ jobs:
 
       - name: Execute Vitest Automated Suite
         run: bun run test
-
-      - name: Automate SemVer Version Bump & CHANGELOG.md Update
-        id: version
-        run: |
-          node -e '
-            const { execSync } = require("child_process");
-            const fs = require("fs");
-
-            const pkgPath = "./package.json";
-            const tauriConfPath = "./src-tauri/tauri.conf.json";
-            const changelogPath = "./CHANGELOG.md";
-
-            const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
-            let currentVersion = pkg.version || "1.0.0";
-
-            let latestTag = "";
-            try {
-              latestTag = execSync("git describe --tags --abbrev=0", { encoding: "utf8" }).trim();
-            } catch (e) {}
-
-            let logRange = latestTag ? `${latestTag}..HEAD` : "HEAD~10..HEAD";
-            let commits = [];
-            try {
-              const rawLog = execSync(`git log ${logRange} --pretty=format:"%h|%s"`, { encoding: "utf8" });
-              commits = rawLog.split("\n").filter(Boolean).map(line => {
-                const parts = line.split("|");
-                return { hash: parts[0], subject: parts.slice(1).join("|") };
-              });
-            } catch (e) {}
-
-            let isMajor = false;
-            let isMinor = false;
-            let isPatch = false;
-
-            const added = [];
-            const fixed = [];
-            const changed = [];
-            const security = [];
-
-            for (const c of commits) {
-              const msg = c.subject;
-              if (msg.startsWith("chore(release):") || msg.startsWith("Merge pull request") || msg.startsWith("Merge branch")) {
-                continue;
-              }
-
-              if (/BREAKING CHANGE|!:/.test(msg)) {
-                isMajor = true;
-              } else if (/^feat(\([^\)]+\))?:/.test(msg)) {
-                isMinor = true;
-                added.push(msg.replace(/^feat(\([^\)]+\))?:\s*/, ""));
-              } else if (/^fix(\([^\)]+\))?:/.test(msg)) {
-                isPatch = true;
-                fixed.push(msg.replace(/^fix(\([^\)]+\))?:\s*/, ""));
-              } else if (/^perf(\([^\)]+\))?:/.test(msg)) {
-                isPatch = true;
-                changed.push(msg.replace(/^perf(\([^\)]+\))?:\s*/, ""));
-              } else if (/^security(\([^\)]+\))?:/.test(msg)) {
-                isPatch = true;
-                security.push(msg.replace(/^security(\([^\)]+\))?:\s*/, ""));
-              }
-            }
-
-            const baseTag = latestTag ? latestTag.replace(/^v/, "") : currentVersion;
-            const parts = baseTag.split(".").map(Number);
-            let major = parts[0] || 1;
-            let minor = parts[1] || 0;
-            let patch = parts[2] || 0;
-
-            if (isMajor) {
-              major += 1; minor = 0; patch = 0;
-            } else if (isMinor) {
-              minor += 1; patch = 0;
-            } else if (isPatch) {
-              patch += 1;
-            }
-
-            const nextVersion = `${major}.${minor}.${patch}`;
-            const dateStr = new Date().toISOString().split("T")[0];
-
-            // Only update files if an actual version bump occurred
-            if (nextVersion !== baseTag) {
-              pkg.version = nextVersion;
-              fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + "\n");
-
-              try {
-                const tauriConf = JSON.parse(fs.readFileSync(tauriConfPath, "utf8"));
-                tauriConf.version = nextVersion;
-                fs.writeFileSync(tauriConfPath, JSON.stringify(tauriConf, null, 2) + "\n");
-              } catch (e) {}
-
-              try {
-                const docsPath = "./docs/index.html";
-                if (fs.existsSync(docsPath)) {
-                  let docsContent = fs.readFileSync(docsPath, "utf8");
-                  docsContent = docsContent.replace(/Digital-CR-Logbook-v\d+\.\d+\.\d+/g, `Digital-CR-Logbook-v${nextVersion}`);
-                  fs.writeFileSync(docsPath, docsContent);
-                }
-              } catch (e) {}
-
-            let changelog = fs.readFileSync(changelogPath, "utf8");
-            let extractedNotes = "";
-
-            // Extract the exact section from CHANGELOG.md corresponding to nextVersion
-            const versionHeaderRegex = new RegExp(`##\\s*\\[${nextVersion.replace(/\./g, '\\.')}\\][^\n]*\n([\\s\\S]*?)(?=\\n##\\s*\\[|$)`, "i");
-            const match = changelog.match(versionHeaderRegex);
-            if (match && match[1] && match[1].trim()) {
-              extractedNotes = match[1].trim();
-            }
-
-            if (!extractedNotes) {
-              let newReleaseMd = `\n## [${nextVersion}] - ${dateStr}\n`;
-              if (added.length > 0) {
-                newReleaseMd += `\n### Added\n` + added.map(i => `- ${i}`).join("\n") + `\n`;
-              }
-              if (changed.length > 0) {
-                newReleaseMd += `\n### Changed\n` + changed.map(i => `- ${i}`).join("\n") + `\n`;
-              }
-              if (fixed.length > 0) {
-                newReleaseMd += `\n### Fixed\n` + fixed.map(i => `- ${i}`).join("\n") + `\n`;
-              }
-              if (security.length > 0) {
-                newReleaseMd += `\n### Security\n` + security.map(i => `- ${i}`).join("\n") + `\n`;
-              }
-
-              if (newReleaseMd.trim() !== `## [${nextVersion}] - ${dateStr}`) {
-                extractedNotes = newReleaseMd.trim();
-                if (changelog.includes("## [Unreleased]")) {
-                  changelog = changelog.replace("## [Unreleased]", "## [Unreleased]\n" + newReleaseMd);
-                } else {
-                  changelog = changelog + "\n" + newReleaseMd;
-                }
-                fs.writeFileSync(changelogPath, changelog);
-              } else {
-                extractedNotes = `### Release v${nextVersion}\n- See CHANGELOG.md for full details.`;
-              }
-            }
-
-            fs.writeFileSync("release_notes.md", extractedNotes);
-
-            console.log(`Automated release version: v${nextVersion} (Date: ${dateStr})`);
-            const delim = `EOF_RELEASE_${Date.now()}`;
-            fs.appendFileSync(process.env.GITHUB_OUTPUT, `version=${nextVersion}\n`);
-            fs.appendFileSync(process.env.GITHUB_OUTPUT, `tag_name=v${nextVersion}\n`);
-            fs.appendFileSync(process.env.GITHUB_OUTPUT, `release_notes<<${delim}\n${(fs.readFileSync("release_notes.md", "utf8")).trim()}\n${delim}\n`);
-          '
-
-      - name: Commit & Push Version Bump & CHANGELOG.md & documentation links
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add package.json src-tauri/tauri.conf.json CHANGELOG.md docs/index.html
-          if ! git diff --cached --quiet; then
-            git commit -m "chore(release): bump version to v${{ steps.version.outputs.version }} and update CHANGELOG [skip ci]"
-            git push
-          fi
 
   build-tauri-executables:
     name: Build Portable Desktop (${{ matrix.platform.name }})
@@ -248,15 +91,14 @@ jobs:
       - name: Prepare Staged Executable Assets
         shell: bash
         run: |
-          VERSION="${{ needs.test-and-validate.outputs.version }}"
           mkdir -p staged-assets
           if [ "${{ matrix.platform.name }}" = "linux" ]; then
-            find src-tauri/target/release/bundle -type f -name "*.AppImage" -exec cp {} staged-assets/Digital-CR-Logbook-v${VERSION}-x86_64.AppImage \;
-            find src-tauri/target/release/bundle -type f -name "*.deb" -exec cp {} staged-assets/Digital-CR-Logbook-v${VERSION}-amd64.deb \;
+            find src-tauri/target/release/bundle -type f -name "*.AppImage" -exec cp {} staged-assets/ \;
+            find src-tauri/target/release/bundle -type f -name "*.deb" -exec cp {} staged-assets/ \;
           elif [ "${{ matrix.platform.name }}" = "macos" ]; then
-            find src-tauri/target/release/bundle -type f -name "*.dmg" -exec cp {} staged-assets/Digital-CR-Logbook-v${VERSION}-x64.dmg \;
+            find src-tauri/target/release/bundle -type f -name "*.dmg" -exec cp {} staged-assets/ \;
           elif [ "${{ matrix.platform.name }}" = "windows" ]; then
-            find src-tauri/target/release/bundle -type f \( -name "*.exe" -o -name "*.msi" \) -exec cp {} staged-assets/Digital-CR-Logbook-v${VERSION}-x64-setup.exe \;
+            find src-tauri/target/release/bundle -type f \( -name "*.exe" -o -name "*.msi" \) -exec cp {} staged-assets/ \;
           fi
           echo "Staged executable files:"
           ls -lh staged-assets/
@@ -266,15 +108,25 @@ jobs:
         with:
           name: desktop-executables-${{ matrix.platform.name }}
           path: staged-assets/*
-          retention-days: 7
+          retention-days: 1
 
-  github-release:
-    name: Create GitHub Release & Upload Executable Assets
+  semantic-release:
+    name: Execute Semantic Release & Upload Executable Assets
     needs: [test-and-validate, build-tauri-executables]
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun Environment
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install Dependencies
+        run: bun install
 
       - name: Download Linux Executables
         uses: actions/download-artifact@v4
@@ -296,17 +148,10 @@ jobs:
 
       - name: Display Release Asset List
         run: |
-          echo "All release assets to be uploaded:"
+          echo "All release assets staged for semantic-release:"
           ls -lh release-assets/
 
-      - name: Create or Update GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ needs.test-and-validate.outputs.tag_name }}
-          name: ${{ needs.test-and-validate.outputs.tag_name }} - C&R Digital Logbook
-          body: ${{ needs.test-and-validate.outputs.release_notes }}
-          draft: false
-          prerelease: false
-          files: release-assets/*
+      - name: Run Semantic Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bunx semantic-release

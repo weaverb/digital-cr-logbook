@@ -164,6 +164,16 @@ This repository strictly enforces the following engineering guidelines:
   - Format: `<type>[optional scope]: <description>` (e.g., `feat(boundbook): add inline A&D entry validation`)
 - **Semantic Versioning (v2.0.0)**: Releases adhere to `MAJOR.MINOR.PATCH` as specified at [SemVer](https://semver.org/).
 
+### 🤖 Automated Release Pipeline (`semantic-release`)
+
+Releases are fully automated via [semantic-release](https://semantic-release.org/) on every merge to `main`:
+
+1. **Commit Analysis**: `@semantic-release/commit-analyzer` parses Conventional Commits to calculate the SemVer version bump (`feat:` -> minor, `fix:`/`perf:`/`security:` -> patch, `BREAKING CHANGE:` -> major).
+2. **Release Notes & Changelog**: `@semantic-release/release-notes-generator` and `@semantic-release/changelog` format change items and update `CHANGELOG.md`.
+3. **Multi-File Version Sync**: `@semantic-release/exec` invokes `bun scripts/update-version-files.js` to synchronize `src-tauri/tauri.conf.json` and `docs/index.html` download URLs.
+4. **Git Commit & Asset Push**: `@semantic-release/git` commits updated release files (`package.json`, `src-tauri/tauri.conf.json`, `CHANGELOG.md`, `docs/index.html`) with message `chore(release): ${nextRelease.version} [skip ci]`.
+5. **GitHub Release & Assets**: `@semantic-release/github` tags the release, creates the GitHub Release, and attaches all 4 multi-platform desktop binaries (`.exe`, `.msi`, `.dmg`, `.AppImage`, `.deb`).
+
 ---
 
 ## 🔒 License & Compliance
