@@ -139,6 +139,17 @@ jobs:
                 }
               } catch (e) {}
 
+            let changelog = fs.readFileSync(changelogPath, "utf8");
+            let extractedNotes = "";
+
+            // Extract the exact section from CHANGELOG.md corresponding to nextVersion
+            const versionHeaderRegex = new RegExp(`##\\s*\\[${nextVersion.replace(/\./g, '\\.')}\\][^\n]*\n([\\s\\S]*?)(?=\\n##\\s*\\[|$)`, "i");
+            const match = changelog.match(versionHeaderRegex);
+            if (match && match[1] && match[1].trim()) {
+              extractedNotes = match[1].trim();
+            }
+
+            if (!extractedNotes) {
               let newReleaseMd = `\n## [${nextVersion}] - ${dateStr}\n`;
               if (added.length > 0) {
                 newReleaseMd += `\n### Added\n` + added.map(i => `- ${i}`).join("\n") + `\n`;
@@ -153,17 +164,20 @@ jobs:
                 newReleaseMd += `\n### Security\n` + security.map(i => `- ${i}`).join("\n") + `\n`;
               }
 
-              let changelog = fs.readFileSync(changelogPath, "utf8");
-              if (changelog.includes("## [Unreleased]")) {
-                changelog = changelog.replace("## [Unreleased]", "## [Unreleased]\n" + newReleaseMd);
+              if (newReleaseMd.trim() !== `## [${nextVersion}] - ${dateStr}`) {
+                extractedNotes = newReleaseMd.trim();
+                if (changelog.includes("## [Unreleased]")) {
+                  changelog = changelog.replace("## [Unreleased]", "## [Unreleased]\n" + newReleaseMd);
+                } else {
+                  changelog = changelog + "\n" + newReleaseMd;
+                }
+                fs.writeFileSync(changelogPath, changelog);
               } else {
-                changelog = changelog + "\n" + newReleaseMd;
+                extractedNotes = `### Release v${nextVersion}\n- See CHANGELOG.md for full details.`;
               }
-              fs.writeFileSync(changelogPath, changelog);
-              fs.writeFileSync("release_notes.md", newReleaseMd.trim());
-            } else {
-              fs.writeFileSync("release_notes.md", `Release v${nextVersion}`);
             }
+
+            fs.writeFileSync("release_notes.md", extractedNotes);
 
             console.log(`Automated release version: v${nextVersion} (Date: ${dateStr})`);
             const delim = `EOF_RELEASE_${Date.now()}`;
