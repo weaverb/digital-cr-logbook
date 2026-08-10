@@ -19,9 +19,13 @@ permissions:
   pull-requests: write
 
 jobs:
-  test-and-validate:
-    name: Run Automated Tests
+  prepare-release:
+    name: Run Tests, Analyze SemVer & Pre-sync Config Files
     runs-on: ubuntu-22.04
+    outputs:
+      has_release: ${{ steps.version.outputs.has_release }}
+      version: ${{ steps.version.outputs.version }}
+      tag_name: ${{ steps.version.outputs.tag_name }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -39,9 +43,45 @@ jobs:
       - name: Execute Vitest Automated Suite
         run: bun run test
 
+      - name: Calculate Next Version & Pre-sync Config Files
+        id: version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Run dry-run semantic-release to calculate next release version
+          RELEASE_OUTPUT=$(bunx semantic-release --dry-run 2>&1 || true)
+          echo "$RELEASE_OUTPUT"
+
+          NEXT_VERSION=$(echo "$RELEASE_OUTPUT" | grep -oP 'The next release version is \K[0-9]+\.[0-9]+\.[0-9]+' | head -n 1)
+
+          if [ -z "$NEXT_VERSION" ]; then
+            echo "No release required for this commit."
+            echo "has_release=false" >> $GITHUB_OUTPUT
+          else
+            echo "Calculated next release version: v${NEXT_VERSION}"
+            echo "has_release=true" >> $GITHUB_OUTPUT
+            echo "version=${NEXT_VERSION}" >> $GITHUB_OUTPUT
+            echo "tag_name=v${NEXT_VERSION}" >> $GITHUB_OUTPUT
+
+            # Sync package.json, tauri.conf.json, and docs/index.html BEFORE build matrix starts!
+            bun scripts/update-version-files.js "${NEXT_VERSION}"
+          fi
+
+      - name: Upload Pre-synced Version Config Artifacts
+        if: steps.version.outputs.has_release == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: prepared-version-configs
+          path: |
+            package.json
+            src-tauri/tauri.conf.json
+            docs/index.html
+          retention-days: 1
+
   build-tauri-executables:
     name: Build Portable Desktop (${{ matrix.platform.name }})
-    needs: test-and-validate
+    needs: prepare-release
+    if: needs.prepare-release.outputs.has_release == 'true'
     runs-on: ${{ matrix.platform.os }}
     strategy:
       fail-fast: false
@@ -60,6 +100,20 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+
+      - name: Download Pre-synced Version Config Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: prepared-version-configs
+          path: ./
+
+      - name: Verify Pre-synced Version Configuration
+        shell: bash
+        run: |
+          echo "Verified package.json version:"
+          grep '"version"' package.json
+          echo "Verified tauri.conf.json version:"
+          grep '"version"' src-tauri/tauri.conf.json
 
       - name: Setup Node & Bun
         uses: oven-sh/setup-bun@v2
@@ -91,16 +145,18 @@ jobs:
       - name: Prepare Staged Executable Assets
         shell: bash
         run: |
+          VERSION="${{ needs.prepare-release.outputs.version }}"
           mkdir -p staged-assets
           if [ "${{ matrix.platform.name }}" = "linux" ]; then
-            find src-tauri/target/release/bundle -type f -name "*.AppImage" -exec cp {} staged-assets/ \;
-            find src-tauri/target/release/bundle -type f -name "*.deb" -exec cp {} staged-assets/ \;
+            find src-tauri/target/release/bundle -type f -name "*.AppImage" -exec cp {} staged-assets/Digital-CR-Logbook-v${VERSION}-x86_64.AppImage \;
+            find src-tauri/target/release/bundle -type f -name "*.deb" -exec cp {} staged-assets/Digital-CR-Logbook-v${VERSION}-amd64.deb \;
           elif [ "${{ matrix.platform.name }}" = "macos" ]; then
-            find src-tauri/target/release/bundle -type f -name "*.dmg" -exec cp {} staged-assets/ \;
+            find src-tauri/target/release/bundle -type f -name "*.dmg" -exec cp {} staged-assets/Digital-CR-Logbook-v${VERSION}-x64.dmg \;
           elif [ "${{ matrix.platform.name }}" = "windows" ]; then
-            find src-tauri/target/release/bundle -type f \( -name "*.exe" -o -name "*.msi" \) -exec cp {} staged-assets/ \;
+            find src-tauri/target/release/bundle -type f -name "*-setup.exe" -exec cp {} staged-assets/Digital-CR-Logbook-v${VERSION}-x64-setup.exe \;
+            find src-tauri/target/release/bundle -type f -name "*.msi" -exec cp {} staged-assets/Digital-CR-Logbook-v${VERSION}-x64.msi \;
           fi
-          echo "Staged executable files:"
+          echo "Staged executable files for v${VERSION}:"
           ls -lh staged-assets/
 
       - name: Upload Platform Executables
@@ -112,7 +168,8 @@ jobs:
 
   semantic-release:
     name: Execute Semantic Release & Upload Executable Assets
-    needs: [test-and-validate, build-tauri-executables]
+    needs: [prepare-release, build-tauri-executables]
+    if: needs.prepare-release.outputs.has_release == 'true'
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout Repository

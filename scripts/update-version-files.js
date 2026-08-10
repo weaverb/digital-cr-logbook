@@ -10,7 +10,20 @@ if (!nextVersion) {
 
 console.log(`Executing update-version-files.js for version v${nextVersion}...`);
 
-// 1. Update src-tauri/tauri.conf.json
+// 1. Update package.json
+const pkgPath = path.resolve("./package.json");
+if (fs.existsSync(pkgPath)) {
+  try {
+    const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
+    pkg.version = nextVersion;
+    fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + "\n");
+    console.log(`✓ Updated ${pkgPath} version to v${nextVersion}`);
+  } catch (err) {
+    console.error(`Failed to update ${pkgPath}:`, err);
+  }
+}
+
+// 2. Update src-tauri/tauri.conf.json
 const tauriConfPath = path.resolve("./src-tauri/tauri.conf.json");
 if (fs.existsSync(tauriConfPath)) {
   try {
@@ -23,7 +36,7 @@ if (fs.existsSync(tauriConfPath)) {
   }
 }
 
-// 2. Update docs/index.html download URLs
+// 3. Update docs/index.html download URLs
 const docsPath = path.resolve("./docs/index.html");
 if (fs.existsSync(docsPath)) {
   try {
