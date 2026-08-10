@@ -179,7 +179,7 @@ jobs:
           git add package.json src-tauri/tauri.conf.json CHANGELOG.md docs/index.html
           if ! git diff --cached --quiet; then
             git commit -m "chore(release): bump version to v${{ steps.version.outputs.version }} and update CHANGELOG [skip ci]"
-            git push
+            git push || echo "Notice: Direct push to main branch skipped due to repository branch protection rulesets"
           fi
 
   build-tauri-executables:
