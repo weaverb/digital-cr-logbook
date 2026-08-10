@@ -1,3 +1,5 @@
+## [1.2.0](https://github.com/weaverb/digital-cr-logbook/compare/v1.1.0...v1.2.0) (2026-08-10)
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
