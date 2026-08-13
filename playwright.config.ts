@@ -19,7 +19,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: '/var/home/bryan/.bun/bin/bunx vite preview --port 5173',
+    command: 'npx vite preview --port 5173',
     url: 'http://localhost:5173',
     reuseExistingServer: true,
     timeout: 30 * 1000,
