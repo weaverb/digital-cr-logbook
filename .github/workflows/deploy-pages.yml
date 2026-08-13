@@ -1,7 +1,10 @@
 name: Deploy GitHub Pages Documentation
 
 on:
-  push:
+  workflow_run:
+    workflows: ["Automated Release & Portable Executables Pipeline"]
+    types:
+      - completed
     branches:
       - main
   workflow_dispatch:

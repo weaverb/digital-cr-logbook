@@ -1,5 +1,3 @@
-## [1.2.0](https://github.com/weaverb/digital-cr-logbook/compare/v1.1.1...v1.2.0) (2026-08-13)
-
 # Changelog
 
 All notable changes to this project will be documented in this file.
@@ -8,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.2.0] - 2026-08-13
+
+### Fixed
+- **Documentation Package Links**: Removed non-existent `.msi` package download button and text references from `docs/index.html`.
+- **UI State Reactivity**: Fixed state reactivity issue in `App.tsx` where saving new maintenance or range entries did not trigger immediate UI re-renders for selected firearms.
+
+### Added
+- **Playwright E2E Testing Suite**: Added 5 Playwright spec files under `e2e/` covering 100% of app features (16 automated test cases).
+
+### CI / Automation
+- **Playwright Pipeline Integration**: Integrated automated Playwright E2E test execution into GitHub Actions release workflow (`release.yml`).
+
 
 ## [1.1.1] - 2026-08-10
 
