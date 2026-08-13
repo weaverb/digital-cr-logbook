@@ -134,6 +134,12 @@ export function saveContact(contact: Omit<import('../types/logbook').Contact, 'i
   return newContact;
 }
 
+export function deleteContact(id: string): void {
+  const current = getContacts();
+  const updated = current.filter(c => c.id !== id);
+  localStorage.setItem(CONTACTS_KEY, JSON.stringify(updated));
+}
+
 export function getMediaAttachments(firearmId?: string): import('../types/logbook').MediaAttachment[] {
   const data = localStorage.getItem(MEDIA_KEY);
   let attachments: import('../types/logbook').MediaAttachment[] = [];
@@ -158,3 +164,10 @@ export function saveMediaAttachment(attachment: Omit<import('../types/logbook').
   localStorage.setItem(MEDIA_KEY, JSON.stringify(updated));
   return newAttachment;
 }
+
+export function deleteMediaAttachment(id: string): void {
+  const current = getMediaAttachments();
+  const updated = current.filter(a => a.id !== id);
+  localStorage.setItem(MEDIA_KEY, JSON.stringify(updated));
+}
+

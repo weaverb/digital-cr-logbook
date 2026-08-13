@@ -8,6 +8,8 @@ dist-ssr
 coverage
 target
 src-tauri/target
+playwright-report/
+test-results/
 
 # Bun & Node logs
 logs

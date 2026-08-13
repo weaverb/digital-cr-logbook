@@ -10,8 +10,10 @@ import {
   saveRangeRecord,
   getContacts,
   saveContact,
+  deleteContact,
   getMediaAttachments,
-  saveMediaAttachment
+  saveMediaAttachment,
+  deleteMediaAttachment
 } from '../lib/storage';
 
 describe('Storage Library (Bound Book & Audit Engine)', () => {
@@ -101,7 +103,7 @@ describe('Storage Library (Bound Book & Audit Engine)', () => {
     expect(firearmRange.some(r => r.id === newRange.id)).toBe(true);
   });
 
-  it('manages contacts rolodex correctly', () => {
+  it('manages contacts rolodex and deletion correctly', () => {
     const contacts = getContacts();
     expect(contacts).toEqual([]);
 
@@ -114,11 +116,15 @@ describe('Storage Library (Bound Book & Audit Engine)', () => {
     });
 
     expect(newContact.id).toBeDefined();
-    const updatedContacts = getContacts();
+    let updatedContacts = getContacts();
     expect(updatedContacts.some(c => c.name === 'MidwayUSA')).toBe(true);
+
+    deleteContact(newContact.id);
+    updatedContacts = getContacts();
+    expect(updatedContacts.some(c => c.id === newContact.id)).toBe(false);
   });
 
-  it('manages media attachments correctly', () => {
+  it('manages media attachments and deletion correctly', () => {
     const attachments = getMediaAttachments();
     expect(attachments.length).toBe(0);
 
@@ -131,7 +137,28 @@ describe('Storage Library (Bound Book & Audit Engine)', () => {
     });
 
     expect(newMedia.id).toBeDefined();
-    const firearmMedia = getMediaAttachments('firearm-001');
+    let firearmMedia = getMediaAttachments('firearm-001');
     expect(firearmMedia.length).toBe(1);
+
+    deleteMediaAttachment(newMedia.id);
+    firearmMedia = getMediaAttachments('firearm-001');
+    expect(firearmMedia.length).toBe(0);
+  });
+
+  it('handles invalid JSON safely in storage getters', () => {
+    localStorage.setItem('cr_logbook_bound_book_records_v1', '{invalid-json}');
+    localStorage.setItem('cr_logbook_audit_log_v1', '{invalid-json}');
+    localStorage.setItem('cr_logbook_maintenance_records_v1', '{invalid-json}');
+    localStorage.setItem('cr_logbook_range_records_v1', '{invalid-json}');
+    localStorage.setItem('cr_logbook_contacts_v1', '{invalid-json}');
+    localStorage.setItem('cr_logbook_media_attachments_v1', '{invalid-json}');
+
+    expect(getBoundBookRecords()).toEqual([]);
+    expect(getAuditLogs()).toEqual([]);
+    expect(getMaintenanceRecords()).toEqual([]);
+    expect(getRangeRecords()).toEqual([]);
+    expect(getContacts()).toEqual([]);
+    expect(getMediaAttachments()).toEqual([]);
   });
 });
+

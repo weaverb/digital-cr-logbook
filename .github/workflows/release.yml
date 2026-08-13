@@ -7,10 +7,15 @@ on:
     paths:
       - 'src/**'
       - 'src-tauri/**'
+      - 'e2e/**'
+      - 'playwright.config.ts'
       - 'package.json'
       - 'bun.lock'
       - 'vite.config.ts'
       - 'tsconfig*.json'
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -20,7 +25,7 @@ permissions:
 
 jobs:
   prepare-release:
-    name: Run Tests, Analyze SemVer & Pre-sync Config Files
+    name: Run Unit & E2E Tests, Analyze SemVer & Pre-sync Config Files
     runs-on: ubuntu-22.04
     outputs:
       has_release: ${{ steps.version.outputs.has_release }}
@@ -42,6 +47,23 @@ jobs:
 
       - name: Execute Vitest Automated Suite
         run: bun run test
+
+      - name: Install Playwright Browsers & System Dependencies
+        run: bunx playwright install --with-deps chromium
+
+      - name: Build Web Bundle
+        run: bun run build
+
+      - name: Execute Playwright E2E Suite
+        run: bun run test:e2e
+
+      - name: Upload Playwright Test Report on Failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
 
       - name: Calculate Next Version & Pre-sync Config Files
         id: version
