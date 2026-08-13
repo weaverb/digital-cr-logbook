@@ -114,13 +114,15 @@ export function App() {
     return records.find(r => r.id === selectedRecordId) || records[0] || null;
   }, [records, selectedRecordId]);
 
+  const [logRefreshKey, setLogRefreshKey] = useState(0);
+
   const selectedMaintenance = useMemo(() => {
     return selectedRecord ? getMaintenanceRecords(selectedRecord.id) : [];
-  }, [selectedRecord]);
+  }, [selectedRecord, logRefreshKey]);
 
   const selectedRange = useMemo(() => {
     return selectedRecord ? getRangeRecords(selectedRecord.id) : [];
-  }, [selectedRecord]);
+  }, [selectedRecord, logRefreshKey]);
 
   const totalRoundsFired = useMemo(() => {
     return selectedRange.reduce((acc, r) => acc + r.roundsFired, 0);
@@ -255,6 +257,7 @@ export function App() {
     setNewMaintCost('');
     setNewMaintBy('');
     setNewMaintNotes('');
+    setLogRefreshKey(prev => prev + 1);
   };
 
   // Add Range Log
@@ -273,6 +276,7 @@ export function App() {
     setNewRangeAmmo('');
     setNewRangeRounds('');
     setNewRangeNotes('');
+    setLogRefreshKey(prev => prev + 1);
   };
 
   // Export Bound Book as ATF Audit CSV
