@@ -45,16 +45,19 @@ import { CommandPaletteModal } from './components/CommandPaletteModal';
 import { PDFExportDialogModal } from './components/PDFExportDialogModal';
 import { VaultHealthModal } from './components/VaultHealthModal';
 import { UserSupportModal } from './components/UserSupportModal';
+import { ImportCRCSVModal } from './components/ImportCRCSVModal';
 import { saveFileWithNativePicker } from './lib/fileSaveHelper';
 import { hotkeyLabel } from './lib/osHelper';
-import crMasterData from './data/cr_master_data.json';
-
-const crRecords = crMasterData as CRReferenceEntry[];
+import { getActiveCRLibrary, getCRLibraryMetadata, type CRLibraryMetadata } from './lib/crLibraryStorage';
 
 export function App() {
   const [records, setRecords] = useState<BoundBookRecord[]>([]);
   const [auditLogs, setAuditLogs] = useState(getAuditLogs());
   const [activeTab, setActiveTab] = useState<'boundbook' | 'reference' | 'maintenance' | 'range'>('boundbook');
+
+  // Dynamic C&R Reference Library State (Bundled or User-Imported CSV)
+  const [crRecords, setCrRecords] = useState<CRReferenceEntry[]>(() => getActiveCRLibrary());
+  const [crMetadata, setCrMetadata] = useState<CRLibraryMetadata>(() => getCRLibraryMetadata());
   
   // Selection and Search State
   const [selectedRecordId, setSelectedRecordId] = useState<string | null>(null);
@@ -78,6 +81,7 @@ export function App() {
   const [isPDFOptionsOpen, setIsPDFOptionsOpen] = useState(false);
   const [isVaultHealthOpen, setIsVaultHealthOpen] = useState(false);
   const [isSupportModalOpen, setIsSupportModalOpen] = useState(false);
+  const [isImportCRModalOpen, setIsImportCRModalOpen] = useState(false);
 
   // Keyboard shortcut listener for Cmd+K / Ctrl+K
   useEffect(() => {
@@ -453,7 +457,7 @@ export function App() {
           <Database className="w-3.5 h-3.5" />
           <span>ATF Master C&R Reference Library</span>
           <span className="ml-1 px-1.5 py-0.2 text-[11px] rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 font-mono">
-            4,207 Items
+            {crRecords.length.toLocaleString()} Items
           </span>
         </button>
       </div>
@@ -742,14 +746,28 @@ export function App() {
                   ATF Master Curios & Relics Reference Library
                 </h2>
                 <p className="text-xs text-slate-400 mt-1">
-                  Complete offline database containing 4,207 historical classification records extracted from ATF publications (1972 through April 2025).
+                  Complete offline database containing {crRecords.length.toLocaleString()} historical classification records extracted from ATF publications.
+                  {crMetadata.isCustom && (
+                    <span className="ml-1 text-cyan-400 font-semibold">
+                      (Custom Imported CSV Active: {crMetadata.sourceFileName})
+                    </span>
+                  )}
                 </p>
               </div>
 
               <div className="flex items-center space-x-2">
                 <span className="px-3 py-1 bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 rounded-full text-xs font-mono">
-                  4,207 Records Pre-Loaded
+                  {crRecords.length.toLocaleString()} Records {crMetadata.isCustom ? 'Loaded (Custom)' : 'Pre-Loaded'}
                 </span>
+
+                <button
+                  onClick={() => setIsImportCRModalOpen(true)}
+                  className="flex items-center space-x-1.5 px-3 py-1.5 bg-cyan-500 hover:bg-cyan-400 text-cyan-950 font-bold rounded-lg text-xs transition-colors shadow-md shadow-cyan-950/20 cursor-pointer"
+                  title="Import updated ATF C&R CSV file"
+                >
+                  <Download className="w-3.5 h-3.5 rotate-180" />
+                  <span>Import Updated CSV</span>
+                </button>
               </div>
             </div>
 
@@ -798,6 +816,16 @@ export function App() {
                   Section III (NFA Exempt)
                 </button>
                 <button
+                  onClick={() => setCrSectionFilter('Section IIIA')}
+                  className={`px-3 py-1.5 text-xs font-medium rounded transition-colors whitespace-nowrap ${
+                    crSectionFilter === 'Section IIIA'
+                      ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
+                      : 'bg-slate-800 text-slate-400 hover:text-slate-200'
+                  }`}
+                >
+                  Section IIIA (Antique)
+                </button>
+                <button
                   onClick={() => setCrSectionFilter('Section IV')}
                   className={`px-3 py-1.5 text-xs font-medium rounded transition-colors whitespace-nowrap ${
                     crSectionFilter === 'Section IV'
@@ -806,6 +834,16 @@ export function App() {
                   }`}
                 >
                   Section IV (NFA C&R)
+                </button>
+                <button
+                  onClick={() => setCrSectionFilter('Section I')}
+                  className={`px-3 py-1.5 text-xs font-medium rounded transition-colors whitespace-nowrap ${
+                    crSectionFilter === 'Section I'
+                      ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
+                      : 'bg-slate-800 text-slate-400 hover:text-slate-200'
+                  }`}
+                >
+                  Section I (Ammo)
                 </button>
               </div>
             </div>
@@ -1062,6 +1100,7 @@ export function App() {
         isOpen={isAcqModalOpen}
         onClose={() => setIsAcqModalOpen(false)}
         onSave={handleSaveAcquisition}
+        crRecords={crRecords}
       />
 
       <LogDispositionModal
@@ -1125,6 +1164,7 @@ export function App() {
         onOpenAuditLogs={() => setIsAuditViewerOpen(true)}
         onOpenPDF={() => setIsPDFOptionsOpen(true)}
         onOpenVault={() => setIsVaultModalOpen(true)}
+        onOpenImportCR={() => setIsImportCRModalOpen(true)}
       />
 
       <PDFExportDialogModal
@@ -1143,6 +1183,19 @@ export function App() {
       <UserSupportModal
         isOpen={isSupportModalOpen}
         onClose={() => setIsSupportModalOpen(false)}
+      />
+
+      <ImportCRCSVModal
+        isOpen={isImportCRModalOpen}
+        onClose={() => setIsImportCRModalOpen(false)}
+        onImportSuccess={(newEntries, meta) => {
+          setCrRecords(newEntries);
+          setCrMetadata(meta);
+        }}
+        onResetSuccess={(defaultEntries, meta) => {
+          setCrRecords(defaultEntries);
+          setCrMetadata(meta);
+        }}
       />
     </div>
   );

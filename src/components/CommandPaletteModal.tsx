@@ -25,6 +25,7 @@ interface CommandPaletteModalProps {
   onOpenAuditLogs: () => void;
   onOpenPDF: () => void;
   onOpenVault: () => void;
+  onOpenImportCR?: () => void;
 }
 
 export function CommandPaletteModal({
@@ -37,7 +38,8 @@ export function CommandPaletteModal({
   onOpenRolodex,
   onOpenAuditLogs,
   onOpenPDF,
-  onOpenVault
+  onOpenVault,
+  onOpenImportCR
 }: CommandPaletteModalProps) {
   useEscapeKey(onClose, isOpen);
   const [query, setQuery] = useState('');
@@ -48,7 +50,8 @@ export function CommandPaletteModal({
     { id: 'act-rolodex', title: 'Open FFL Contacts & Transferee Rolodex', icon: Users, category: 'Action', action: onOpenRolodex },
     { id: 'act-logs', title: 'View ATF Audit Trail History', icon: History, category: 'Action', action: onOpenAuditLogs },
     { id: 'act-pdf', title: 'Generate Printable ATF Bound Book PDF', icon: Download, category: 'Action', action: onOpenPDF },
-    { id: 'act-vault', title: 'Open Encrypted BIP-39 Vault (.crbk)', icon: HardDrive, category: 'Action', action: onOpenVault }
+    { id: 'act-vault', title: 'Open Encrypted BIP-39 Vault (.crbk)', icon: HardDrive, category: 'Action', action: onOpenVault },
+    ...(onOpenImportCR ? [{ id: 'act-cr-import', title: 'Import / Update ATF C&R Master List (CSV)', icon: Download, category: 'Action', action: onOpenImportCR }] : [])
   ];
 
   const recordResults = useMemo(() => {
