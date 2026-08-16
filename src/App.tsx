@@ -167,7 +167,7 @@ export function App() {
       if (crSectionFilter !== 'all') return matchesSearch && cr.section_code === crSectionFilter;
       return matchesSearch;
     }).slice(0, 100); // High performance virtualization slice
-  }, [crSearchQuery, crSectionFilter]);
+  }, [crSearchQuery, crSectionFilter, crRecords]);
 
   // Handle Save New Acquisition
   const handleSaveAcquisition = (newAcq: Omit<BoundBookRecord, 'id' | 'lineNumber' | 'status' | 'isLocked' | 'createdAt' | 'updatedAt'>) => {
