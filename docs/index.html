@@ -364,6 +364,41 @@
         <p>3. Click <strong>"Download Printable PDF"</strong>. Your operating system's native save dialog will open allowing you to choose where to save your PDF (or print directly).</p>
       </div>
     </div>
+
+    <!-- Workflow 4: ATF C&R Reference Library & CSV Import/Replace -->
+    <div class="bg-gunmetal-900 border border-slate-800 rounded-2xl p-6 md:p-8 space-y-6 shadow-xl">
+      <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
+        <div class="p-3 bg-cyan-500/10 border border-cyan-500/30 rounded-xl text-cyan-400">
+          <i data-lucide="database" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h3 class="text-xl md:text-2xl font-bold text-slate-100">4. ATF C&R Reference Library & Drop-and-Replace CSV Import</h3>
+          <p class="text-xs md:text-sm text-slate-400">
+            Search 4,200+ pre-loaded historical classifications or drop-in updated CSV lists published by the ATF without upgrading the application.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="space-y-2 bg-gunmetal-950 p-4 border border-slate-800 rounded-xl">
+          <span class="text-xs font-bold font-mono text-cyan-400">STEP 1</span>
+          <h4 class="font-bold text-slate-200">Open Reference Library</h4>
+          <p class="text-xs text-slate-400">Click the <strong>"ATF Master C&R Reference Library"</strong> tab in the navigation bar or search for it via <kbd class="px-1.5 py-0.5 bg-slate-800 rounded border border-slate-700 text-slate-200 font-mono text-[10px]">Ctrl + K</kbd> / <kbd class="px-1.5 py-0.5 bg-slate-800 rounded border border-slate-700 text-slate-200 font-mono text-[10px]">Cmd + K</kbd>.</p>
+        </div>
+
+        <div class="space-y-2 bg-gunmetal-950 p-4 border border-slate-800 rounded-xl">
+          <span class="text-xs font-bold font-mono text-cyan-400">STEP 2</span>
+          <h4 class="font-bold text-slate-200">Click "Import Updated CSV"</h4>
+          <p class="text-xs text-slate-400">Drag and drop any updated official ATF C&R Master CSV file (e.g. from the repository's extraction tooling) into the drop zone.</p>
+        </div>
+
+        <div class="space-y-2 bg-gunmetal-950 p-4 border border-slate-800 rounded-xl">
+          <span class="text-xs font-bold font-mono text-cyan-400">STEP 3</span>
+          <h4 class="font-bold text-slate-200">Apply & Replace</h4>
+          <p class="text-xs text-slate-400">Click <strong>"Apply & Replace C&R List"</strong>. The active database and acquisition autocomplete are updated instantly. You can revert to default at any time.</p>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- Bonus Collector Features Section -->
@@ -622,6 +657,25 @@
         </button>
         <div class="faq-answer hidden px-5 pb-5 pt-1 text-sm text-slate-300 border-t border-slate-800/60 leading-relaxed">
           Press <kbd class="px-2 py-0.5 bg-slate-800 border border-slate-700 rounded text-xs font-mono text-slate-200">Ctrl + K</kbd> (Windows/Linux) or <kbd class="px-2 py-0.5 bg-slate-800 border border-slate-700 rounded text-xs font-mono text-slate-200">Cmd + K</kbd> (Mac) anywhere in the application to open the Global Command Palette & Instant Search. Type any Manufacturer, Model, or Serial Number to find records instantly.
+        </div>
+      </div>
+
+      <!-- FAQ 6: Updating ATF C&R CSV without software update -->
+      <div class="faq-item bg-gunmetal-900 border border-slate-800 rounded-xl overflow-hidden shadow-lg transition-all" data-keywords="update csv import atf cr list publication drop replace new list">
+        <button class="w-full p-5 text-left flex items-center justify-between font-bold text-slate-100 text-base md:text-lg focus:outline-none hover:bg-slate-800/50 transition-colors" onclick="toggleFaq(this)">
+          <span class="flex items-center gap-3">
+            <i data-lucide="file-spreadsheet" class="w-5 h-5 text-cyan-400 shrink-0"></i>
+            How do I update the ATF C&R list when the ATF publishes new classifications?
+          </span>
+          <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform faq-icon"></i>
+        </button>
+        <div class="faq-answer hidden px-5 pb-5 pt-1 text-sm text-slate-300 border-t border-slate-800/60 space-y-2 leading-relaxed">
+          <p>
+            You do <strong>not</strong> need to wait for a new app version or rebuild the software when the ATF releases an updated Curios & Relics list publication.
+          </p>
+          <p>
+            Simply go to the <strong>ATF Master C&R Reference Library</strong> tab, click <strong>"Import Updated CSV"</strong>, drop in the new CSV file, and click <strong>"Apply & Replace C&R List"</strong>. The new list is loaded immediately and powers your search and acquisition autocomplete without touching your existing bound book records. You can also restore the default bundled list at any time.
+          </p>
         </div>
       </div>
 
