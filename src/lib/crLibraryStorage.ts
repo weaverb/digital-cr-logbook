@@ -4,11 +4,132 @@ import crMasterData from '../data/cr_master_data.json';
 const CUSTOM_CR_LIBRARY_KEY = 'cr_logbook_custom_cr_library_v1';
 const CR_LIBRARY_METADATA_KEY = 'cr_logbook_cr_library_metadata_v1';
 
+const IDB_DB_NAME = 'cr_logbook_db';
+const IDB_STORE_NAME = 'cr_library';
+const IDB_DATA_KEY = 'custom_library';
+
 export interface CRLibraryMetadata {
   isCustom: boolean;
   totalRecords: number;
   importedAt?: string;
   sourceFileName?: string;
+}
+
+// In-memory cache for fast synchronous access
+let inMemoryLibraryCache: CRReferenceEntry[] | null = null;
+
+// Initialize in-memory cache on load
+function initCacheFromStorage(): CRReferenceEntry[] {
+  if (inMemoryLibraryCache) return inMemoryLibraryCache;
+  
+  // Try localStorage first for quick synchronous recovery
+  const customData = typeof localStorage !== 'undefined' ? localStorage.getItem(CUSTOM_CR_LIBRARY_KEY) : null;
+  if (customData) {
+    try {
+      const parsed: CRReferenceEntry[] = JSON.parse(customData);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        inMemoryLibraryCache = parsed;
+        return parsed;
+      }
+    } catch (e) {
+      console.warn('Failed to parse custom C&R dataset from localStorage', e);
+    }
+  }
+
+  inMemoryLibraryCache = crMasterData as CRReferenceEntry[];
+  return inMemoryLibraryCache;
+}
+
+/**
+ * Open or upgrade IndexedDB database
+ */
+function openDB(): Promise<IDBDatabase> {
+  return new Promise((resolve, reject) => {
+    if (typeof indexedDB === 'undefined') {
+      return reject(new Error('IndexedDB is not available in this environment.'));
+    }
+    const request = indexedDB.open(IDB_DB_NAME, 1);
+    request.onupgradeneeded = () => {
+      const db = request.result;
+      if (!db.objectStoreNames.contains(IDB_STORE_NAME)) {
+        db.createObjectStore(IDB_STORE_NAME);
+      }
+    };
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+/**
+ * Persist custom C&R entries to IndexedDB (asynchronous, supports 100MB+)
+ */
+export async function saveToIndexedDB(entries: CRReferenceEntry[]): Promise<void> {
+  try {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(IDB_STORE_NAME, 'readwrite');
+      const store = tx.objectStore(IDB_STORE_NAME);
+      const req = store.put(entries, IDB_DATA_KEY);
+      req.onsuccess = () => resolve();
+      req.onerror = () => reject(req.error);
+      tx.oncomplete = () => db.close();
+    });
+  } catch (e) {
+    console.warn('IndexedDB write failed, relying on in-memory and local storage', e);
+  }
+}
+
+/**
+ * Load custom C&R entries from IndexedDB if available
+ */
+export async function loadFromIndexedDB(): Promise<CRReferenceEntry[] | null> {
+  try {
+    const db = await openDB();
+    return new Promise((resolve) => {
+      const tx = db.transaction(IDB_STORE_NAME, 'readonly');
+      const store = tx.objectStore(IDB_STORE_NAME);
+      const req = store.get(IDB_DATA_KEY);
+      req.onsuccess = () => {
+        db.close();
+        if (Array.isArray(req.result) && req.result.length > 0) {
+          inMemoryLibraryCache = req.result;
+          resolve(req.result);
+        } else {
+          resolve(null);
+        }
+      };
+      req.onerror = () => {
+        db.close();
+        resolve(null);
+      };
+    });
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Clear custom C&R entries from IndexedDB
+ */
+export async function clearIndexedDB(): Promise<void> {
+  try {
+    const db = await openDB();
+    return new Promise((resolve) => {
+      const tx = db.transaction(IDB_STORE_NAME, 'readwrite');
+      const store = tx.objectStore(IDB_STORE_NAME);
+      store.delete(IDB_DATA_KEY);
+      tx.oncomplete = () => {
+        db.close();
+        resolve();
+      };
+      tx.onerror = () => {
+        db.close();
+        resolve();
+      };
+    });
+  } catch {
+    // Ignore error
+  }
 }
 
 /**
@@ -149,33 +270,27 @@ export function parseCRReferenceCSV(csvText: string): CRReferenceEntry[] {
 
 /**
  * Returns the currently active C&R Reference Library dataset.
- * If user has imported a custom CSV, returns that. Otherwise returns bundled master dataset.
+ * Synchronous accessor for fast rendering.
  */
 export function getActiveCRLibrary(): CRReferenceEntry[] {
-  const customData = localStorage.getItem(CUSTOM_CR_LIBRARY_KEY);
-  if (customData) {
-    try {
-      const parsed: CRReferenceEntry[] = JSON.parse(customData);
-      if (Array.isArray(parsed) && parsed.length > 0) {
-        return parsed;
-      }
-    } catch (e) {
-      console.error('Failed to parse custom C&R dataset from localStorage, falling back to bundled dataset', e);
-    }
+  if (inMemoryLibraryCache) {
+    return inMemoryLibraryCache;
   }
-  return crMasterData as CRReferenceEntry[];
+  return initCacheFromStorage();
 }
 
 /**
  * Returns metadata about the currently active C&R Reference Library dataset.
  */
 export function getCRLibraryMetadata(): CRLibraryMetadata {
-  const meta = localStorage.getItem(CR_LIBRARY_METADATA_KEY);
-  if (meta) {
-    try {
-      return JSON.parse(meta);
-    } catch (e) {
-      console.error('Failed to parse C&R library metadata', e);
+  if (typeof localStorage !== 'undefined') {
+    const meta = localStorage.getItem(CR_LIBRARY_METADATA_KEY);
+    if (meta) {
+      try {
+        return JSON.parse(meta);
+      } catch (e) {
+        console.error('Failed to parse C&R library metadata', e);
+      }
     }
   }
   
@@ -187,17 +302,34 @@ export function getCRLibraryMetadata(): CRLibraryMetadata {
 }
 
 /**
- * Saves a new custom C&R dataset into local storage, replacing any previous custom dataset.
+ * Saves a new custom C&R dataset into memory, IndexedDB, and metadata into localStorage.
+ * Does not hit the 5MB browser localStorage quota limit.
  */
-export function saveCustomCRLibrary(entries: CRReferenceEntry[], sourceFileName?: string): void {
-  localStorage.setItem(CUSTOM_CR_LIBRARY_KEY, JSON.stringify(entries));
+export async function saveCustomCRLibrary(entries: CRReferenceEntry[], sourceFileName?: string): Promise<void> {
+  // Update in-memory cache immediately
+  inMemoryLibraryCache = entries;
+
+  // Persist metadata in localStorage (small JSON string, <1KB)
   const metadata: CRLibraryMetadata = {
     isCustom: true,
     totalRecords: entries.length,
     importedAt: new Date().toISOString(),
     sourceFileName: sourceFileName || 'Custom C&R Master List.csv'
   };
-  localStorage.setItem(CR_LIBRARY_METADATA_KEY, JSON.stringify(metadata));
+  
+  if (typeof localStorage !== 'undefined') {
+    localStorage.setItem(CR_LIBRARY_METADATA_KEY, JSON.stringify(metadata));
+    // Try localStorage if small enough, but ignore quota errors gracefully
+    try {
+      localStorage.setItem(CUSTOM_CR_LIBRARY_KEY, JSON.stringify(entries));
+    } catch {
+      // Clean up localStorage key if exceeded so stale partial data doesn't persist
+      localStorage.removeItem(CUSTOM_CR_LIBRARY_KEY);
+    }
+  }
+
+  // Persist large dataset into IndexedDB
+  await saveToIndexedDB(entries);
 }
 
 /**
@@ -210,7 +342,11 @@ export function getDefaultCRLibrary(): CRReferenceEntry[] {
 /**
  * Resets the C&R dataset back to the default bundled dataset.
  */
-export function resetCRLibraryToDefault(): void {
-  localStorage.removeItem(CUSTOM_CR_LIBRARY_KEY);
-  localStorage.removeItem(CR_LIBRARY_METADATA_KEY);
+export async function resetCRLibraryToDefault(): Promise<void> {
+  inMemoryLibraryCache = crMasterData as CRReferenceEntry[];
+  if (typeof localStorage !== 'undefined') {
+    localStorage.removeItem(CUSTOM_CR_LIBRARY_KEY);
+    localStorage.removeItem(CR_LIBRARY_METADATA_KEY);
+  }
+  await clearIndexedDB();
 }

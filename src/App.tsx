@@ -48,7 +48,7 @@ import { UserSupportModal } from './components/UserSupportModal';
 import { ImportCRCSVModal } from './components/ImportCRCSVModal';
 import { saveFileWithNativePicker } from './lib/fileSaveHelper';
 import { hotkeyLabel } from './lib/osHelper';
-import { getActiveCRLibrary, getCRLibraryMetadata, type CRLibraryMetadata } from './lib/crLibraryStorage';
+import { getActiveCRLibrary, getCRLibraryMetadata, loadFromIndexedDB, type CRLibraryMetadata } from './lib/crLibraryStorage';
 
 export function App() {
   const [records, setRecords] = useState<BoundBookRecord[]>([]);
@@ -112,6 +112,14 @@ export function App() {
     if (loaded.length > 0) {
       setSelectedRecordId(loaded[0].id);
     }
+
+    // Hydrate custom C&R reference records from IndexedDB if active
+    loadFromIndexedDB().then((customEntries) => {
+      if (customEntries && customEntries.length > 0) {
+        setCrRecords(customEntries);
+        setCrMetadata(getCRLibraryMetadata());
+      }
+    });
   }, []);
 
   const selectedRecord = useMemo(() => {

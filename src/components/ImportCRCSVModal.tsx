@@ -103,12 +103,12 @@ export function ImportCRCSVModal({
     }
   };
 
-  const handleApplyImport = () => {
+  const handleApplyImport = async () => {
     if (!previewEntries || previewEntries.length === 0) return;
 
     try {
       setIsProcessing(true);
-      saveCustomCRLibrary(previewEntries, selectedFile?.name);
+      await saveCustomCRLibrary(previewEntries, selectedFile?.name);
       const meta = getCRLibraryMetadata();
       onImportSuccess(previewEntries, meta);
       handleClose();
@@ -118,8 +118,8 @@ export function ImportCRCSVModal({
     }
   };
 
-  const handleResetToDefault = () => {
-    resetCRLibraryToDefault();
+  const handleResetToDefault = async () => {
+    await resetCRLibraryToDefault();
     const meta = getCRLibraryMetadata();
     const defaults = getDefaultCRLibrary();
     onResetSuccess(defaults, meta);

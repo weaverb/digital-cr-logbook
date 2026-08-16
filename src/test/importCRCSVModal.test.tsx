@@ -67,8 +67,10 @@ describe('ImportCRCSVModal Component', () => {
 
     fireEvent.click(applyButton);
 
-    expect(onImportSuccess).toHaveBeenCalled();
-    expect(onClose).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(onImportSuccess).toHaveBeenCalled();
+      expect(onClose).toHaveBeenCalled();
+    });
   });
 
   it('displays an error message when an invalid non-CSV file or corrupted content is chosen', async () => {

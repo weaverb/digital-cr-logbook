@@ -102,7 +102,7 @@ describe('C&R Master List CSV Parser & Storage Engine', () => {
       expect(meta.totalRecords).toBe(records.length);
     });
 
-    it('saves and activates a custom C&R dataset', () => {
+    it('saves custom C&R dataset and returns custom metadata', async () => {
       const customEntries: CRReferenceEntry[] = [
         {
           record_id: 'CR-NEW-001',
@@ -112,7 +112,7 @@ describe('C&R Master List CSV Parser & Storage Engine', () => {
           manufacturer_or_make: 'Custom Arsenal',
           model: 'Model 2026',
           caliber_or_gauge: 'cal. 9mm',
-          serial_number_range: '',
+          serial_number_range: '1-100',
           date_or_year_range: '1970',
           atf_classification_details: 'Custom 2026 classification listing.',
           first_published_edition: 'ATF 2026',
@@ -124,7 +124,7 @@ describe('C&R Master List CSV Parser & Storage Engine', () => {
         }
       ];
 
-      saveCustomCRLibrary(customEntries, 'curios_and_relics_2026.csv');
+      await saveCustomCRLibrary(customEntries, 'curios_and_relics_2026.csv');
 
       const active = getActiveCRLibrary();
       expect(active.length).toBe(1);
@@ -137,8 +137,8 @@ describe('C&R Master List CSV Parser & Storage Engine', () => {
       expect(meta.importedAt).toBeDefined();
     });
 
-    it('resets custom C&R dataset back to bundled default', () => {
-      saveCustomCRLibrary([
+    it('resets custom C&R dataset back to bundled default', async () => {
+      await saveCustomCRLibrary([
         {
           record_id: 'CR-TEMP-001',
           section_code: 'Section II',
@@ -160,7 +160,7 @@ describe('C&R Master List CSV Parser & Storage Engine', () => {
       ]);
 
       expect(getActiveCRLibrary().length).toBe(1);
-      resetCRLibraryToDefault();
+      await resetCRLibraryToDefault();
       
       const reverted = getActiveCRLibrary();
       expect(reverted.length).toBeGreaterThan(4000);
