@@ -102,3 +102,11 @@ python3 generate_cr_csv.py
 ```
 
 The script will automatically parse the new publication, merge new entries, update publication flags, maintain existing record IDs, and output an updated `curios_and_relics_master_list.csv`.
+
+### Step 4: Import New CSV Directly Into Application
+Users and collectors can immediately import the new CSV into the running application without needing to upgrade or rebuild:
+1. Navigate to the **ATF Master C&R Reference Library** tab (or press `Cmd+K` / `Ctrl+K` and search *Import / Update ATF C&R Master List*).
+2. Click **Import Updated CSV**.
+3. Drag and drop the generated `curios_and_relics_master_list.csv` file and click **Apply & Replace C&R List**.
+4. The application dynamically updates its live search index and autocomplete references while keeping your bound book records safe.
+

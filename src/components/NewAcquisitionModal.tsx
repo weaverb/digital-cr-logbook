@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import { X, Plus, ShieldCheck, Search, CheckCircle2, RotateCcw } from 'lucide-react';
 import type { BoundBookRecord, FirearmType, CRReferenceEntry } from '../types/logbook';
-import crMasterData from '../data/cr_master_data.json';
+import { getActiveCRLibrary } from '../lib/crLibraryStorage';
 import { useEscapeKey } from '../hooks/useEscapeKey';
 import { CfrLink } from '../lib/legalLinks';
 
@@ -9,11 +9,19 @@ interface NewAcquisitionModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSave: (newRecord: Omit<BoundBookRecord, 'id' | 'lineNumber' | 'status' | 'isLocked' | 'createdAt' | 'updatedAt'>) => void;
+  crRecords?: CRReferenceEntry[];
 }
 
-const crRecords = crMasterData as CRReferenceEntry[];
+export function NewAcquisitionModal({ isOpen, onClose, onSave, crRecords: propCRRecords }: NewAcquisitionModalProps) {
+  const [activeCRRecords, setActiveCRRecords] = useState<CRReferenceEntry[]>(() => propCRRecords || getActiveCRLibrary());
 
-export function NewAcquisitionModal({ isOpen, onClose, onSave }: NewAcquisitionModalProps) {
+  useEffect(() => {
+    if (propCRRecords) {
+      setActiveCRRecords(propCRRecords);
+    } else {
+      setActiveCRRecords(getActiveCRLibrary());
+    }
+  }, [propCRRecords, isOpen]);
   const [manufacturer, setManufacturer] = useState('');
   const [importer, setImporter] = useState('');
   const [model, setModel] = useState('');
@@ -63,14 +71,14 @@ export function NewAcquisitionModal({ isOpen, onClose, onSave }: NewAcquisitionM
   }, [isOpen, resetForm]);
 
   const filteredCRs = useMemo(() => {
-    if (!crSearchQuery.trim()) return crRecords.slice(0, 10);
+    if (!crSearchQuery.trim()) return activeCRRecords.slice(0, 10);
     const q = crSearchQuery.toLowerCase();
-    return crRecords.filter(r => 
+    return activeCRRecords.filter(r => 
       r.manufacturer_or_make.toLowerCase().includes(q) ||
       r.model.toLowerCase().includes(q) ||
       r.atf_classification_details.toLowerCase().includes(q)
     ).slice(0, 15);
-  }, [crSearchQuery]);
+  }, [crSearchQuery, activeCRRecords]);
 
   if (!isOpen) return null;
 
