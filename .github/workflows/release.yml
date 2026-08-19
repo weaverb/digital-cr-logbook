@@ -55,7 +55,8 @@ jobs:
         run: bun run build
 
       - name: Execute Playwright E2E Suite
-        run: bun run test:e2e
+        timeout-minutes: 5
+        run: bunx playwright test
 
       - name: Upload Playwright Test Report on Failure
         if: failure()
