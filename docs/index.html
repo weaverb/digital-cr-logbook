@@ -358,10 +358,24 @@
         </div>
       </div>
 
-      <div class="space-y-3 text-sm text-slate-300 leading-relaxed">
-        <p>1. Click the <strong>"Print PDF"</strong> button in the top action header bar.</p>
-        <p>2. Enter your <strong>Licensee/Collector Name</strong> and <strong>FFL License Number</strong>.</p>
-        <p>3. Click <strong>"Download Printable PDF"</strong>. Your operating system's native save dialog will open allowing you to choose where to save your PDF (or print directly).</p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="space-y-2 bg-gunmetal-950 p-4 border border-slate-800 rounded-xl">
+          <span class="text-xs font-bold font-mono text-emerald-400">STEP 1</span>
+          <h4 class="font-bold text-slate-200">Click "Print PDF"</h4>
+          <p class="text-xs text-slate-400">Click the <strong>"Print PDF"</strong> button in the top action header bar to open the compliance export dialog.</p>
+        </div>
+
+        <div class="space-y-2 bg-gunmetal-950 p-4 border border-slate-800 rounded-xl">
+          <span class="text-xs font-bold font-mono text-emerald-400">STEP 2</span>
+          <h4 class="font-bold text-slate-200">Enter Licensee Info</h4>
+          <p class="text-xs text-slate-400">Enter your <strong>Licensee/Collector Name</strong> and <strong>FFL License Number</strong> for the header block.</p>
+        </div>
+
+        <div class="space-y-2 bg-gunmetal-950 p-4 border border-slate-800 rounded-xl">
+          <span class="text-xs font-bold font-mono text-emerald-400">STEP 3</span>
+          <h4 class="font-bold text-slate-200">Download Printable PDF</h4>
+          <p class="text-xs text-slate-400">Click <strong>"Download Printable PDF"</strong>. Your system's native save dialog will open to save or print your landscape compliance report.</p>
+        </div>
       </div>
     </div>
 
@@ -450,52 +464,57 @@
             Record round counts, ammo brand/grain weights, velocity, and group sizes. Monitor barrel wear and shooting logs for historical surplus rifles.
           </p>
           <ul class="text-xs text-slate-400 space-y-1.5 list-disc list-inside">
-            <li>Track total rounds fired per firearm</li>
-            <li>Log ammunition types & performance</li>
-            <li>Record range dates & target notes</li>
+            <li>Auto-calculates total rounds fired per firearm</li>
+            <li>Log distance, grain weight & group accuracy</li>
+            <li>Filter shooting history by serial number</li>
           </ul>
         </div>
         <div class="pt-2 border-t border-slate-800/80 text-[11px] text-cyan-400/90 font-mono">
-          Tab: "Range Log"
+          Tab: "Range & Ammo Log"
         </div>
       </div>
 
-      <!-- Feature 3: FFL Contacts Rolodex -->
+      <!-- Feature 3: FFL Contacts & Media Gallery -->
       <div class="bg-gunmetal-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between shadow-xl space-y-4 hover:border-cyan-500/40 transition-all">
         <div class="space-y-3">
-          <div class="w-10 h-10 bg-purple-500/10 border border-purple-500/30 rounded-xl flex items-center justify-center text-purple-400">
+          <div class="w-10 h-10 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex items-center justify-center text-emerald-400">
             <i data-lucide="users" class="w-5 h-5"></i>
           </div>
-          <h3 class="text-xl font-bold text-slate-100">FFL Contacts Rolodex</h3>
+          <h3 class="text-xl font-bold text-slate-100">FFL Contacts & Media Gallery</h3>
           <p class="text-xs text-slate-300 leading-relaxed">
-            Maintain an offline directory of trusted FFL dealers, transfer agents, estate sellers, and fellow collectors for seamless acquisition & disposition entry.
+            Manage your network of preferred FFL transfer dealers, collectors, and auction houses. Attach photo notes of receiver rollmarks, crests, and cartouches.
           </p>
           <ul class="text-xs text-slate-400 space-y-1.5 list-disc list-inside">
-            <li>Store FFL numbers & expiration dates</li>
-            <li>Save dealer addresses & phone numbers</li>
-            <li>Auto-fill transfer details during logging</li>
+            <li>Address book for frequent transferors & buyers</li>
+            <li>Store proof marks, inspector stamp & cartouche photos</li>
+            <li>100% offline local media storage</li>
           </ul>
         </div>
-        <div class="pt-2 border-t border-slate-800/80 text-[11px] text-purple-400/90 font-mono">
-          Button: "Contacts Rolodex"
+        <div class="pt-2 border-t border-slate-800/80 text-[11px] text-emerald-400/90 font-mono">
+          Tabs: "FFL Contacts" & "Media Gallery"
         </div>
       </div>
 
     </div>
   </section>
 
-  <!-- Encrypted Backup Vault Section -->
-  <section id="backups" class="bg-gunmetal-900/60 border-y border-slate-800 py-16 px-4 md:px-8">
-    <div class="max-w-6xl mx-auto space-y-8">
-      <div class="text-center space-y-2">
-        <h2 class="text-2xl md:text-4xl font-extrabold text-slate-100 flex items-center justify-center gap-3">
-          <i data-lucide="shield" class="w-8 h-8 text-amber-400"></i>
-          Encrypted Backup Vault & Seed Phrase Guide
-        </h2>
-        <p class="text-sm md:text-base text-slate-400">Protect your collection records against computer hardware failures.</p>
+  <!-- BIP-39 Encrypted Vault Section -->
+  <section id="vault" class="py-16 px-4 md:px-8 max-w-6xl mx-auto space-y-8">
+    <div class="bg-gunmetal-900 border border-slate-800 rounded-2xl p-6 md:p-8 space-y-6 shadow-xl">
+      
+      <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
+        <div class="p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-amber-400">
+          <i data-lucide="shield-alert" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-slate-100">Backing Up Your Bound Book Records</h2>
+          <p class="text-xs md:text-sm text-slate-400">
+            Because this logbook operates 100% offline on your device, regular backups are your responsibility.
+          </p>
+        </div>
       </div>
 
-      <div class="bg-gunmetal-900 border border-slate-800 rounded-2xl p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 shadow-xl">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         
         <!-- Left: Seed Phrase Explanation -->
         <div class="space-y-4">
@@ -661,7 +680,7 @@
       </div>
 
       <!-- FAQ 6: Updating ATF C&R CSV without software update -->
-      <div class="faq-item bg-gunmetal-900 border border-slate-800 rounded-xl overflow-hidden shadow-lg transition-all" data-keywords="update csv import atf cr list publication drop replace new list">
+      <div class="faq-item bg-gunmetal-900 border border-slate-800 rounded-xl overflow-hidden shadow-lg transition-all" data-keywords="update csv import atf cr list publication drop replace new list download cr_list">
         <button class="w-full p-5 text-left flex items-center justify-between font-bold text-slate-100 text-base md:text-lg focus:outline-none hover:bg-slate-800/50 transition-colors" onclick="toggleFaq(this)">
           <span class="flex items-center gap-3">
             <i data-lucide="file-spreadsheet" class="w-5 h-5 text-cyan-400 shrink-0"></i>
@@ -669,12 +688,20 @@
           </span>
           <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform faq-icon"></i>
         </button>
-        <div class="faq-answer hidden px-5 pb-5 pt-1 text-sm text-slate-300 border-t border-slate-800/60 space-y-2 leading-relaxed">
+        <div class="faq-answer hidden px-5 pb-5 pt-1 text-sm text-slate-300 border-t border-slate-800/60 space-y-3 leading-relaxed">
           <p>
-            You do <strong>not</strong> need to wait for a new app version or rebuild the software when the ATF releases an updated Curios & Relics list publication.
+            You do <strong>not</strong> need to convert PDFs to JSON or wait for a new app release. Pre-extracted, normalized CSV files are maintained directly in the project repository's <a href="https://github.com/weaverb/digital-cr-logbook/tree/main/cr_list" target="_blank" rel="noopener noreferrer" class="text-cyan-400 underline font-bold hover:text-cyan-300">cr_list/ folder on GitHub</a>.
           </p>
+          <div class="p-3.5 bg-gunmetal-950 border border-slate-800 rounded-xl space-y-2 text-xs text-slate-300">
+            <p class="font-bold text-slate-100 flex items-center gap-1.5"><i data-lucide="download" class="w-4 h-4 text-cyan-400"></i> How to download the latest C&R CSV:</p>
+            <ol class="space-y-1 list-decimal list-inside text-slate-400">
+              <li>Visit the repository <a href="https://github.com/weaverb/digital-cr-logbook/tree/main/cr_list" target="_blank" rel="noopener noreferrer" class="text-cyan-400 underline hover:text-cyan-300">cr_list/ directory</a> on GitHub.</li>
+              <li>Click on the latest master list CSV file (e.g. <strong class="text-slate-200">`curios_and_relics_master_list_2026_08_06.csv`</strong>).</li>
+              <li>Click the <strong>Download raw file</strong> button (top right of the file viewer) to save the CSV file to your computer.</li>
+            </ol>
+          </div>
           <p>
-            Simply go to the <strong>ATF Master C&R Reference Library</strong> tab, click <strong>"Import Updated CSV"</strong>, drop in the new CSV file, and click <strong>"Apply & Replace C&R List"</strong>. The new list is loaded immediately and powers your search and acquisition autocomplete without touching your existing bound book records. You can also restore the default bundled list at any time.
+            Next, inside the application, go to the <strong>ATF Master C&R Reference Library</strong> tab, click <strong>"Import Updated CSV"</strong>, drop in the downloaded CSV file, and click <strong>"Apply & Replace C&R List"</strong>. The new list is active immediately for your searches and acquisition autocomplete without modifying any of your existing bound book records. You can also restore the default bundled list at any time.
           </p>
         </div>
       </div>
