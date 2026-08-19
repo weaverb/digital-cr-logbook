@@ -1,13 +1,23 @@
 # Changelog
 
-## [1.3.0](https://github.com/weaverb/digital-cr-logbook/compare/v1.2.0...v1.3.0) (2026-08-17)
-
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.3.0] - 2026-08-17
+
+### Added
+- **ATF C&R Master List CSV Import & Replace Engine**: Built dynamic CSV parser engine (`src/lib/crLibraryStorage.ts`) and modal dialog (`src/components/ImportCRCSVModal.tsx`) allowing Type 03 collectors to import and hot-swap updated official ATF Curios & Relics master CSV datasets (`curios_and_relics_master_list_*.csv`) directly in the app without requiring software updates or rebuilds.
+- **Enhanced Section Filtering**: Added Section IIIA (Antique) and Section I (Ammunition) section filter buttons in the C&R Reference tab and live badge count indicators.
+- **Acquisition Autocomplete Dynamic Hook**: Integrated the active C&R reference library into the New Acquisition modal autocomplete picker.
+- **User Guide Workflow 4 & FAQ #6**: Added detailed walkthrough for C&R CSV import and FAQ guidance in `docs/index.html` and `cr_list/README_CR_LIST.md`.
+- **Playwright E2E Test Suite**: Added browser automation test cases covering CSV upload, drag-and-drop, validation preview, library hot-swapping, and bundled default dataset restore.
+
+### Fixed
+- **Storage Quota Resilience**: Upgraded custom C&R storage from browser `localStorage` to IndexedDB (`cr_logbook_db`) with memory caching to safely store large (>4,200+ item, ~3.3MB) C&R datasets without exceeding the 5MB browser storage quota.
 
 ## [1.2.0] - 2026-08-13
 
