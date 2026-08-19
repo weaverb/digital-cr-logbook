@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.1](https://github.com/weaverb/digital-cr-logbook/compare/v1.3.0...v1.3.1) (2026-08-19)
+
+
+### Bug Fixes
+
+* **ci:** optimize playwright webServer command and add step timeout ([39d8b11](https://github.com/weaverb/digital-cr-logbook/commit/39d8b11af2856734e2dab26aa0fcc474bb0f8d03))
+* **ci:** switch release-notes-generator to angular preset and backfill v1.3.0 in changelog ([cd099ce](https://github.com/weaverb/digital-cr-logbook/commit/cd099ce129347c6b63016c1624c12b060f0b4753))
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
