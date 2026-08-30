@@ -330,11 +330,11 @@ export function App() {
               <h1 className="text-base font-bold tracking-tight text-slate-100">
                 C&R Digital Logbook
               </h1>
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono font-medium">
+              <span className="text-sm px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono font-medium">
                 <CfrLink text="27 CFR § 478.125(f)" className="hover:text-emerald-300 transition-colors" />
               </span>
             </div>
-            <p className="text-[11px] text-slate-400 flex items-center gap-1.5 mt-0.5 font-sans">
+            <p className="text-sm text-slate-400 flex items-center gap-1.5 mt-0.5 font-sans">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> FFL Type 03 Collector • 100% Offline Local Storage
             </p>
           </div>
@@ -344,7 +344,7 @@ export function App() {
         <div className="flex items-center flex-wrap gap-2 justify-end">
           <button
             onClick={() => setIsDashboardModalOpen(true)}
-            className="flex items-center space-x-1.5 bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700/80 px-2.5 py-1.5 rounded text-xs font-medium transition-colors"
+            className="flex items-center space-x-1.5 bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700/80 px-2.5 py-1.5 rounded text-sm font-medium transition-colors"
           >
             <Activity className="w-3.5 h-3.5 text-emerald-400" />
             <span>Audit Dashboard</span>
@@ -352,7 +352,7 @@ export function App() {
 
           <button 
             onClick={() => setIsContactsModalOpen(true)}
-            className="flex items-center space-x-1.5 bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700/80 px-2.5 py-1.5 rounded text-xs font-medium transition-colors"
+            className="flex items-center space-x-1.5 bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700/80 px-2.5 py-1.5 rounded text-sm font-medium transition-colors"
           >
             <Users className="w-3.5 h-3.5 text-amber-400" />
             <span>FFL Rolodex</span>
@@ -360,7 +360,7 @@ export function App() {
 
           <button 
             onClick={() => setIsAuditViewerOpen(true)}
-            className="flex items-center space-x-1.5 bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700/80 px-2.5 py-1.5 rounded text-xs font-medium transition-colors"
+            className="flex items-center space-x-1.5 bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700/80 px-2.5 py-1.5 rounded text-sm font-medium transition-colors"
           >
             <History className="w-3.5 h-3.5 text-amber-400" />
             <span>Audit Logs ({auditLogs.length})</span>
@@ -370,7 +370,7 @@ export function App() {
           <div className="flex items-center border border-slate-700/80 rounded bg-slate-800/60 p-0.5 space-x-0.5">
             <button 
               onClick={() => setIsPDFOptionsOpen(true)}
-              className="flex items-center space-x-1 px-2 py-1 text-slate-300 hover:text-slate-100 hover:bg-slate-700/80 rounded text-xs font-medium transition-colors"
+              className="flex items-center space-x-1 px-2 py-1 text-slate-300 hover:text-slate-100 hover:bg-slate-700/80 rounded text-sm font-medium transition-colors"
               title="Printable ATF PDF"
             >
               <Download className="w-3.5 h-3.5 text-emerald-400" />
@@ -378,7 +378,7 @@ export function App() {
             </button>
             <button 
               onClick={handleExportCSV}
-              className="flex items-center space-x-1 px-2 py-1 text-slate-300 hover:text-slate-100 hover:bg-slate-700/80 rounded text-xs font-medium transition-colors"
+              className="flex items-center space-x-1 px-2 py-1 text-slate-300 hover:text-slate-100 hover:bg-slate-700/80 rounded text-sm font-medium transition-colors"
               title="Export CSV"
             >
               <Download className="w-3.5 h-3.5 text-cyan-400" />
@@ -386,7 +386,7 @@ export function App() {
             </button>
             <button 
               onClick={() => setIsVaultModalOpen(true)}
-              className="flex items-center space-x-1 px-2 py-1 text-slate-300 hover:text-slate-100 hover:bg-slate-700/80 rounded text-xs font-medium transition-colors"
+              className="flex items-center space-x-1 px-2 py-1 text-slate-300 hover:text-slate-100 hover:bg-slate-700/80 rounded text-sm font-medium transition-colors"
               title="Encrypted Vault (.crbk)"
             >
               <HardDrive className="w-3.5 h-3.5 text-amber-400" />
@@ -396,7 +396,7 @@ export function App() {
 
           <button
             onClick={() => setIsAcqModalOpen(true)}
-            className="flex items-center space-x-1.5 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold px-3 py-1.5 rounded text-xs transition-colors shadow-md shadow-amber-950/20 shrink-0"
+            className="flex items-center space-x-1.5 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold px-3 py-1.5 rounded text-sm transition-colors shadow-md shadow-amber-950/20 shrink-0"
           >
             <Plus className="w-4 h-4 stroke-[2.5]" />
             <span>New Acquisition</span>
@@ -407,7 +407,7 @@ export function App() {
               labeled button, so this stays last and visually quiet. */}
           <button
             onClick={() => setIsCmdPaletteOpen(true)}
-            className="flex items-center space-x-1 text-slate-500 hover:text-slate-300 px-2 py-1.5 rounded text-[11px] font-mono transition-colors"
+            className="flex items-center space-x-1 text-slate-500 hover:text-slate-300 px-2 py-1.5 rounded text-xs font-mono transition-colors"
             title={`Global Command Palette (${hotkeyLabel})`}
           >
             <Command className="w-3 h-3" />
@@ -420,7 +420,7 @@ export function App() {
       <div className="bg-slate-900/60 border-b border-slate-800/80 px-6 flex items-center space-x-1">
         <button
           onClick={() => setActiveTab('boundbook')}
-          className={`flex items-center space-x-2 px-4 py-2.5 text-xs font-medium border-b-2 transition-all ${
+          className={`flex items-center space-x-2 px-4 py-2.5 text-sm font-medium border-b-2 transition-all ${
             activeTab === 'boundbook'
               ? 'border-amber-500 text-amber-400 bg-slate-800/50'
               : 'border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/30'
@@ -428,14 +428,14 @@ export function App() {
         >
           <BookOpen className="w-3.5 h-3.5" />
           <span>Bound Book (A&D)</span>
-          <span className="ml-1 px-1.5 py-0.2 text-[11px] rounded bg-slate-800 text-slate-300 font-mono">
+          <span className="ml-1 px-1.5 py-0.2 text-xs rounded bg-slate-800 text-slate-300 font-mono">
             {records.length}
           </span>
         </button>
 
         <button
           onClick={() => setActiveTab('maintenance')}
-          className={`flex items-center space-x-2 px-4 py-2.5 text-xs font-medium border-b-2 transition-all ${
+          className={`flex items-center space-x-2 px-4 py-2.5 text-sm font-medium border-b-2 transition-all ${
             activeTab === 'maintenance'
               ? 'border-amber-500 text-amber-400 bg-slate-800/50'
               : 'border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/30'
@@ -447,7 +447,7 @@ export function App() {
 
         <button
           onClick={() => setActiveTab('range')}
-          className={`flex items-center space-x-2 px-4 py-2.5 text-xs font-medium border-b-2 transition-all ${
+          className={`flex items-center space-x-2 px-4 py-2.5 text-sm font-medium border-b-2 transition-all ${
             activeTab === 'range'
               ? 'border-amber-500 text-amber-400 bg-slate-800/50'
               : 'border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/30'
@@ -459,7 +459,7 @@ export function App() {
 
         <button
           onClick={() => setActiveTab('reference')}
-          className={`flex items-center space-x-2 px-4 py-2.5 text-xs font-medium border-b-2 transition-all ${
+          className={`flex items-center space-x-2 px-4 py-2.5 text-sm font-medium border-b-2 transition-all ${
             activeTab === 'reference'
               ? 'border-amber-500 text-amber-400 bg-slate-800/50'
               : 'border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/30'
@@ -467,7 +467,7 @@ export function App() {
         >
           <Database className="w-3.5 h-3.5" />
           <span>ATF Master C&R Reference Library</span>
-          <span className="ml-1 px-1.5 py-0.2 text-[11px] rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 font-mono">
+          <span className="ml-1 px-1.5 py-0.2 text-xs rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 font-mono">
             {crRecords.length.toLocaleString()} Items
           </span>
         </button>
@@ -488,14 +488,14 @@ export function App() {
                     placeholder="Search by Manufacturer, Model, Serial #, or Caliber..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded pl-8 pr-3 py-1.5 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-500/50 font-mono"
+                    className="w-full bg-slate-950 border border-slate-800 rounded pl-8 pr-3 py-1.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-500/50 font-mono"
                   />
                 </div>
 
                 <div className="flex items-center space-x-1.5">
                   <button
                     onClick={() => setFilterStatus('all')}
-                    className={`px-2.5 py-1 text-[11px] font-medium rounded transition-colors ${
+                    className={`px-2.5 py-1 text-sm font-medium rounded transition-colors ${
                       filterStatus === 'all'
                         ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
                         : 'bg-slate-800 text-slate-400 hover:text-slate-200'
@@ -505,7 +505,7 @@ export function App() {
                   </button>
                   <button
                     onClick={() => setFilterStatus('collection')}
-                    className={`px-2.5 py-1 text-[11px] font-medium rounded transition-colors ${
+                    className={`px-2.5 py-1 text-sm font-medium rounded transition-colors ${
                       filterStatus === 'collection'
                         ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
                         : 'bg-slate-800 text-slate-400 hover:text-slate-200'
@@ -515,7 +515,7 @@ export function App() {
                   </button>
                   <button
                     onClick={() => setFilterStatus('disposed')}
-                    className={`px-2.5 py-1 text-[11px] font-medium rounded transition-colors ${
+                    className={`px-2.5 py-1 text-sm font-medium rounded transition-colors ${
                       filterStatus === 'disposed'
                         ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
                         : 'bg-slate-800 text-slate-400 hover:text-slate-200'
@@ -529,8 +529,8 @@ export function App() {
               {/* Data Table */}
               <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-xl">
                 <div className="overflow-x-auto max-h-[680px] overflow-y-auto">
-                  <table className="w-full text-left text-xs border-collapse">
-                    <thead className="sticky top-0 bg-slate-950 text-slate-400 border-b border-slate-800 uppercase tracking-wider text-[10px] font-semibold">
+                  <table className="w-full text-left text-sm border-collapse">
+                    <thead className="sticky top-0 bg-slate-950 text-slate-400 border-b border-slate-800 uppercase tracking-wider text-xs font-semibold">
                       <tr>
                         <th className="py-2.5 px-3 w-10 text-center">Line</th>
                         <th className="py-2.5 px-3">Manufacturer & Model</th>
@@ -560,12 +560,12 @@ export function App() {
                               <div className="font-semibold text-slate-100 font-sans flex items-center gap-1.5">
                                 {r.manufacturer}
                                 {r.crSection && (
-                                  <span className="text-[9px] px-1 bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 rounded font-mono">
+                                  <span className="text-xs px-1 bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 rounded font-mono">
                                     C&R
                                   </span>
                                 )}
                               </div>
-                              <div className="text-slate-400 text-[11px] font-sans">{r.model}</div>
+                              <div className="text-slate-400 text-sm font-sans">{r.model}</div>
                             </td>
                             <td className="py-2.5 px-3 text-amber-400 font-bold">
                               {r.serialNumber}
@@ -575,11 +575,11 @@ export function App() {
                             </td>
                             <td className="py-2.5 px-3 text-center">
                               {r.status === 'In Collection' ? (
-                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-sans font-medium bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-sm font-sans font-medium bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
                                   In Collection
                                 </span>
                               ) : (
-                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-sans font-medium bg-amber-500/10 border border-amber-500/30 text-amber-400">
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-sm font-sans font-medium bg-amber-500/10 border border-amber-500/30 text-amber-400">
                                   Disposed
                                 </span>
                               )}
@@ -622,15 +622,15 @@ export function App() {
                   {/* Header info */}
                   <div className="border-b border-slate-800 pb-4 space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-mono text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 border border-amber-500/30 rounded">
+                      <span className="text-sm font-mono text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 border border-amber-500/30 rounded">
                         Line #{selectedRecord.lineNumber}
                       </span>
                       {selectedRecord.isLocked ? (
-                        <span className="px-2 py-0.5 bg-amber-500/10 text-amber-400 border border-amber-500/30 rounded text-[10px] flex items-center gap-1 font-mono">
+                        <span className="px-2 py-0.5 bg-amber-500/10 text-amber-400 border border-amber-500/30 rounded text-sm flex items-center gap-1 font-mono">
                           <Lock className="w-3 h-3" /> ATF Compliance Locked
                         </span>
                       ) : (
-                        <span className="px-2 py-0.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded text-[10px] flex items-center gap-1 font-mono">
+                        <span className="px-2 py-0.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded text-sm flex items-center gap-1 font-mono">
                           <ShieldCheck className="w-3 h-3" /> Active Bound Book Entry
                         </span>
                       )}
@@ -639,7 +639,7 @@ export function App() {
                       <h2 className="text-base font-bold text-slate-100">
                         {selectedRecord.manufacturer} {selectedRecord.model}
                       </h2>
-                      <p className="text-xs text-slate-400 font-mono mt-0.5">
+                      <p className="text-sm text-slate-400 font-mono mt-0.5">
                         Serial #: <span className="text-amber-400 font-bold">{selectedRecord.serialNumber}</span> • Caliber: {selectedRecord.caliber}
                       </p>
                     </div>
@@ -647,51 +647,51 @@ export function App() {
 
                   {/* C&R Official Citation Badge */}
                   {matchedCRInfo ? (
-                    <div className="p-3 bg-cyan-950/40 border border-cyan-500/30 rounded-lg text-xs space-y-1">
-                      <div className="flex items-center justify-between text-cyan-400 font-semibold text-[11px]">
+                    <div className="p-3 bg-cyan-950/40 border border-cyan-500/30 rounded-lg text-sm space-y-1">
+                      <div className="flex items-center justify-between text-cyan-400 font-semibold text-sm">
                         <span className="flex items-center gap-1">
                           <Sparkles className="w-3.5 h-3.5" /> Official ATF C&R Listed Item
                         </span>
                         <span className="font-mono">{matchedCRInfo.record_id}</span>
                       </div>
-                      <p className="text-slate-300 text-[11px] line-clamp-2">
+                      <p className="text-slate-300 text-sm line-clamp-2">
                         {matchedCRInfo.atf_classification_details}
                       </p>
                     </div>
                   ) : selectedRecord.crSection && (
-                    <div className="p-2.5 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-400 flex items-center gap-2">
+                    <div className="p-2.5 bg-slate-950 border border-slate-800 rounded-lg text-sm text-slate-400 flex items-center gap-2">
                       <ShieldCheck className="w-4 h-4 text-cyan-400" />
                       <span>Classified under <strong>{selectedRecord.crSection}</strong></span>
                     </div>
                   )}
 
                   {/* Specification Breakdown Grid */}
-                  <div className="grid grid-cols-2 gap-3 text-xs font-sans">
+                  <div className="grid grid-cols-2 gap-3 text-sm font-sans">
                     <div className="p-2.5 bg-slate-950 border border-slate-800/80 rounded">
-                      <span className="text-[10px] text-slate-400 block uppercase font-mono">Type</span>
+                      <span className="text-xs text-slate-400 block uppercase font-mono">Type</span>
                       <span className="font-semibold text-slate-200">{selectedRecord.type}</span>
                     </div>
                     <div className="p-2.5 bg-slate-950 border border-slate-800/80 rounded">
-                      <span className="text-[10px] text-slate-400 block uppercase font-mono">Importer</span>
+                      <span className="text-xs text-slate-400 block uppercase font-mono">Importer</span>
                       <span className="font-semibold text-slate-200">{selectedRecord.importer || 'N/A (Domestic)'}</span>
                     </div>
                     <div className="p-2.5 bg-slate-950 border border-slate-800/80 rounded">
-                      <span className="text-[10px] text-slate-400 block uppercase font-mono">Acq Date</span>
+                      <span className="text-xs text-slate-400 block uppercase font-mono">Acq Date</span>
                       <span className="font-semibold text-slate-200 font-mono">{selectedRecord.acqDate}</span>
                     </div>
                     <div className="p-2.5 bg-slate-950 border border-slate-800/80 rounded">
-                      <span className="text-[10px] text-slate-400 block uppercase font-mono">Acquisition Source</span>
+                      <span className="text-xs text-slate-400 block uppercase font-mono">Acquisition Source</span>
                       <span className="font-semibold text-slate-200 truncate block" title={selectedRecord.acqName}>{selectedRecord.acqName}</span>
                     </div>
                   </div>
 
                   {/* Disposition Details (if disposed) */}
                   {selectedRecord.status === 'Disposed' && (
-                    <div className="p-3 bg-amber-950/30 border border-amber-500/30 rounded-lg text-xs space-y-1.5">
+                    <div className="p-3 bg-amber-950/30 border border-amber-500/30 rounded-lg text-sm space-y-1.5">
                       <div className="font-bold text-amber-300 flex items-center gap-1.5">
                         <Lock className="w-3.5 h-3.5" /> Disposition Record (27 CFR § 478.125)
                       </div>
-                      <div className="grid grid-cols-2 gap-2 text-[11px] font-mono text-amber-200">
+                      <div className="grid grid-cols-2 gap-2 text-sm font-mono text-amber-200">
                         <div>Date: {selectedRecord.dispDate}</div>
                         <div>Recipient: {selectedRecord.dispName}</div>
                         {selectedRecord.dispFFL && <div className="col-span-2">FFL: {selectedRecord.dispFFL}</div>}
@@ -700,14 +700,14 @@ export function App() {
                   )}
 
                   {/* History Stats Bar */}
-                  <div className="flex items-center justify-between p-3 bg-slate-950 border border-slate-800 rounded-lg text-xs font-mono">
+                  <div className="flex items-center justify-between p-3 bg-slate-950 border border-slate-800 rounded-lg text-sm font-mono">
                     <div>
-                      <span className="text-slate-400 block text-[10px]">Maintenance Entries</span>
+                      <span className="text-slate-400 block text-xs">Maintenance Entries</span>
                       <span className="text-amber-400 font-bold text-sm">{selectedMaintenance.length}</span>
                     </div>
                     <div className="w-px h-6 bg-slate-800"></div>
                     <div>
-                      <span className="text-slate-400 block text-[10px]">Total Rounds Fired</span>
+                      <span className="text-slate-400 block text-xs">Total Rounds Fired</span>
                       <span className="text-cyan-400 font-bold text-sm">{totalRoundsFired}</span>
                     </div>
                   </div>
@@ -716,14 +716,14 @@ export function App() {
                   <div className="pt-2 flex items-center space-x-2">
                     <button
                       onClick={() => setIsMediaModalOpen(true)}
-                      className="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded text-xs font-medium transition-colors flex items-center justify-center gap-1.5"
+                      className="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded text-sm font-medium transition-colors flex items-center justify-center gap-1.5"
                     >
                       <Camera className="w-3.5 h-3.5 text-cyan-400" />
                       Proof Marks & Scans
                     </button>
                     <button
                       onClick={() => setEditModalRecord(selectedRecord)}
-                      className="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded text-xs font-medium transition-colors flex items-center justify-center gap-1.5"
+                      className="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded text-sm font-medium transition-colors flex items-center justify-center gap-1.5"
                     >
                       <Edit3 className="w-3.5 h-3.5 text-amber-400" />
                       Amend Entry
@@ -731,7 +731,7 @@ export function App() {
                     {selectedRecord.status === 'In Collection' && (
                       <button
                         onClick={() => setDispModalRecord(selectedRecord)}
-                        className="flex-1 py-2 bg-amber-400 hover:bg-amber-300 text-amber-950 font-bold rounded text-xs transition-colors flex items-center justify-center gap-1.5"
+                        className="flex-1 py-2 bg-amber-400 hover:bg-amber-300 text-amber-950 font-bold rounded text-sm transition-colors flex items-center justify-center gap-1.5"
                       >
                         <Lock className="w-3.5 h-3.5" />
                         Log Disposition
@@ -758,7 +758,7 @@ export function App() {
                   <Database className="w-5 h-5 text-cyan-400" />
                   ATF Master Curios & Relics Reference Library
                 </h2>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="text-sm text-slate-400 mt-1">
                   Complete offline database containing {crRecords.length.toLocaleString()} historical classification records extracted from ATF publications.
                   {crMetadata.isCustom && (
                     <span className="ml-1 text-cyan-400 font-semibold">
@@ -769,13 +769,13 @@ export function App() {
               </div>
 
               <div className="flex items-center space-x-2">
-                <span className="px-3 py-1 bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 rounded-full text-xs font-mono">
+                <span className="px-3 py-1 bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 rounded-full text-sm font-mono">
                   {crRecords.length.toLocaleString()} Records {crMetadata.isCustom ? 'Loaded (Custom)' : 'Pre-Loaded'}
                 </span>
 
                 <button
                   onClick={() => setIsImportCRModalOpen(true)}
-                  className="flex items-center space-x-1.5 px-3 py-1.5 bg-cyan-500 hover:bg-cyan-400 text-cyan-950 font-bold rounded-lg text-xs transition-colors shadow-md shadow-cyan-950/20 cursor-pointer"
+                  className="flex items-center space-x-1.5 px-3 py-1.5 bg-cyan-500 hover:bg-cyan-400 text-cyan-950 font-bold rounded-lg text-sm transition-colors shadow-md shadow-cyan-950/20 cursor-pointer"
                   title="Import updated ATF C&R CSV file"
                 >
                   <Download className="w-3.5 h-3.5 rotate-180" />
@@ -793,14 +793,14 @@ export function App() {
                   placeholder="Search by Manufacturer (e.g. Colt, Mauser, Springfield), Model, or Details..."
                   value={crSearchQuery}
                   onChange={(e) => setCrSearchQuery(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg pl-10 pr-4 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 font-mono"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-lg pl-10 pr-4 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 font-mono"
                 />
               </div>
 
               <div className="flex items-center space-x-1.5 w-full md:w-auto overflow-x-auto">
                 <button
                   onClick={() => setCrSectionFilter('all')}
-                  className={`px-3 py-1.5 text-xs font-medium rounded transition-colors whitespace-nowrap ${
+                  className={`px-3 py-1.5 text-sm font-medium rounded transition-colors whitespace-nowrap ${
                     crSectionFilter === 'all'
                       ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
                       : 'bg-slate-800 text-slate-400 hover:text-slate-200'
@@ -810,7 +810,7 @@ export function App() {
                 </button>
                 <button
                   onClick={() => setCrSectionFilter('Section II')}
-                  className={`px-3 py-1.5 text-xs font-medium rounded transition-colors whitespace-nowrap ${
+                  className={`px-3 py-1.5 text-sm font-medium rounded transition-colors whitespace-nowrap ${
                     crSectionFilter === 'Section II'
                       ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
                       : 'bg-slate-800 text-slate-400 hover:text-slate-200'
@@ -820,7 +820,7 @@ export function App() {
                 </button>
                 <button
                   onClick={() => setCrSectionFilter('Section III')}
-                  className={`px-3 py-1.5 text-xs font-medium rounded transition-colors whitespace-nowrap ${
+                  className={`px-3 py-1.5 text-sm font-medium rounded transition-colors whitespace-nowrap ${
                     crSectionFilter === 'Section III'
                       ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
                       : 'bg-slate-800 text-slate-400 hover:text-slate-200'
@@ -830,7 +830,7 @@ export function App() {
                 </button>
                 <button
                   onClick={() => setCrSectionFilter('Section IIIA')}
-                  className={`px-3 py-1.5 text-xs font-medium rounded transition-colors whitespace-nowrap ${
+                  className={`px-3 py-1.5 text-sm font-medium rounded transition-colors whitespace-nowrap ${
                     crSectionFilter === 'Section IIIA'
                       ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
                       : 'bg-slate-800 text-slate-400 hover:text-slate-200'
@@ -840,7 +840,7 @@ export function App() {
                 </button>
                 <button
                   onClick={() => setCrSectionFilter('Section IV')}
-                  className={`px-3 py-1.5 text-xs font-medium rounded transition-colors whitespace-nowrap ${
+                  className={`px-3 py-1.5 text-sm font-medium rounded transition-colors whitespace-nowrap ${
                     crSectionFilter === 'Section IV'
                       ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
                       : 'bg-slate-800 text-slate-400 hover:text-slate-200'
@@ -850,7 +850,7 @@ export function App() {
                 </button>
                 <button
                   onClick={() => setCrSectionFilter('Section I')}
-                  className={`px-3 py-1.5 text-xs font-medium rounded transition-colors whitespace-nowrap ${
+                  className={`px-3 py-1.5 text-sm font-medium rounded transition-colors whitespace-nowrap ${
                     crSectionFilter === 'Section I'
                       ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
                       : 'bg-slate-800 text-slate-400 hover:text-slate-200'
@@ -867,23 +867,23 @@ export function App() {
                 <div key={cr.record_id} className="p-4 bg-slate-950 border border-slate-800/80 hover:border-cyan-500/40 rounded-xl space-y-2 transition-all">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2 font-mono">
-                      <span className="px-2 py-0.5 bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 rounded text-xs font-bold">
+                      <span className="px-2 py-0.5 bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 rounded text-sm font-bold">
                         {cr.record_id}
                       </span>
                       <span className="text-slate-300 font-sans font-bold text-sm">
                         {cr.manufacturer_or_make} {cr.model}
                       </span>
                     </div>
-                    <span className="text-xs px-2.5 py-0.5 bg-slate-900 border border-slate-800 text-slate-400 rounded-full font-mono">
+                    <span className="text-sm px-2.5 py-0.5 bg-slate-900 border border-slate-800 text-slate-400 rounded-full font-mono">
                       {cr.section_code}
                     </span>
                   </div>
 
-                  <p className="text-xs text-slate-300 leading-relaxed">
+                  <p className="text-sm text-slate-300 leading-relaxed">
                     {cr.atf_classification_details}
                   </p>
 
-                  <div className="flex items-center justify-between text-[11px] text-slate-400 pt-2 border-t border-slate-900 font-mono">
+                  <div className="flex items-center justify-between text-sm text-slate-400 pt-2 border-t border-slate-900 font-mono">
                     <div>
                       Published: <span className="text-slate-300">{cr.latest_published_edition}</span>
                     </div>
@@ -906,7 +906,7 @@ export function App() {
             </h2>
 
             {selectedRecord && (
-              <form onSubmit={handleAddMaintenance} className="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-4 text-xs">
+              <form onSubmit={handleAddMaintenance} className="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-4 text-sm">
                 <div className="font-semibold text-slate-200 flex items-center gap-2">
                   <span>Log Maintenance Event for:</span>
                   <span className="text-amber-400 font-mono font-bold">{selectedRecord.manufacturer} {selectedRecord.model} ({selectedRecord.serialNumber})</span>
@@ -966,7 +966,7 @@ export function App() {
 
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold rounded text-xs transition-colors"
+                  className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold rounded text-sm transition-colors"
                 >
                   Save Maintenance Record
                 </button>
@@ -976,7 +976,7 @@ export function App() {
             {/* List */}
             <div className="space-y-3">
               {selectedMaintenance.map((m) => (
-                <div key={m.id} className="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-1 text-xs font-sans">
+                <div key={m.id} className="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-1 text-sm font-sans">
                   <div className="flex items-center justify-between font-mono">
                     <span className="px-2 py-0.5 bg-amber-500/10 text-amber-400 border border-amber-500/30 rounded font-bold">
                       {m.type}
@@ -984,7 +984,7 @@ export function App() {
                     <span className="text-slate-400">{m.date}</span>
                   </div>
                   <div className="text-slate-200 mt-1">{m.notes}</div>
-                  <div className="text-slate-400 text-[11px] font-mono flex items-center justify-between pt-1">
+                  <div className="text-slate-400 text-sm font-mono flex items-center justify-between pt-1">
                     <span>Performed by: {m.performedBy}</span>
                     <span>Cost: ${m.cost.toFixed(2)}</span>
                   </div>
@@ -1003,7 +1003,7 @@ export function App() {
             </h2>
 
             {selectedRecord && (
-              <form onSubmit={handleAddRangeLog} className="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-4 text-xs">
+              <form onSubmit={handleAddRangeLog} className="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-4 text-sm">
                 <div className="font-semibold text-slate-200 flex items-center gap-2">
                   <span>Log Range Trip for:</span>
                   <span className="text-cyan-400 font-mono font-bold">{selectedRecord.manufacturer} {selectedRecord.model} ({selectedRecord.serialNumber})</span>
@@ -1048,7 +1048,7 @@ export function App() {
 
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-cyan-500 hover:bg-cyan-400 text-cyan-950 font-bold rounded text-xs transition-colors"
+                  className="px-4 py-2 bg-cyan-500 hover:bg-cyan-400 text-cyan-950 font-bold rounded text-sm transition-colors"
                 >
                   Save Range Entry
                 </button>
@@ -1058,7 +1058,7 @@ export function App() {
             {/* List */}
             <div className="space-y-3">
               {selectedRange.map((r) => (
-                <div key={r.id} className="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-1 text-xs font-sans">
+                <div key={r.id} className="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-1 text-sm font-sans">
                   <div className="flex items-center justify-between font-mono">
                     <span className="px-2 py-0.5 bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 rounded font-bold">
                       {r.roundsFired} Rounds Fired
@@ -1066,7 +1066,7 @@ export function App() {
                     <span className="text-slate-400">{r.date}</span>
                   </div>
                   <div className="text-slate-200 mt-1">{r.notes}</div>
-                  <div className="text-slate-400 text-[11px] font-mono pt-1">
+                  <div className="text-slate-400 text-sm font-mono pt-1">
                     Ammo: {r.ammoType}
                   </div>
                 </div>
@@ -1077,14 +1077,14 @@ export function App() {
       </main>
 
       {/* Footer Status Bar */}
-      <footer className="bg-slate-950 border-t border-slate-800/80 px-6 py-2.5 text-[11px] text-slate-500 flex items-center justify-between">
+      <footer className="bg-slate-950 border-t border-slate-800/80 px-6 py-2.5 text-xs text-slate-500 flex items-center justify-between">
         <div className="flex items-center space-x-3">
-          <span className="px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/30 text-amber-400 font-mono font-bold text-xs flex items-center gap-1">
+          <span className="px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/30 text-amber-400 font-mono font-bold text-sm flex items-center gap-1">
             <Tag className="w-3 h-3" /> v{APP_VERSION}
           </span>
           <button
             onClick={() => setIsSupportModalOpen(true)}
-            className="px-2 py-0.5 rounded bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-400 font-mono font-bold text-xs flex items-center gap-1 transition-colors"
+            className="px-2 py-0.5 rounded bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-400 font-mono font-bold text-sm flex items-center gap-1 transition-colors"
             title="Open User Support & Assistance"
           >
             <HelpCircle className="w-3 h-3" /> Support

@@ -39,7 +39,7 @@ export function PDFExportDialogModal({ isOpen, records, onClose }: PDFExportDial
               <Download className="w-5 h-5 text-emerald-400" />
               Generate ATF Printable Bound Book PDF
             </h2>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className="text-sm text-slate-400 mt-0.5">
               <CfrLink className="underline hover:text-emerald-300 transition-colors" /> & <AtfRulingLink className="underline hover:text-emerald-300 transition-colors" /> Inspection Format
             </p>
           </div>
@@ -53,7 +53,7 @@ export function PDFExportDialogModal({ isOpen, records, onClose }: PDFExportDial
         </div>
 
         {/* Form Body */}
-        <form onSubmit={handleGenerate} className="p-6 space-y-4 text-xs">
+        <form onSubmit={handleGenerate} className="p-6 space-y-4 text-sm">
           <div>
             <label className="block text-slate-300 mb-1">Licensee / Collector Name *</label>
             <input
@@ -91,7 +91,7 @@ export function PDFExportDialogModal({ isOpen, records, onClose }: PDFExportDial
             </select>
           </div>
 
-          <div className="p-3 bg-slate-950 border border-slate-800 rounded text-[11px] text-slate-400 space-y-1">
+          <div className="p-3 bg-slate-950 border border-slate-800 rounded text-sm text-slate-400 space-y-1">
             <div className="font-semibold text-emerald-400 flex items-center gap-1.5">
               <ShieldCheck className="w-3.5 h-3.5" /> Printable Format Specs
             </div>
@@ -104,13 +104,13 @@ export function PDFExportDialogModal({ isOpen, records, onClose }: PDFExportDial
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-xs font-medium transition-colors"
+              className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-sm font-medium transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-5 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded text-xs transition-colors flex items-center gap-1.5 shadow-lg shadow-emerald-950/20"
+              className="px-5 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded text-sm transition-colors flex items-center gap-1.5 shadow-lg shadow-emerald-950/20"
             >
               <FileCheck className="w-4 h-4" />
               Download Printable PDF

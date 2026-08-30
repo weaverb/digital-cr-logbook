@@ -136,7 +136,7 @@ export function ImportCRCSVModal({
               <Database className="w-5 h-5 text-cyan-400" />
               Import ATF C&R Master List (CSV)
             </h2>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className="text-sm text-slate-400 mt-0.5">
               Drop and replace the offline Curios & Relics reference library with an updated official CSV list.
             </p>
           </div>
@@ -150,21 +150,21 @@ export function ImportCRCSVModal({
         </div>
 
         {/* Content Body */}
-        <div className="p-6 overflow-y-auto space-y-6 flex-1 text-xs">
+        <div className="p-6 overflow-y-auto space-y-6 flex-1 text-sm">
           {/* Active Dataset Status Card */}
           <div className="p-4 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-between">
             <div className="space-y-1">
-              <div className="text-slate-400 font-mono text-[11px]">Current Active Dataset:</div>
+              <div className="text-slate-400 font-mono text-xs">Current Active Dataset:</div>
               <div className="flex items-center space-x-2">
                 <span className="text-slate-200 font-bold text-sm">
                   {currentMetadata.isCustom ? 'Custom User-Imported List' : 'Default Official Bundled List'}
                 </span>
-                <span className="px-2 py-0.5 bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 rounded-full font-mono text-[11px]">
+                <span className="px-2 py-0.5 bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 rounded-full font-mono text-xs">
                   {currentMetadata.totalRecords.toLocaleString()} Records
                 </span>
               </div>
               {currentMetadata.isCustom && (
-                <div className="text-[11px] text-slate-400 font-mono">
+                <div className="text-sm text-slate-400 font-mono">
                   Source: {currentMetadata.sourceFileName} • Imported: {new Date(currentMetadata.importedAt || '').toLocaleDateString()}
                 </div>
               )}
@@ -175,7 +175,7 @@ export function ImportCRCSVModal({
                 {!confirmReset ? (
                   <button
                     onClick={() => setConfirmReset(true)}
-                    className="flex items-center space-x-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-lg text-xs font-medium transition-colors"
+                    className="flex items-center space-x-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-lg text-sm font-medium transition-colors"
                   >
                     <RotateCcw className="w-3.5 h-3.5 text-amber-400" />
                     <span>Restore Bundled Default</span>
@@ -184,13 +184,13 @@ export function ImportCRCSVModal({
                   <div className="flex items-center space-x-2">
                     <button
                       onClick={handleResetToDefault}
-                      className="px-2.5 py-1 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold rounded text-xs transition-colors"
+                      className="px-2.5 py-1 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold rounded text-sm transition-colors"
                     >
                       Confirm Reset
                     </button>
                     <button
                       onClick={() => setConfirmReset(false)}
-                      className="px-2 py-1 text-slate-400 hover:text-slate-200 text-xs"
+                      className="px-2 py-1 text-slate-400 hover:text-slate-200 text-sm"
                     >
                       Cancel
                     </button>
@@ -230,7 +230,7 @@ export function ImportCRCSVModal({
               <p className="text-slate-200 font-medium">
                 {selectedFile ? selectedFile.name : 'Choose a new ATF C&R CSV file or drag and drop here'}
               </p>
-              <p className="text-[11px] text-slate-500">
+              <p className="text-xs text-slate-500">
                 Supports official ATF Master C&R CSV datasets (`curios_and_relics_master_list_*.csv`)
               </p>
             </div>
@@ -242,7 +242,7 @@ export function ImportCRCSVModal({
               <AlertTriangle className="w-5 h-5 shrink-0 text-rose-400 mt-0.5" />
               <div>
                 <strong className="font-semibold block">CSV Parsing Error</strong>
-                <span className="text-xs">{errorMessage}</span>
+                <span className="text-sm">{errorMessage}</span>
               </div>
             </div>
           )}
@@ -254,19 +254,19 @@ export function ImportCRCSVModal({
                 <span className="text-emerald-400 font-semibold flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4" /> Ready to Import and Replace
                 </span>
-                <span className="px-2.5 py-0.5 bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 rounded font-mono font-bold text-xs">
+                <span className="px-2.5 py-0.5 bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 rounded font-mono font-bold text-sm">
                   {previewEntries.length.toLocaleString()} Valid Records Extracted
                 </span>
               </div>
 
-              <p className="text-slate-300 text-xs">
+              <p className="text-slate-300 text-sm">
                 Importing will replace the active local C&R reference database. Your logbook records, acquisitions, and audit entries will remain completely intact and reference the updated list.
               </p>
             </div>
           )}
 
           {/* Guidelines info */}
-          <div className="p-3.5 bg-slate-950 border border-slate-800 rounded-lg flex items-start space-x-3 text-slate-400 text-[11px]">
+          <div className="p-3.5 bg-slate-950 border border-slate-800 rounded-lg flex items-start space-x-3 text-slate-400 text-sm">
             <Info className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
             <p className="leading-relaxed">
               <strong>Source of Truth:</strong> When the ATF publishes updated C&R PDFs, generate the corresponding CSV list using the repository extraction tooling and import it here to update the application instantly without reinstalling.
@@ -278,7 +278,7 @@ export function ImportCRCSVModal({
         <div className="px-6 py-4 bg-slate-950 border-t border-slate-800 flex items-center justify-between">
           <button
             onClick={handleClose}
-            className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-medium transition-colors"
+            className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-sm font-medium transition-colors"
           >
             Cancel
           </button>
@@ -286,7 +286,7 @@ export function ImportCRCSVModal({
           <button
             onClick={handleApplyImport}
             disabled={!previewEntries || previewEntries.length === 0 || isProcessing}
-            className={`flex items-center space-x-2 px-5 py-2 rounded-lg text-xs font-bold transition-all shadow-md ${
+            className={`flex items-center space-x-2 px-5 py-2 rounded-lg text-sm font-bold transition-all shadow-md ${
               previewEntries && previewEntries.length > 0 && !isProcessing
                 ? 'bg-cyan-500 hover:bg-cyan-400 text-cyan-950 shadow-cyan-500/20 cursor-pointer'
                 : 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700/50'
