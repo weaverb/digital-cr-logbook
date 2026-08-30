@@ -27,8 +27,9 @@ export function AuditLogViewerModal({ isOpen, logs, onClose }: AuditLogViewerMod
               Immutable log of record amendments per <AtfRulingLink className="underline hover:text-amber-400 transition-colors" />.
             </p>
           </div>
-          <button 
+          <button
             onClick={onClose}
+            aria-label="Close"
             className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors"
           >
             <X className="w-5 h-5" />

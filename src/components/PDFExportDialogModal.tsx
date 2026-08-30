@@ -43,8 +43,9 @@ export function PDFExportDialogModal({ isOpen, records, onClose }: PDFExportDial
               <CfrLink className="underline hover:text-emerald-300 transition-colors" /> & <AtfRulingLink className="underline hover:text-emerald-300 transition-colors" /> Inspection Format
             </p>
           </div>
-          <button 
+          <button
             onClick={onClose}
+            aria-label="Close"
             className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors"
           >
             <X className="w-5 h-5" />
