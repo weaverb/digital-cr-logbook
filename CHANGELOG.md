@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.3](https://github.com/weaverb/digital-cr-logbook/compare/v1.3.2...v1.3.3) (2026-08-30)
+
+
+### Bug Fixes
+
+* repair broken gunmetal classes and consolidate ad-hoc purple/indigo accents ([85e4e6b](https://github.com/weaverb/digital-cr-logbook/commit/85e4e6b5dfda35883b1c1cf9e9bc94b8bec20551))
+
 ## [1.3.2](https://github.com/weaverb/digital-cr-logbook/compare/v1.3.1...v1.3.2) (2026-08-30)
 
 
