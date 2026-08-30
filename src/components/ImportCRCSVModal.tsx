@@ -140,8 +140,9 @@ export function ImportCRCSVModal({
               Drop and replace the offline Curios & Relics reference library with an updated official CSV list.
             </p>
           </div>
-          <button 
+          <button
             onClick={handleClose}
+            aria-label="Close"
             className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors"
           >
             <X className="w-5 h-5" />
