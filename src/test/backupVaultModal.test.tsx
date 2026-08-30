@@ -23,7 +23,7 @@ const existingRecord: BoundBookRecord = {
 };
 
 async function buildValidCrbkFile(): Promise<{ file: File; seedPhrase: string }> {
-  const seed = generate12WordSeed();
+  const seed = await generate12WordSeed();
   const blob = await createEncryptedVaultArchive(
     {
       version: '1.0.0',
@@ -130,11 +130,14 @@ describe('BackupVaultModal restore flow (confirmation gate before overwrite)', (
     );
 
     const badFile = new File(['not a valid crbk archive'], 'bad.crbk', { type: 'application/octet-stream' });
-    await fillAndSubmitRestoreForm(container, badFile, generate12WordSeed().join(' '));
+    await fillAndSubmitRestoreForm(container, badFile, (await generate12WordSeed()).join(' '));
 
     await waitFor(() => {
+      // The component surfaces the actual thrown error message, which for a
+      // file with no valid CRBK header is more specific and useful than a
+      // generic fallback.
       expect(
-        screen.getByText(/Decryption failed: Invalid 12-word seed phrase or corrupted backup archive/i)
+        screen.getByText(/Invalid vault file format\. Missing CRBK header signature\./i)
       ).toBeInTheDocument();
     });
 
