@@ -3,6 +3,7 @@ import { X, ShieldCheck, CheckCircle2, RefreshCw } from 'lucide-react';
 import type { BoundBookRecord, AuditLogEntry } from '../types/logbook';
 import { useEscapeKey } from '../hooks/useEscapeKey';
 import { CfrLink } from '../lib/legalLinks';
+import { checkLineNumberContinuity, checkDispositionLocks } from '../lib/vaultIntegrity';
 
 interface VaultHealthModalProps {
   isOpen: boolean;
@@ -26,19 +27,10 @@ export function VaultHealthModal({ isOpen, records, auditLogs, onClose }: VaultH
     }, 600);
   };
 
-  // Integrity diagnostics
-  const lineGapCheck = () => {
-    const lineNumbers = records.map(r => r.lineNumber).sort((a, b) => a - b);
-    for (let i = 0; i < lineNumbers.length; i++) {
-      if (lineNumbers[i] !== i + 1) {
-        return false;
-      }
-    }
-    return true;
-  };
-
-  const isLineContinuous = lineGapCheck();
-  const allLockedValid = records.filter(r => r.status === 'Disposed').every(r => r.isLocked);
+  // Integrity diagnostics — real checks against current local data, not a
+  // database engine. See src/lib/vaultIntegrity.ts.
+  const isLineContinuous = checkLineNumberContinuity(records);
+  const allLockedValid = checkDispositionLocks(records);
 
   return (
     <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 font-sans">
@@ -48,10 +40,10 @@ export function VaultHealthModal({ isOpen, records, auditLogs, onClose }: VaultH
           <div>
             <h2 className="text-lg font-bold text-slate-100 flex items-center gap-2">
               <ShieldCheck className="w-5 h-5 text-cyan-400" />
-              Vault Integrity & Database Diagnostics
+              Vault Integrity & Data Diagnostics
             </h2>
             <p className="text-xs text-slate-400 mt-0.5">
-              Run PRAGMA integrity checks & bound book line continuity tests.
+              Local data integrity check & bound book line continuity tests.
             </p>
           </div>
           <button 
@@ -66,8 +58,8 @@ export function VaultHealthModal({ isOpen, records, auditLogs, onClose }: VaultH
         <div className="p-6 space-y-4 text-xs">
           <div className="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-3 font-mono">
             <div className="flex items-center justify-between">
-              <span className="text-slate-300">SQLite Storage WAL Mode:</span>
-              <span className="text-emerald-400 font-bold">HEALTHY (OK)</span>
+              <span className="text-slate-300">Local Storage Engine:</span>
+              <span className="text-emerald-400 font-bold">ACTIVE (OK)</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-slate-300">Line Number Continuity:</span>
@@ -98,7 +90,7 @@ export function VaultHealthModal({ isOpen, records, auditLogs, onClose }: VaultH
               className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium rounded text-xs transition-colors flex items-center gap-1.5"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isRunningCheck ? 'animate-spin text-cyan-400' : ''}`} />
-              <span>{isRunningCheck ? 'Running PRAGMA Check...' : 'Re-Run Diagnostics'}</span>
+              <span>{isRunningCheck ? 'Running Data Check...' : 'Re-Run Diagnostics'}</span>
             </button>
 
             {checkCompleted && (

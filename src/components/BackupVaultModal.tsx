@@ -18,19 +18,40 @@ interface BackupVaultModalProps {
   onRestoreSuccess: () => void;
 }
 
+interface PendingRestore {
+  payload: VaultPayload;
+  currentCounts: {
+    boundBook: number;
+    audit: number;
+    maintenance: number;
+    range: number;
+  };
+}
+
 export function BackupVaultModal({ isOpen, onClose, onRestoreSuccess }: BackupVaultModalProps) {
-  useEscapeKey(onClose, isOpen);
   const [activeMode, setActiveMode] = useState<'backup' | 'restore'>('backup');
-  
+
   // Seed phrase state for backup
   const [seedWords, setSeedWords] = useState<string[]>([]);
   const [copied, setCopied] = useState(false);
-  
+
   // Input seed phrase state for restore
   const [restoreInputSeed, setRestoreInputSeed] = useState('');
   const [selectedRestoreFile, setSelectedRestoreFile] = useState<File | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  // Set once a backup file decrypts successfully; the actual overwrite is
+  // held until the user explicitly confirms it in the review screen below.
+  const [pendingRestore, setPendingRestore] = useState<PendingRestore | null>(null);
+
+  const handleModalClose = () => {
+    setPendingRestore(null);
+    setErrorMessage(null);
+    onClose();
+  };
+
+  useEscapeKey(handleModalClose, isOpen);
 
   if (!isOpen) return null;
 
@@ -100,20 +121,44 @@ export function BackupVaultModal({ isOpen, onClose, onRestoreSuccess }: BackupVa
       const arrayBuffer = await selectedRestoreFile.arrayBuffer();
       const payload = await decryptVaultArchive(arrayBuffer, words);
 
-      // Save restored data to storage
-      saveBoundBookRecords(payload.boundBookRecords);
-      localStorage.setItem('cr_logbook_audit_log_v1', JSON.stringify(payload.auditLogs));
-      localStorage.setItem('cr_logbook_maintenance_records_v1', JSON.stringify(payload.maintenanceRecords));
-      localStorage.setItem('cr_logbook_range_records_v1', JSON.stringify(payload.rangeRecords));
-
+      // Decryption succeeded — stage the restore and let the user review
+      // exactly what will be overwritten before anything is written.
+      // (defensively tolerate an older/partial archive missing a field)
+      setPendingRestore({
+        payload,
+        currentCounts: {
+          boundBook: getBoundBookRecords().length,
+          audit: getAuditLogs().length,
+          maintenance: getMaintenanceRecords().length,
+          range: getRangeRecords().length,
+        },
+      });
       setIsProcessing(false);
-      alert('Vault successfully restored! Bound book and compliance records reloaded.');
-      onRestoreSuccess();
-      onClose();
     } catch (e: any) {
       setIsProcessing(false);
       setErrorMessage('Decryption failed: Invalid 12-word seed phrase or corrupted backup archive.');
     }
+  };
+
+  const handleCancelRestore = () => {
+    setPendingRestore(null);
+  };
+
+  const handleConfirmRestore = () => {
+    if (!pendingRestore) return;
+    const { payload } = pendingRestore;
+
+    // Save restored data to storage — this is the only place that actually
+    // overwrites current records, and it only runs after explicit confirmation.
+    saveBoundBookRecords(payload.boundBookRecords ?? []);
+    localStorage.setItem('cr_logbook_audit_log_v1', JSON.stringify(payload.auditLogs ?? []));
+    localStorage.setItem('cr_logbook_maintenance_records_v1', JSON.stringify(payload.maintenanceRecords ?? []));
+    localStorage.setItem('cr_logbook_range_records_v1', JSON.stringify(payload.rangeRecords ?? []));
+
+    setPendingRestore(null);
+    alert('Vault successfully restored! Bound book and compliance records reloaded.');
+    onRestoreSuccess();
+    onClose();
   };
 
   return (
@@ -130,8 +175,8 @@ export function BackupVaultModal({ isOpen, onClose, onRestoreSuccess }: BackupVa
               100% offline AES-256-GCM encrypted backup archives (`.crbk`).
             </p>
           </div>
-          <button 
-            onClick={onClose}
+          <button
+            onClick={handleModalClose}
             className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors"
           >
             <X className="w-5 h-5" />
@@ -217,6 +262,84 @@ export function BackupVaultModal({ isOpen, onClose, onRestoreSuccess }: BackupVa
                   </div>
                 </div>
               )}
+            </div>
+          ) : pendingRestore ? (
+            /* Restore Confirmation — nothing is written until the user confirms here */
+            <div className="space-y-4 text-xs">
+              <div className="p-4 bg-red-500/10 border border-red-500/30 rounded-lg space-y-2">
+                <div className="font-bold text-red-400 flex items-center gap-2">
+                  <AlertTriangle className="w-4 h-4" /> Confirm Restore — This Cannot Be Undone
+                </div>
+                <p className="text-red-200 text-[11px]">
+                  The backup file decrypted successfully. Restoring will permanently
+                  <strong> replace your current bound book, audit log, maintenance, and range records </strong>
+                  with the contents of this backup. Review the counts below before continuing.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="p-3 bg-slate-950 border border-slate-800 rounded-lg space-y-1.5">
+                  <div className="text-slate-400 font-semibold text-[11px] uppercase tracking-wide">
+                    Current Data (Will Be Replaced)
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-300">Bound Book Records</span>
+                    <span className="font-mono text-slate-100">{pendingRestore.currentCounts.boundBook}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-300">Audit Log Entries</span>
+                    <span className="font-mono text-slate-100">{pendingRestore.currentCounts.audit}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-300">Maintenance Records</span>
+                    <span className="font-mono text-slate-100">{pendingRestore.currentCounts.maintenance}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-300">Range Records</span>
+                    <span className="font-mono text-slate-100">{pendingRestore.currentCounts.range}</span>
+                  </div>
+                </div>
+
+                <div className="p-3 bg-slate-950 border border-cyan-500/30 rounded-lg space-y-1.5">
+                  <div className="text-cyan-400 font-semibold text-[11px] uppercase tracking-wide">
+                    Incoming Backup ({new Date(pendingRestore.payload.timestamp).toLocaleDateString()})
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-300">Bound Book Records</span>
+                    <span className="font-mono text-cyan-300">{pendingRestore.payload.boundBookRecords?.length ?? 0}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-300">Audit Log Entries</span>
+                    <span className="font-mono text-cyan-300">{pendingRestore.payload.auditLogs?.length ?? 0}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-300">Maintenance Records</span>
+                    <span className="font-mono text-cyan-300">{pendingRestore.payload.maintenanceRecords?.length ?? 0}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-300">Range Records</span>
+                    <span className="font-mono text-cyan-300">{pendingRestore.payload.rangeRecords?.length ?? 0}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-2 flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={handleCancelRestore}
+                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded font-medium text-xs transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={handleConfirmRestore}
+                  className="px-5 py-2 bg-red-600 hover:bg-red-500 text-white font-bold rounded text-xs transition-colors flex items-center gap-1.5"
+                >
+                  <ShieldCheck className="w-4 h-4" />
+                  Confirm & Overwrite Current Data
+                </button>
+              </div>
             </div>
           ) : (
             /* Restore Mode */

@@ -1091,7 +1091,7 @@ export function App() {
             title="Click to run vault integrity diagnostics"
           >
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            SQLite WAL Mode: Active (Click for Health Diagnostics)
+            Local Storage: Active (Click for Health Diagnostics)
           </button>
           <span>•</span>
           <span>ATF Audit Log: Active ({auditLogs.length} Events)</span>
