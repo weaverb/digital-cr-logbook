@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, useCallback } from 'react';
-import { X, Plus, ShieldCheck, Search, CheckCircle2, RotateCcw } from 'lucide-react';
+import { X, Plus, ShieldCheck, Search, CheckCircle2, RotateCcw, AlertTriangle } from 'lucide-react';
 import type { BoundBookRecord, FirearmType, CRReferenceEntry } from '../types/logbook';
 import { getActiveCRLibrary } from '../lib/crLibraryStorage';
 import { useEscapeKey } from '../hooks/useEscapeKey';
@@ -33,6 +33,7 @@ export function NewAcquisitionModal({ isOpen, onClose, onSave, crRecords: propCR
   const [acqAddress, setAcqAddress] = useState('');
   const [acqFFL, setAcqFFL] = useState('');
   const [notes, setNotes] = useState('');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // Selected C&R Reference Match
   const [selectedCR, setSelectedCR] = useState<CRReferenceEntry | null>(null);
@@ -54,6 +55,7 @@ export function NewAcquisitionModal({ isOpen, onClose, onSave, crRecords: propCR
     setSelectedCR(null);
     setCrSearchQuery('');
     setShowCrPicker(false);
+    setErrorMessage(null);
   }, []);
 
   const handleClose = useCallback(() => {
@@ -92,8 +94,9 @@ export function NewAcquisitionModal({ isOpen, onClose, onSave, crRecords: propCR
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage(null);
     if (!manufacturer.trim() || !model.trim() || !serialNumber.trim() || !acqDate || !acqName.trim()) {
-      alert('Please fill out all mandatory ATF bound book fields (Manufacturer, Model, Serial Number, Acq Date, Acq Source Name).');
+      setErrorMessage('Please fill out all mandatory ATF bound book fields (Manufacturer, Model, Serial Number, Acq Date, Acq Source Name).');
       return;
     }
 
@@ -130,8 +133,9 @@ export function NewAcquisitionModal({ isOpen, onClose, onSave, crRecords: propCR
               Enter mandatory acquisition details pursuant to <CfrLink className="underline hover:text-amber-400 transition-colors" />.
             </p>
           </div>
-          <button 
+          <button
             onClick={handleClose}
+            aria-label="Close"
             className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors"
           >
             <X className="w-5 h-5" />
@@ -140,6 +144,17 @@ export function NewAcquisitionModal({ isOpen, onClose, onSave, crRecords: propCR
 
         {/* Form Body */}
         <form onSubmit={handleSubmit} className="p-6 overflow-y-auto space-y-6 flex-1 text-xs">
+          {/* Validation Error Banner */}
+          {errorMessage && (
+            <div className="p-4 bg-rose-950/40 border border-rose-500/40 rounded-xl flex items-start space-x-3 text-rose-300">
+              <AlertTriangle className="w-5 h-5 shrink-0 text-rose-400 mt-0.5" />
+              <div>
+                <strong className="font-semibold block">Missing Required Fields</strong>
+                <span className="text-xs">{errorMessage}</span>
+              </div>
+            </div>
+          )}
+
           {/* C&R Autocomplete Selector */}
           <div>
             <h3 className="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-3 pb-1 border-b border-slate-800">
@@ -177,7 +192,7 @@ export function NewAcquisitionModal({ isOpen, onClose, onSave, crRecords: propCR
                     placeholder="Search by Manufacturer, Model, or Details..."
                     value={crSearchQuery}
                     onChange={(e) => setCrSearchQuery(e.target.value)}
-                    className="w-full bg-slate-900 border border-cyan-500/50 rounded pl-8 pr-3 py-1.5 text-slate-100 placeholder-slate-500 focus:outline-none"
+                    className="w-full bg-slate-900 border border-cyan-500/50 rounded pl-8 pr-3 py-1.5 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
                     autoFocus
                   />
                 </div>

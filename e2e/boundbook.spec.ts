@@ -29,8 +29,8 @@ test.describe('Bound Book Acquisition, Disposition, and ATF Audit E2E Flow', () 
 
     await page.getByRole('button', { name: /Save Bound Book Acquisition/i }).click();
 
-    await expect(page.getByRole('cell', { name: 'Mosin-Nagant Armory' })).toBeVisible();
-    await expect(page.getByRole('cell', { name: 'M91/30 PU Sniper' })).toBeVisible();
+    await expect(page.getByRole('cell', { name: 'Mosin-Nagant Armory' }).first()).toBeVisible();
+    await expect(page.getByRole('cell', { name: 'M91/30 PU Sniper' }).first()).toBeVisible();
     await expect(page.getByRole('cell', { name: 'SN-E2E-1001' })).toBeVisible();
     await expect(page.getByRole('cell', { name: 'In Collection' })).toBeVisible();
   });
@@ -55,14 +55,14 @@ test.describe('Bound Book Acquisition, Disposition, and ATF Audit E2E Flow', () 
 
     const searchInput = page.getByPlaceholder(/Search by Manufacturer, Model/i);
     await searchInput.fill('Colt');
-    await expect(page.getByRole('cell', { name: 'Colt Firearms' })).toBeVisible();
-    await expect(page.getByRole('cell', { name: 'Tula Arsenal' })).not.toBeVisible();
+    await expect(page.getByRole('cell', { name: 'Colt Firearms' }).first()).toBeVisible();
+    await expect(page.getByRole('cell', { name: 'Tula Arsenal' }).first()).not.toBeVisible();
 
     await searchInput.fill('');
-    await expect(page.getByRole('cell', { name: 'Tula Arsenal' })).toBeVisible();
+    await expect(page.getByRole('cell', { name: 'Tula Arsenal' }).first()).toBeVisible();
 
     await page.getByRole('button', { name: /^Collection/ }).click();
-    await expect(page.getByRole('cell', { name: 'Tula Arsenal' })).toBeVisible();
+    await expect(page.getByRole('cell', { name: 'Tula Arsenal' }).first()).toBeVisible();
   });
 
   test('amends an unlocked firearm record with ATF audit log entry', async ({ page }) => {
@@ -81,7 +81,7 @@ test.describe('Bound Book Acquisition, Disposition, and ATF Audit E2E Flow', () 
     await page.locator('div').filter({ hasText: /^Model \*/ }).locator('input').fill('M1 Garand (30-06 Special)');
     await page.getByRole('button', { name: /Save Amendment & Log Audit Event/i }).click();
 
-    await expect(page.getByRole('cell', { name: 'M1 Garand (30-06 Special)' })).toBeVisible();
+    await expect(page.getByRole('cell', { name: 'M1 Garand (30-06 Special)' }).first()).toBeVisible();
   });
 
   test('disposes a firearm and locks record per 27 CFR § 478.125(f)', async ({ page }) => {
