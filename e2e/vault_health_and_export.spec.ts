@@ -86,7 +86,7 @@ test.describe('Backup Vault, PDF/CSV Export, and Health Dashboard E2E Flow', () 
     await page.getByPlaceholder('e.g. 7.62x54mmR').fill('7.62x54mmR');
     await page.getByPlaceholder('e.g. Classic Firearms or John Smith').fill('Arms Supplier Two');
     await page.getByRole('button', { name: /Save Bound Book Acquisition/i }).click();
-    await expect(page.getByText('Mosin Arsenal')).toBeVisible();
+    await expect(page.getByText('Mosin Arsenal').first()).toBeVisible();
 
     // Load the backup file and seed phrase into the Restore tab
     await page.getByTitle('Encrypted Vault (.crbk)').click();
@@ -99,13 +99,13 @@ test.describe('Backup Vault, PDF/CSV Export, and Health Dashboard E2E Flow', () 
     await expect(page.getByText('Confirm Restore — This Cannot Be Undone')).toBeVisible();
     await expect(page.getByText('Current Data (Will Be Replaced)')).toBeVisible();
     await expect(page.getByText(/Incoming Backup/)).toBeVisible();
-    await expect(page.getByText('Mosin Arsenal')).toBeVisible(); // still present, nothing written yet
+    await expect(page.getByText('Mosin Arsenal').first()).toBeVisible(); // still present, nothing written yet
 
     // Cancelling returns to the form without touching any data
     await page.getByRole('button', { name: 'Cancel' }).click();
     await expect(page.getByText('Confirm Restore — This Cannot Be Undone')).not.toBeVisible();
     await page.keyboard.press('Escape');
-    await expect(page.getByText('Mosin Arsenal')).toBeVisible();
+    await expect(page.getByText('Mosin Arsenal').first()).toBeVisible();
 
     // Re-run the restore and this time confirm the overwrite
     await page.getByTitle('Encrypted Vault (.crbk)').click();
@@ -118,7 +118,7 @@ test.describe('Backup Vault, PDF/CSV Export, and Health Dashboard E2E Flow', () 
 
     // The backup (captured before the second acquisition) is now restored
     await expect(page.getByText('BIP-39 Encrypted Backup & Restore Vault')).not.toBeVisible();
-    await expect(page.getByText('Mosin Arsenal')).not.toBeVisible();
-    await expect(page.getByText('Enfield')).toBeVisible();
+    await expect(page.getByText('Mosin Arsenal').first()).not.toBeVisible();
+    await expect(page.getByText('Enfield').first()).toBeVisible();
   });
 });
