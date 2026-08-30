@@ -78,7 +78,7 @@ export function CommandPaletteModal({
             placeholder="Type a command or search firearms by Manufacturer, Serial #..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="w-full bg-transparent text-slate-100 placeholder-slate-500 text-xs focus:outline-none font-mono"
+            className="w-full bg-transparent text-slate-100 placeholder-slate-500 text-xs focus:outline-none focus:ring-2 focus:ring-amber-500/50 rounded font-mono"
             autoFocus
           />
           <kbd className="px-2 py-0.5 bg-slate-800 border border-slate-700 rounded text-[10px] text-slate-400 font-mono">

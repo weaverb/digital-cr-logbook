@@ -17,13 +17,15 @@ export function LogDispositionModal({ isOpen, record, onClose, onSave }: LogDisp
   const [dispName, setDispName] = useState('');
   const [dispAddress, setDispAddress] = useState('');
   const [dispFFL, setDispFFL] = useState('');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   if (!isOpen || !record) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage(null);
     if (!dispDate || !dispName.trim()) {
-      alert('Please fill out the mandatory Disposition Date and Recipient Name fields required by 27 CFR § 478.125(f).');
+      setErrorMessage('Please fill out the mandatory Disposition Date and Recipient Name fields required by 27 CFR § 478.125(f).');
       return;
     }
 
@@ -51,8 +53,9 @@ export function LogDispositionModal({ isOpen, record, onClose, onSave }: LogDisp
               Line #{record.lineNumber} • {record.manufacturer} {record.model} ({record.serialNumber})
             </p>
           </div>
-          <button 
+          <button
             onClick={onClose}
+            aria-label="Close"
             className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors"
           >
             <X className="w-5 h-5" />
@@ -72,6 +75,17 @@ export function LogDispositionModal({ isOpen, record, onClose, onSave }: LogDisp
 
         {/* Form Body */}
         <form onSubmit={handleSubmit} className="p-6 space-y-4 text-xs">
+          {/* Validation Error Banner */}
+          {errorMessage && (
+            <div className="p-4 bg-rose-950/40 border border-rose-500/40 rounded-xl flex items-start space-x-3 text-rose-300">
+              <AlertTriangle className="w-5 h-5 shrink-0 text-rose-400 mt-0.5" />
+              <div>
+                <strong className="font-semibold block">Missing Required Fields</strong>
+                <span className="text-xs">{errorMessage}</span>
+              </div>
+            </div>
+          )}
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-slate-300 mb-1">Disposition Date *</label>
