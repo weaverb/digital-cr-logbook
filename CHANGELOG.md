@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.3.3](https://github.com/weaverb/digital-cr-logbook/compare/v1.3.2...v1.3.3) (2026-08-30)
+
+
+### Bug Fixes
+
+* repair broken gunmetal classes and consolidate ad-hoc purple/indigo accents ([85e4e6b](https://github.com/weaverb/digital-cr-logbook/commit/85e4e6b5dfda35883b1c1cf9e9bc94b8bec20551))
+
+## [1.3.2](https://github.com/weaverb/digital-cr-logbook/compare/v1.3.1...v1.3.2) (2026-08-30)
+
+
+### Bug Fixes
+
+* add aria-labels, focus rings, and error banners for a11y audit ([5867f3c](https://github.com/weaverb/digital-cr-logbook/commit/5867f3cd9addbabc972e10c7a85f35ffd2185b3b))
+* de-emphasize command palette trigger and add form section grouping ([4f60c80](https://github.com/weaverb/digital-cr-logbook/commit/4f60c801e3618ed079f9ddc2787963c472738dd0))
+* **test:** disambiguate cell locators that now match the new aria-labels ([c1361e5](https://github.com/weaverb/digital-cr-logbook/commit/c1361e5ad2bb527cb61ae62c93b50c73fcb641c7))
+
 ## [1.3.1](https://github.com/weaverb/digital-cr-logbook/compare/v1.3.0...v1.3.1) (2026-08-19)
 
 

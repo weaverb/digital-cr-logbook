@@ -177,6 +177,7 @@ export function BackupVaultModal({ isOpen, onClose, onRestoreSuccess }: BackupVa
           </div>
           <button
             onClick={handleModalClose}
+            aria-label="Close"
             className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors"
           >
             <X className="w-5 h-5" />

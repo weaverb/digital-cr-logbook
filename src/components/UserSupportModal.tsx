@@ -58,7 +58,7 @@ Timestamp: ${new Date().toISOString()}`;
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4 animate-in fade-in duration-200">
       <div 
-        className="bg-gunmetal-900 border border-slate-700/80 rounded-2xl max-w-2xl w-full p-6 md:p-8 space-y-6 shadow-2xl overflow-y-auto max-h-[90vh] text-slate-100 selection:bg-amber-500 selection:text-amber-950"
+        className="bg-slate-900 border border-slate-700/80 rounded-2xl max-w-2xl w-full p-6 md:p-8 space-y-6 shadow-2xl overflow-y-auto max-h-[90vh] text-slate-100 selection:bg-amber-500 selection:text-amber-950"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
@@ -81,6 +81,7 @@ Timestamp: ${new Date().toISOString()}`;
             onClick={onClose}
             className="p-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-lg transition-colors"
             title="Close modal (Esc)"
+            aria-label="Close"
           >
             <X className="w-5 h-5" />
           </button>
@@ -96,7 +97,7 @@ Timestamp: ${new Date().toISOString()}`;
         </div>
 
         {/* Dedicated System & Diagnostic Information Section */}
-        <div className="p-5 bg-gunmetal-950 border border-slate-800 rounded-2xl space-y-3.5 shadow-lg">
+        <div className="p-5 bg-slate-950 border border-slate-800 rounded-2xl space-y-3.5 shadow-lg">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="flex items-center space-x-2.5">
               <div className="p-2 bg-cyan-500/10 border border-cyan-500/30 rounded-lg text-cyan-400">
@@ -130,19 +131,19 @@ Timestamp: ${new Date().toISOString()}`;
         </div>
 
         {/* Support Option 1: GitHub Issue */}
-        <div className="p-5 bg-gunmetal-950 border border-slate-800 rounded-2xl space-y-4 shadow-lg hover:border-slate-700 transition-colors">
+        <div className="p-5 bg-slate-950 border border-slate-800 rounded-2xl space-y-4 shadow-lg hover:border-slate-700 transition-colors">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2.5">
-              <div className="p-2 bg-purple-500/10 border border-purple-500/30 rounded-lg text-purple-400">
+              <div className="p-2 bg-cyan-500/10 border border-cyan-500/30 rounded-lg text-cyan-400">
                 <GithubIcon className="w-5 h-5" />
               </div>
               <h3 className="text-base font-bold text-slate-100">Option 1: Submit a GitHub Issue (Recommended)</h3>
             </div>
             <div className="flex items-center gap-1.5 shrink-0">
-              <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 bg-purple-500/10 text-purple-400 border border-purple-500/30 rounded-full whitespace-nowrap">
+              <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 rounded-full whitespace-nowrap">
                 Bug Reports
               </span>
-              <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 bg-purple-500/10 text-purple-400 border border-purple-500/30 rounded-full whitespace-nowrap">
+              <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 rounded-full whitespace-nowrap">
                 Feature Requests
               </span>
             </div>
@@ -157,7 +158,7 @@ Timestamp: ${new Date().toISOString()}`;
               href={githubIssueUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors shadow-md"
+              className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors shadow-md"
             >
               <ExternalLink className="w-4 h-4" /> Open GitHub Issue Form
             </a>
@@ -165,7 +166,7 @@ Timestamp: ${new Date().toISOString()}`;
         </div>
 
         {/* Support Option 2: Email Support */}
-        <div className="p-5 bg-gunmetal-950 border border-slate-800 rounded-2xl space-y-4 shadow-lg hover:border-slate-700 transition-colors">
+        <div className="p-5 bg-slate-950 border border-slate-800 rounded-2xl space-y-4 shadow-lg hover:border-slate-700 transition-colors">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2.5">
               <div className="p-2 bg-amber-500/10 border border-amber-500/30 rounded-lg text-amber-400">

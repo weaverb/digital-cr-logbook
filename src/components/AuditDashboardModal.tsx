@@ -42,8 +42,9 @@ export function AuditDashboardModal({ isOpen, records, auditLogs, onClose }: Aud
               Live collection health metrics, <CfrLink className="underline hover:text-emerald-300 transition-colors" /> compliance check, and audit trail analytics.
             </p>
           </div>
-          <button 
+          <button
             onClick={onClose}
+            aria-label="Close"
             className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors"
           >
             <X className="w-5 h-5" />
@@ -75,10 +76,10 @@ export function AuditDashboardModal({ isOpen, records, auditLogs, onClose }: Aud
             <div className="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-1">
               <div className="flex items-center justify-between text-slate-400 text-[11px]">
                 <span>Disposed</span>
-                <Lock className="w-4 h-4 text-indigo-400" />
+                <Lock className="w-4 h-4 text-amber-400" />
               </div>
-              <div className="text-2xl font-bold font-mono text-indigo-400">{disposed}</div>
-              <div className="text-[10px] text-indigo-500/80">Transferred Out ({lockedCount} Locked)</div>
+              <div className="text-2xl font-bold font-mono text-amber-400">{disposed}</div>
+              <div className="text-[10px] text-amber-500/80">Transferred Out ({lockedCount} Locked)</div>
             </div>
 
             <div className="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-1">
