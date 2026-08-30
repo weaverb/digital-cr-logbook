@@ -141,7 +141,11 @@ export function NewAcquisitionModal({ isOpen, onClose, onSave, crRecords: propCR
         {/* Form Body */}
         <form onSubmit={handleSubmit} className="p-6 overflow-y-auto space-y-6 flex-1 text-xs">
           {/* C&R Autocomplete Selector */}
-          <div className="p-4 bg-slate-950/70 border border-slate-800 rounded-lg space-y-3">
+          <div>
+            <h3 className="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-3 pb-1 border-b border-slate-800">
+              Item Classification
+            </h3>
+            <div className="p-4 bg-slate-950/70 border border-slate-800 rounded-lg space-y-3">
             <div className="flex items-center justify-between">
               <label className="text-slate-200 font-semibold flex items-center gap-1.5">
                 <ShieldCheck className="w-4 h-4 text-cyan-400" />
@@ -235,6 +239,7 @@ export function NewAcquisitionModal({ isOpen, onClose, onSave, crRecords: propCR
               </div>
             )}
           </div>
+          </div>
 
           {/* Firearm Description Fields */}
           <div>
@@ -323,7 +328,7 @@ export function NewAcquisitionModal({ isOpen, onClose, onSave, crRecords: propCR
           {/* Acquisition Details */}
           <div>
             <h3 className="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-3 pb-1 border-b border-slate-800">
-              Acquisition Information (Seller / Transferor)
+              Acquisition Details (Seller / Transferor)
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
@@ -375,6 +380,9 @@ export function NewAcquisitionModal({ isOpen, onClose, onSave, crRecords: propCR
 
           {/* Notes */}
           <div>
+            <h3 className="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-3 pb-1 border-b border-slate-800">
+              Notes
+            </h3>
             <label className="block text-slate-300 mb-1">Notes & Provenance Remarks</label>
             <textarea
               rows={2}
