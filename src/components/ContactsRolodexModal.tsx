@@ -78,8 +78,9 @@ export function ContactsRolodexModal({ isOpen, onClose }: ContactsRolodexModalPr
               Directory of FFL Dealers, Manufacturers, Gunsmiths, and Licensees for quick bound book logging.
             </p>
           </div>
-          <button 
+          <button
             onClick={onClose}
+            aria-label="Close"
             className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors"
           >
             <X className="w-5 h-5" />
@@ -214,6 +215,7 @@ export function ContactsRolodexModal({ isOpen, onClose }: ContactsRolodexModalPr
                       onClick={() => handleCopyFFL(c.id, c.fflNumber)}
                       className="p-1 text-slate-400 hover:text-slate-200 transition-colors"
                       title="Copy FFL Number"
+                      aria-label={`Copy FFL number for ${c.name}`}
                     >
                       {copiedId === c.id ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
                     </button>

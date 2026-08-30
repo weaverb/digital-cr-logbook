@@ -33,8 +33,9 @@ export function AuditDashboardModal({ isOpen, records, auditLogs, onClose }: Aud
               Live collection health metrics, <CfrLink className="underline hover:text-emerald-300 transition-colors" /> compliance check, and audit trail analytics.
             </p>
           </div>
-          <button 
+          <button
             onClick={onClose}
+            aria-label="Close"
             className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors"
           >
             <X className="w-5 h-5" />

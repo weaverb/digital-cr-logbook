@@ -586,6 +586,7 @@ export function App() {
                                 <button
                                   onClick={() => setEditModalRecord(r)}
                                   title="Amend Entry (ATF Audit Logged)"
+                                  aria-label={`Amend entry: ${r.manufacturer} ${r.model}`}
                                   className="p-1 text-slate-400 hover:text-amber-400 hover:bg-slate-800 rounded transition-colors"
                                 >
                                   <Edit3 className="w-3.5 h-3.5" />
@@ -594,6 +595,7 @@ export function App() {
                                   <button
                                     onClick={() => setDispModalRecord(r)}
                                     title="Log Disposition (27 CFR 478.125 Lock)"
+                                    aria-label={`Log disposition: ${r.manufacturer} ${r.model}`}
                                     className="p-1 text-slate-400 hover:text-purple-400 hover:bg-slate-800 rounded transition-colors"
                                   >
                                     <Lock className="w-3.5 h-3.5" />
