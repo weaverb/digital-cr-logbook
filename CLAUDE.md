@@ -43,8 +43,11 @@ product context: [PRODUCT.md](./PRODUCT.md). Full schema/architecture:
 - **Package manager / runtime**: Bun (v1.3+) — use `bun`, not `npm`/`yarn`/`pnpm`.
 - **Frontend**: React 19 + TypeScript + Vite, Tailwind CSS v4.
 - **Desktop shell**: Tauri v2 (Rust) — `src-tauri/`. SQLite in WAL mode.
-- **Backup encryption**: BIP-39 seed phrase → AES-256-GCM / Argon2id (`.crbk`
-  archive format), in `src/lib/cryptoVault.ts`.
+- **Backup encryption**: BIP-39 seed phrase → AES-256-GCM / PBKDF2-SHA256
+  (600,000 iterations) (`.crbk` archive format), in `src/lib/cryptoVault.ts`.
+  A pre-fix legacy derivation (100,000 iterations, non-standard 310-word
+  list) is kept restore-only for backward compatibility with older backups
+  — see the comments in `cryptoVault.ts`.
 - **Testing**: Vitest (unit), Playwright (e2e, in `e2e/`).
 - **Lint**: oxlint.
 - **Releases**: semantic-release, fully automated on merge to `main` (see

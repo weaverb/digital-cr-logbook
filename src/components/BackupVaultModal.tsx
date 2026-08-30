@@ -34,8 +34,8 @@ export function BackupVaultModal({ isOpen, onClose, onRestoreSuccess }: BackupVa
 
   if (!isOpen) return null;
 
-  const handleGenerateNewSeed = () => {
-    const newSeed = generate12WordSeed();
+  const handleGenerateNewSeed = async () => {
+    const newSeed = await generate12WordSeed();
     setSeedWords(newSeed);
     setCopied(false);
   };
@@ -112,7 +112,9 @@ export function BackupVaultModal({ isOpen, onClose, onRestoreSuccess }: BackupVa
       onClose();
     } catch (e: any) {
       setIsProcessing(false);
-      setErrorMessage('Decryption failed: Invalid 12-word seed phrase or corrupted backup archive.');
+      setErrorMessage(
+        e?.message || 'Decryption failed: Invalid 12-word seed phrase or corrupted backup archive.'
+      );
     }
   };
 
