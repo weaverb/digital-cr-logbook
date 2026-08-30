@@ -3,8 +3,6 @@ import {
   generate12WordSeed,
   validateSeedPhraseChecksum,
   createEncryptedVaultArchive,
-  createLegacyEncryptedVaultArchiveForTesting,
-  generateLegacySeedForTesting,
   decryptVaultArchive
 } from '../lib/cryptoVault';
 import { BIP39_ENGLISH_WORDLIST } from '../lib/bip39Wordlist';
@@ -112,16 +110,4 @@ describe('BIP-39 Cryptographic Vault Subsystem', () => {
 
     await expect(decryptVaultArchive(arrayBuffer, wrongSeed)).rejects.toThrow(/decryption failed/i);
   });
-
-  it('restores a legacy-format (pre-fix, 310-word, 100k-iteration) backup via the fallback path', async () => {
-    const legacySeed = generateLegacySeedForTesting();
-    const payload = samplePayload();
-
-    const blob = await createLegacyEncryptedVaultArchiveForTesting(payload, legacySeed);
-    const arrayBuffer = await blob.arrayBuffer();
-
-    const restoredPayload = await decryptVaultArchive(arrayBuffer, legacySeed);
-    expect(restoredPayload).toBeDefined();
-    expect(restoredPayload.version).toBe(payload.version);
-  }, 20000);
 });

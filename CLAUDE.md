@@ -45,9 +45,10 @@ product context: [PRODUCT.md](./PRODUCT.md). Full schema/architecture:
 - **Desktop shell**: Tauri v2 (Rust) — `src-tauri/`. SQLite in WAL mode.
 - **Backup encryption**: BIP-39 seed phrase → AES-256-GCM / PBKDF2-SHA256
   (600,000 iterations) (`.crbk` archive format), in `src/lib/cryptoVault.ts`.
-  A pre-fix legacy derivation (100,000 iterations, non-standard 310-word
-  list) is kept restore-only for backward compatibility with older backups
-  — see the comments in `cryptoVault.ts`.
+  No backward-compatibility fallback for older derivations — this app
+  hasn't had an official release yet, so there's no installed base to
+  support. Keep it that way (no legacy fallback code) until there is one;
+  breaking crypto changes should just bump the format instead.
 - **Testing**: Vitest (unit), Playwright (e2e, in `e2e/`).
 - **Lint**: oxlint.
 - **Releases**: semantic-release, fully automated on merge to `main` (see
