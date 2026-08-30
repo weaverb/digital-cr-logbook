@@ -44,7 +44,7 @@ export function LogDispositionModal({ isOpen, record, onClose, onSave }: LogDisp
         <div className="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/60">
           <div>
             <h2 className="text-lg font-bold text-slate-100 flex items-center gap-2">
-              <Lock className="w-5 h-5 text-purple-400" />
+              <Lock className="w-5 h-5 text-amber-400" />
               Log Firearm Disposition
             </h2>
             <p className="text-xs text-slate-400 mt-0.5 font-mono">
@@ -60,11 +60,11 @@ export function LogDispositionModal({ isOpen, record, onClose, onSave }: LogDisp
         </div>
 
         {/* Warning Banner */}
-        <div className="p-4 bg-purple-500/10 border-b border-purple-500/30 flex items-start space-x-3 text-xs">
-          <AlertTriangle className="w-5 h-5 text-purple-400 shrink-0 mt-0.5" />
-          <div className="text-purple-200 space-y-1">
-            <div className="font-semibold">ATF <CfrLink text="27 CFR § 478.125(f)" className="underline hover:text-purple-300 transition-colors" /> Compliance Lock</div>
-            <div className="text-[11px] text-purple-300">
+        <div className="p-4 bg-amber-500/10 border-b border-amber-500/30 flex items-start space-x-3 text-xs">
+          <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+          <div className="text-amber-200 space-y-1">
+            <div className="font-semibold">ATF <CfrLink text="27 CFR § 478.125(f)" className="underline hover:text-amber-300 transition-colors" /> Compliance Lock</div>
+            <div className="text-[11px] text-amber-300">
               Recording a disposition marks this firearm as transferred out of your collection. Once saved, this record will be permanently locked against deletion to satisfy ATF audit regulations.
             </div>
           </div>
@@ -80,7 +80,7 @@ export function LogDispositionModal({ isOpen, record, onClose, onSave }: LogDisp
                 required
                 value={dispDate}
                 onChange={(e) => setDispDate(e.target.value)}
-                className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-slate-100 focus:outline-none focus:border-purple-500/50 font-mono"
+                className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-slate-100 focus:outline-none focus:border-amber-500/50 font-mono"
               />
             </div>
 
@@ -92,7 +92,7 @@ export function LogDispositionModal({ isOpen, record, onClose, onSave }: LogDisp
                 value={dispName}
                 onChange={(e) => setDispName(e.target.value)}
                 placeholder="e.g. John Smith or Dealer Name"
-                className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-slate-100 focus:outline-none focus:border-purple-500/50"
+                className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-slate-100 focus:outline-none focus:border-amber-500/50"
               />
             </div>
 
@@ -103,7 +103,7 @@ export function LogDispositionModal({ isOpen, record, onClose, onSave }: LogDisp
                 value={dispFFL}
                 onChange={(e) => setDispFFL(e.target.value)}
                 placeholder="e.g. 3-42-xxx-01"
-                className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-slate-100 focus:outline-none focus:border-purple-500/50 font-mono"
+                className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-slate-100 focus:outline-none focus:border-amber-500/50 font-mono"
               />
             </div>
 
@@ -114,7 +114,7 @@ export function LogDispositionModal({ isOpen, record, onClose, onSave }: LogDisp
                 value={dispAddress}
                 onChange={(e) => setDispAddress(e.target.value)}
                 placeholder="City, State, ZIP"
-                className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-slate-100 focus:outline-none focus:border-purple-500/50"
+                className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-slate-100 focus:outline-none focus:border-amber-500/50"
               />
             </div>
           </div>
@@ -129,7 +129,7 @@ export function LogDispositionModal({ isOpen, record, onClose, onSave }: LogDisp
             </button>
             <button
               type="submit"
-              className="px-5 py-2 bg-purple-400 hover:bg-purple-300 text-purple-950 font-bold rounded text-xs transition-colors shadow-lg shadow-purple-950/20 flex items-center gap-1.5"
+              className="px-5 py-2 bg-amber-400 hover:bg-amber-300 text-amber-950 font-bold rounded text-xs transition-colors shadow-lg shadow-amber-950/20 flex items-center gap-1.5"
             >
               <Lock className="w-4 h-4" />
               Confirm & Lock Disposition Record
