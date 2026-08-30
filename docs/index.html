@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>C&R Digital Logbook - Collector User Guide & FAQ (100% Free Forever)</title>
-  <meta name="description" content="Official 27 CFR § 478.125(f) Compliant C&R Collector Digital Logbook User Guide and FAQ. 100% Free Forever, 100% Offline, Privacy-First Firearm Bound Book Application.">
-  
+  <title>C&R Digital Logbook - Guide & FAQ for Curio & Relic Collectors</title>
+  <meta name="description" content="Free, offline guide to the C&R Collector Digital Logbook: installation, how to use it, and answers for Type 03 FFL collectors and anyone considering getting licensed.">
+
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
-  
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -34,7 +34,7 @@
       }
     }
   </script>
-  
+
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -48,12 +48,6 @@
 </head>
 <body class="bg-gunmetal-950 text-slate-100 font-sans antialiased min-h-screen flex flex-col selection:bg-amber-500 selection:text-amber-950">
 
-  <!-- Top Announcement Banner -->
-  <div class="bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 text-amber-950 py-2 px-4 text-center text-xs md:text-sm font-bold tracking-wide flex items-center justify-center gap-2 shadow-md">
-    <i data-lucide="gift" class="w-4 h-4 shrink-0"></i>
-    <span>100% FREE FOREVER &bull; 100% Offline & Private &bull; No trial period, no subscription, zero hidden fees.</span>
-  </div>
-
   <!-- Main Navigation Bar -->
   <header class="sticky top-0 z-40 bg-gunmetal-900/90 backdrop-blur-md border-b border-slate-800/80 px-4 md:px-8 py-3.5 flex items-center justify-between shadow-xl">
     <div class="flex items-center space-x-3">
@@ -61,203 +55,150 @@
         <i data-lucide="book-open" class="w-6 h-6"></i>
       </div>
       <div>
-        <a href="#hero" class="text-lg md:text-xl font-bold tracking-tight text-slate-100 flex items-center gap-2 hover:text-amber-400 transition-colors">
+        <a href="#hero" class="text-lg md:text-xl font-bold tracking-tight text-slate-100 hover:text-amber-400 transition-colors">
           C&R Digital Logbook
-          <span class="text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono font-medium hidden sm:inline-block">
-            User Guide & FAQ
-          </span>
         </a>
-        <p class="text-xs text-slate-400">
-          <a href="https://www.ecfr.gov/current/title-27/chapter-II/subchapter-B/part-478/subpart-H/section-478.125#p-478.125(f)" target="_blank" rel="noopener noreferrer" class="hover:text-amber-400 underline">27 CFR § 478.125(f)</a> Compliant Type 03 Collector Help System
-        </p>
+        <p class="text-xs text-slate-400">Free guide for Type 03 C&R collectors, and anyone thinking about becoming one.</p>
       </div>
     </div>
 
     <!-- Quick Navigation Links -->
     <nav class="hidden lg:flex items-center space-x-6 text-sm font-medium text-slate-300">
-      <a href="#installation" class="hover:text-amber-400 transition-colors flex items-center gap-1.5"><i data-lucide="download" class="w-4 h-4"></i> Installation</a>
-      <a href="#features" class="hover:text-amber-400 transition-colors flex items-center gap-1.5"><i data-lucide="layers" class="w-4 h-4"></i> How to Use</a>
-      <a href="#bonus-features" class="hover:text-cyan-400 transition-colors flex items-center gap-1.5"><i data-lucide="sparkles" class="w-4 h-4 text-cyan-400"></i> Bonus Features</a>
-      <a href="#backups" class="hover:text-amber-400 transition-colors flex items-center gap-1.5"><i data-lucide="shield" class="w-4 h-4"></i> Backups</a>
-      <a href="#faq" class="hover:text-amber-400 transition-colors flex items-center gap-1.5"><i data-lucide="help-circle" class="w-4 h-4"></i> FAQ</a>
-      <a href="https://github.com/weaverb/digital-cr-logbook/releases" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold rounded-lg text-xs transition-colors flex items-center gap-1">
-        <i data-lucide="download" class="w-3.5 h-3.5"></i> Download App
+      <a href="#getting-licensed" class="hover:text-amber-400 transition-colors">Getting Licensed</a>
+      <a href="#installation" class="hover:text-amber-400 transition-colors">Installation</a>
+      <a href="#features" class="hover:text-amber-400 transition-colors">How to Use</a>
+      <a href="#more-features" class="hover:text-amber-400 transition-colors">Other Features</a>
+      <a href="#backups" class="hover:text-amber-400 transition-colors">Backups</a>
+      <a href="#faq" class="hover:text-amber-400 transition-colors">FAQ</a>
+      <a href="https://github.com/weaverb/digital-cr-logbook/releases" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold rounded-lg text-xs transition-colors">
+        Download
       </a>
     </nav>
   </header>
 
-  <!-- Hero Section -->
-  <section id="hero" class="relative py-16 md:py-20 px-4 md:px-8 max-w-6xl mx-auto text-center space-y-6">
-    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs md:text-sm font-semibold">
-      <i data-lucide="check-circle-2" class="w-4 h-4"></i> 100% Free Forever &bull; No Trials &bull; No Subscriptions &bull; 100% Private & Offline
-    </div>
-
-    <h1 class="text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-100 leading-tight">
-      Simple, Secure & Legally Compliant <br class="hidden md:inline">
-      <span class="bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 bg-clip-text text-transparent">Digital Bound Book Guide</span>
+  <!-- Intro -->
+  <section id="hero" class="py-14 md:py-16 px-4 md:px-8 max-w-4xl mx-auto space-y-5">
+    <h1 class="text-2xl md:text-4xl font-bold tracking-tight text-slate-100 leading-tight">
+      A digital bound book for Curio & Relic collectors
     </h1>
 
-    <p class="text-base md:text-xl text-slate-300 max-w-3xl mx-auto font-normal leading-relaxed">
-      Welcome to the official collector documentation! Whether you are setting up your logbook for the first time, logging a new rifle or handgun, or preparing for an official inspection, this guide will walk you through every step in plain, easy-to-understand language.
+    <p class="text-base md:text-lg text-slate-300 max-w-3xl leading-relaxed">
+      This application keeps your Type 03 FFL acquisition and disposition records, plus maintenance and range logs and an offline copy of the ATF's C&R reference list, on your own computer. It's free, it works without an internet connection, and there's no account to create.
     </p>
 
-    <!-- Visual Search Bar for FAQ -->
-    <div class="max-w-2xl mx-auto pt-4">
+    <p class="text-sm text-slate-400 max-w-3xl leading-relaxed">
+      Already licensed? Jump to <a href="#installation" class="text-amber-400 underline hover:text-amber-300">installation</a> or <a href="#features" class="text-amber-400 underline hover:text-amber-300">how to use it</a>. Still working toward a Type 03 license? Start with <a href="#getting-licensed" class="text-amber-400 underline hover:text-amber-300">getting licensed</a> below.
+    </p>
+
+    <!-- Search -->
+    <div class="max-w-xl pt-2">
       <div class="relative flex items-center">
-        <i data-lucide="search" class="w-5 h-5 absolute left-4 text-amber-400 pointer-events-none"></i>
-        <input 
-          type="text" 
+        <i data-lucide="search" class="w-4 h-4 absolute left-3.5 text-slate-500 pointer-events-none"></i>
+        <input
+          type="text"
           id="faqSearchInput"
-          placeholder="Search documentation (e.g. 'how to print', 'free', 'backup', 'ATF inspection')..." 
-          class="w-full bg-gunmetal-900 border border-slate-700/80 rounded-xl pl-12 pr-4 py-3.5 text-slate-100 placeholder-slate-400 text-sm md:text-base focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 shadow-xl transition-all"
+          placeholder="Search this guide (e.g. 'backup', 'inspection', 'install')..."
+          class="w-full bg-gunmetal-900 border border-slate-700/80 rounded-lg pl-10 pr-4 py-2.5 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all"
         >
       </div>
     </div>
   </section>
 
   <!-- Legal & Government Disclaimer Note -->
-  <section class="bg-amber-950/30 border-y border-amber-500/30 py-6 px-4 md:px-8">
-    <div class="max-w-5xl mx-auto flex items-start gap-4 text-xs md:text-sm text-amber-200/90 leading-relaxed">
-      <div class="p-2.5 bg-amber-500/20 border border-amber-500/40 rounded-lg text-amber-400 shrink-0 mt-0.5">
-        <i data-lucide="scale" class="w-5 h-5"></i>
-      </div>
-      <div>
-        <h4 class="font-bold text-amber-300 mb-1 flex items-center gap-2 text-sm md:text-base">
-          Legal & Government Disclaimer
-        </h4>
-        <p>
-          Although every effort has been made to adhere strictly to federal statutes and regulations including 
-          <a href="https://www.ecfr.gov/current/title-27/chapter-II/subchapter-B/part-478/subpart-H/section-478.125#p-478.125(f)" target="_blank" rel="noopener noreferrer" class="underline font-bold hover:text-amber-100">27 CFR § 478.125(f)</a> 
-          and 
-          <a href="https://www.atf.gov/firearms/docs/ruling/2016-1-requirements-keep-firearms-records-electronically/download" target="_blank" rel="noopener noreferrer" class="underline font-bold hover:text-amber-100">ATF Ruling 2016-1</a>, 
-          this software application is an independent open-source tool and is <strong>not endorsed by, affiliated with, or sponsored by the U.S. Government, the Department of Justice, or the Bureau of Alcohol, Tobacco, Firearms and Explosives (ATF)</strong>.
-        </p>
-      </div>
+  <section class="bg-gunmetal-900/60 border-y border-slate-800 py-5 px-4 md:px-8">
+    <div class="max-w-4xl mx-auto flex items-start gap-3 text-xs md:text-sm text-slate-400 leading-relaxed">
+      <i data-lucide="scale" class="w-4 h-4 shrink-0 mt-0.5 text-slate-500"></i>
+      <p>
+        Built with real effort to follow
+        <a href="https://www.ecfr.gov/current/title-27/chapter-II/subchapter-B/part-478/subpart-H/section-478.125#p-478.125(f)" target="_blank" rel="noopener noreferrer" class="underline hover:text-slate-300">27 CFR § 478.125(f)</a>
+        and
+        <a href="https://www.atf.gov/firearms/docs/ruling/2016-1-requirements-keep-firearms-records-electronically/download" target="_blank" rel="noopener noreferrer" class="underline hover:text-slate-300">ATF Ruling 2016-1</a>,
+        but this is an independent open-source project, <strong class="text-slate-300">not endorsed by, affiliated with, or sponsored by the U.S. Government or the ATF</strong>. Nothing here is legal advice.
+      </p>
     </div>
   </section>
 
-  <!-- Key Assurance Banner -->
-  <section class="bg-gunmetal-900/60 border-b border-slate-800 py-10 px-4 md:px-8">
-    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
-      
-      <div class="p-6 bg-gunmetal-800/80 border border-slate-700/60 rounded-xl space-y-3 shadow-lg">
-        <div class="w-10 h-10 bg-emerald-500/10 border border-emerald-500/30 rounded-lg flex items-center justify-center text-emerald-400">
-          <i data-lucide="gift" class="w-5 h-5"></i>
-        </div>
-        <h3 class="text-lg font-bold text-slate-100">100% Free Forever</h3>
-        <p class="text-sm text-slate-300 leading-relaxed">
-          No trial periods, no monthly subscription fees, no locked features, and no credit card required. Free for personal collector use.
-        </p>
-      </div>
-
-      <div class="p-6 bg-gunmetal-800/80 border border-slate-700/60 rounded-xl space-y-3 shadow-lg">
-        <div class="w-10 h-10 bg-amber-500/10 border border-amber-500/30 rounded-lg flex items-center justify-center text-amber-400">
-          <i data-lucide="wifi-off" class="w-5 h-5"></i>
-        </div>
-        <h3 class="text-lg font-bold text-slate-100">100% Offline & Private</h3>
-        <p class="text-sm text-slate-300 leading-relaxed">
-          No internet connection is ever required. Your firearm serial numbers, prices, and collector details remain safely on your personal computer.
-        </p>
-      </div>
-
-      <div class="p-6 bg-gunmetal-800/80 border border-slate-700/60 rounded-xl space-y-3 shadow-lg">
-        <div class="w-10 h-10 bg-cyan-500/10 border border-cyan-500/30 rounded-lg flex items-center justify-center text-cyan-400">
-          <i data-lucide="file-check" class="w-5 h-5"></i>
-        </div>
-        <h3 class="text-lg font-bold text-slate-100">
-          <a href="https://www.ecfr.gov/current/title-27/chapter-II/subchapter-B/part-478/subpart-H/section-478.125#p-478.125(f)" target="_blank" rel="noopener noreferrer" class="hover:text-cyan-300 underline">27 CFR § 478.125(f)</a>
-        </h3>
-        <p class="text-sm text-slate-300 leading-relaxed">
-          Designed per federal regulations. Generates clean, official printable Bound Book reports matching 
-          <a href="https://www.atf.gov/firearms/docs/ruling/2016-1-requirements-keep-firearms-records-electronically/download" target="_blank" rel="noopener noreferrer" class="underline hover:text-cyan-300">ATF Ruling 2016-1</a> requirements.
-        </p>
-      </div>
-
+  <!-- Getting Licensed -->
+  <section id="getting-licensed" class="py-14 px-4 md:px-8 max-w-4xl mx-auto space-y-5">
+    <h2 class="text-xl md:text-2xl font-bold text-slate-100">New to C&R collecting?</h2>
+    <div class="space-y-4 text-sm md:text-base text-slate-300 leading-relaxed">
+      <p>
+        This tool is built around the <strong class="text-slate-100">FFL Type 03 — Collector of Curios and Relics</strong> license. It lets an individual collector acquire and hold firearms the ATF has designated as Curios or Relics — generally older, historically or collector-significant arms — without going through a dealer transfer for each one, and this logbook is the bound book you're required to keep once you have it.
+      </p>
+      <p>
+        A full step-by-step guide to applying for a Type 03 FFL is on the way and will live here once it's ready. In the meantime, the ATF's own page on Curios & Relics is the authoritative place to start:
+      </p>
+      <p>
+        <a href="https://www.atf.gov/firearms/tools-and-services-firearms-industry/curios-relics" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-amber-400 underline hover:text-amber-300 font-medium">
+          ATF: Curios & Relics <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+        </a>
+      </p>
     </div>
   </section>
 
-  <!-- Step-by-Step Installation Guide -->
-  <section id="installation" class="py-16 px-4 md:px-8 max-w-7xl mx-auto space-y-8">
-    <div class="text-center space-y-2">
-      <h2 class="text-2xl md:text-4xl font-extrabold text-slate-100 flex items-center justify-center gap-3">
-        <i data-lucide="download" class="w-8 h-8 text-amber-400"></i>
-        How to Install the Application
-      </h2>
-      <p class="text-sm md:text-base text-slate-400">
-        Download files directly from the official 
-        <a href="https://github.com/weaverb/digital-cr-logbook/releases" target="_blank" rel="noopener noreferrer" class="text-amber-400 underline font-bold hover:text-amber-300">GitHub Releases Page</a>.
+  <!-- Installation -->
+  <section id="installation" class="py-14 px-4 md:px-8 max-w-6xl mx-auto space-y-8 border-t border-slate-800">
+    <div class="space-y-1">
+      <h2 class="text-xl md:text-2xl font-bold text-slate-100">Installing the application</h2>
+      <p class="text-sm text-slate-400">
+        Every version is published on the
+        <a href="https://github.com/weaverb/digital-cr-logbook/releases" target="_blank" rel="noopener noreferrer" class="text-amber-400 underline hover:text-amber-300">GitHub Releases page</a>. Pick your platform below.
       </p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      
-      <!-- Windows Installation Card -->
-      <div class="bg-gunmetal-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between shadow-xl space-y-4 hover:border-slate-700 transition-all">
-        <div class="space-y-3">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold font-mono px-3 py-1 bg-amber-500/10 text-amber-400 border border-amber-500/30 rounded-full">Windows (10 / 11)</span>
-            <i data-lucide="monitor" class="w-6 h-6 text-slate-400"></i>
-          </div>
-          <h3 class="text-xl font-bold text-slate-100">Windows Installation</h3>
-          <ol class="text-sm text-slate-300 space-y-2.5 list-decimal list-inside">
-            <li>Go to the <a href="https://github.com/weaverb/digital-cr-logbook/releases" target="_blank" rel="noopener noreferrer" class="text-amber-400 font-bold underline hover:text-amber-300">GitHub Releases page</a> or click a direct download button below.</li>
-            <li>Download the Windows installer (<strong>`.exe`</strong>).</li>
-            <li>Double-click the downloaded file in your <strong>Downloads</strong> folder.</li>
-            <li>If Windows SmartScreen appears, click <strong>"More info"</strong> then <strong>"Run anyway"</strong>.</li>
-            <li>Launch <strong>C&R Digital Logbook</strong> from your Desktop or Start Menu.</li>
-          </ol>
+
+      <!-- Windows -->
+      <div class="border border-slate-800 rounded-xl p-5 space-y-3">
+        <div class="flex items-center gap-2 text-slate-300">
+          <i data-lucide="monitor" class="w-4 h-4"></i>
+          <h3 class="font-bold text-slate-100">Windows 10 / 11</h3>
         </div>
-        <div class="flex flex-col gap-2 pt-2">
-          <a href="https://github.com/weaverb/digital-cr-logbook/releases/latest/download/Digital-CR-Logbook-v1.3.1-x64-setup.exe" class="w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold rounded-xl text-center text-xs transition-colors shadow-md flex items-center justify-center gap-1.5 whitespace-nowrap" title="Direct download Windows executable installer">
-            <i data-lucide="download" class="w-4 h-4 shrink-0"></i> Download Windows Installer (.exe)
-          </a>
-        </div>
+        <ol class="text-sm text-slate-400 space-y-2 list-decimal list-inside">
+          <li>Download the installer below (or from the Releases page).</li>
+          <li>Double-click the downloaded <code class="text-slate-300">.exe</code> file.</li>
+          <li>If SmartScreen appears, click "More info" then "Run anyway".</li>
+          <li>Launch C&R Digital Logbook from your Start Menu.</li>
+        </ol>
+        <a href="https://github.com/weaverb/digital-cr-logbook/releases/latest/download/Digital-CR-Logbook-v1.3.1-x64-setup.exe" class="block w-full py-2 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold rounded-lg text-center text-xs transition-colors" title="Direct download Windows executable installer">
+          Download for Windows (.exe)
+        </a>
       </div>
 
-      <!-- macOS Installation Card -->
-      <div class="bg-gunmetal-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between shadow-xl space-y-4 hover:border-slate-700 transition-all">
-        <div class="space-y-3">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold font-mono px-3 py-1 bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 rounded-full">macOS (Apple & Intel)</span>
-            <i data-lucide="laptop" class="w-6 h-6 text-slate-400"></i>
-          </div>
-          <h3 class="text-xl font-bold text-slate-100">Mac Installation</h3>
-          <ol class="text-sm text-slate-300 space-y-2.5 list-decimal list-inside">
-            <li>Go to the <a href="https://github.com/weaverb/digital-cr-logbook/releases" target="_blank" rel="noopener noreferrer" class="text-cyan-400 font-bold underline hover:text-cyan-300">GitHub Releases page</a> or click the direct download button below.</li>
-            <li>Download the <strong>`.dmg`</strong> installer file.</li>
-            <li>Double-click the <strong>`.dmg`</strong> file to open the installer window.</li>
-            <li>Drag the <strong>C&R Digital Logbook</strong> icon into your <strong>Applications</strong> folder.</li>
-            <li>Open Applications and double-click to launch.</li>
-          </ol>
+      <!-- macOS -->
+      <div class="border border-slate-800 rounded-xl p-5 space-y-3">
+        <div class="flex items-center gap-2 text-slate-300">
+          <i data-lucide="laptop" class="w-4 h-4"></i>
+          <h3 class="font-bold text-slate-100">macOS</h3>
         </div>
-        <div class="flex flex-col gap-2 pt-2">
-          <a href="https://github.com/weaverb/digital-cr-logbook/releases/latest/download/Digital-CR-Logbook-v1.3.1-x64.dmg" class="w-full py-2.5 bg-cyan-500 hover:bg-cyan-400 text-cyan-950 font-bold rounded-xl text-center text-xs transition-colors shadow-md flex items-center justify-center gap-1.5 whitespace-nowrap" title="Direct download macOS DMG package">
-            <i data-lucide="download" class="w-4 h-4 shrink-0"></i> Download Mac Package (.dmg)
-          </a>
-        </div>
+        <ol class="text-sm text-slate-400 space-y-2 list-decimal list-inside">
+          <li>Download the <code class="text-slate-300">.dmg</code> file below.</li>
+          <li>Double-click it to open the installer window.</li>
+          <li>Drag C&R Digital Logbook into your Applications folder.</li>
+          <li>Open it from Applications.</li>
+        </ol>
+        <a href="https://github.com/weaverb/digital-cr-logbook/releases/latest/download/Digital-CR-Logbook-v1.3.1-x64.dmg" class="block w-full py-2 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold rounded-lg text-center text-xs transition-colors" title="Direct download macOS DMG package">
+          Download for macOS (.dmg)
+        </a>
       </div>
 
-      <!-- Linux Installation Card -->
-      <div class="bg-gunmetal-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between shadow-xl space-y-4 hover:border-slate-700 transition-all">
-        <div class="space-y-3">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold font-mono px-3 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded-full">Linux / Bazzite</span>
-            <i data-lucide="terminal" class="w-6 h-6 text-slate-400"></i>
-          </div>
-          <h3 class="text-xl font-bold text-slate-100">Linux / AppImage</h3>
-          <ol class="text-sm text-slate-300 space-y-2.5 list-decimal list-inside">
-            <li>Go to the <a href="https://github.com/weaverb/digital-cr-logbook/releases" target="_blank" rel="noopener noreferrer" class="text-emerald-400 font-bold underline hover:text-emerald-300">GitHub Releases page</a> or click a direct download button below.</li>
-            <li>Download the standalone <strong>`.AppImage`</strong> or <strong>`.deb`</strong> package.</li>
-            <li>Right-click the `.AppImage`, select <strong>Properties -> Permissions</strong>, and check <strong>"Allow executing file as program"</strong>.</li>
-            <li>Double-click to run immediately without installation.</li>
-          </ol>
+      <!-- Linux -->
+      <div class="border border-slate-800 rounded-xl p-5 space-y-3">
+        <div class="flex items-center gap-2 text-slate-300">
+          <i data-lucide="terminal" class="w-4 h-4"></i>
+          <h3 class="font-bold text-slate-100">Linux</h3>
         </div>
-        <div class="flex flex-col gap-2 pt-2">
-          <a href="https://github.com/weaverb/digital-cr-logbook/releases/latest/download/Digital-CR-Logbook-v1.3.1-x86_64.AppImage" class="w-full py-2.5 bg-emerald-500 hover:bg-emerald-400 text-emerald-950 font-bold rounded-xl text-center text-xs transition-colors shadow-md flex items-center justify-center gap-1.5 whitespace-nowrap" title="Direct download Linux AppImage binary">
-            <i data-lucide="download" class="w-4 h-4 shrink-0"></i> Download Linux AppImage (.AppImage)
+        <ol class="text-sm text-slate-400 space-y-2 list-decimal list-inside">
+          <li>Download the <code class="text-slate-300">.AppImage</code> or <code class="text-slate-300">.deb</code> package below.</li>
+          <li>For the AppImage: right-click it, open Properties → Permissions, and enable "Allow executing file as program".</li>
+          <li>Double-click to run — no install step needed.</li>
+        </ol>
+        <div class="flex flex-col gap-2">
+          <a href="https://github.com/weaverb/digital-cr-logbook/releases/latest/download/Digital-CR-Logbook-v1.3.1-x86_64.AppImage" class="block w-full py-2 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold rounded-lg text-center text-xs transition-colors" title="Direct download Linux AppImage binary">
+            Download AppImage
           </a>
-          <a href="https://github.com/weaverb/digital-cr-logbook/releases/latest/download/Digital-CR-Logbook-v1.3.1-amd64.deb" class="w-full py-2.5 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/30 font-bold rounded-xl text-center text-xs transition-colors shadow-md flex items-center justify-center gap-1.5 whitespace-nowrap" title="Direct download Linux Debian package">
-            <i data-lucide="download" class="w-4 h-4 shrink-0"></i> Download Debian Package (.deb)
+          <a href="https://github.com/weaverb/digital-cr-logbook/releases/latest/download/Digital-CR-Logbook-v1.3.1-amd64.deb" class="block w-full py-2 border border-amber-500/40 text-amber-400 hover:bg-amber-500/10 font-bold rounded-lg text-center text-xs transition-colors" title="Direct download Linux Debian package">
+            Download .deb
           </a>
         </div>
       </div>
@@ -265,443 +206,277 @@
     </div>
   </section>
 
-  <!-- How to Use / Core Workflows Section -->
-  <section id="features" class="py-16 px-4 md:px-8 max-w-6xl mx-auto space-y-12">
-    <div class="text-center space-y-2">
-      <h2 class="text-2xl md:text-4xl font-extrabold text-slate-100 flex items-center justify-center gap-3">
-        <i data-lucide="layers" class="w-8 h-8 text-amber-400"></i>
-        How to Use Your Logbook
-      </h2>
-      <p class="text-sm md:text-base text-slate-400">Detailed visual walkthroughs for everyday firearm logging tasks.</p>
+  <!-- How to Use -->
+  <section id="features" class="py-14 px-4 md:px-8 max-w-5xl mx-auto space-y-10 border-t border-slate-800">
+    <div class="space-y-1">
+      <h2 class="text-xl md:text-2xl font-bold text-slate-100">How to use it</h2>
+      <p class="text-sm text-slate-400">The core bound-book workflow, in four parts.</p>
     </div>
 
-    <!-- Workflow 1: Logging an Acquisition -->
-    <div class="bg-gunmetal-900 border border-slate-800 rounded-2xl p-6 md:p-8 space-y-6 shadow-xl">
-      <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
-        <div class="p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-amber-400">
-          <i data-lucide="plus-circle" class="w-6 h-6"></i>
-        </div>
-        <div>
-          <h3 class="text-xl md:text-2xl font-bold text-slate-100">1. Logging a New Firearm Acquisition</h3>
-          <p class="text-xs md:text-sm text-slate-400">
-            Pursuant to <a href="https://www.ecfr.gov/current/title-27/chapter-II/subchapter-B/part-478/subpart-H/section-478.125#p-478.125(f)" target="_blank" rel="noopener noreferrer" class="underline hover:text-amber-400">27 CFR § 478.125(f)</a>, record firearms within 7 days of receipt.
-          </p>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="space-y-2 bg-gunmetal-950 p-4 border border-slate-800 rounded-xl">
-          <span class="text-xs font-bold font-mono text-amber-400">STEP 1</span>
-          <h4 class="font-bold text-slate-200">Click "+ New Acquisition"</h4>
-          <p class="text-xs text-slate-400">Click the amber button at the top right of your screen or press <kbd class="px-1.5 py-0.5 bg-slate-800 rounded border border-slate-700 text-slate-200 font-mono text-[10px]">Ctrl + K</kbd> / <kbd class="px-1.5 py-0.5 bg-slate-800 rounded border border-slate-700 text-slate-200 font-mono text-[10px]">Cmd + K</kbd>.</p>
-        </div>
-
-        <div class="space-y-2 bg-gunmetal-950 p-4 border border-slate-800 rounded-xl">
-          <span class="text-xs font-bold font-mono text-amber-400">STEP 2</span>
-          <h4 class="font-bold text-slate-200">Use C&R Autocomplete</h4>
-          <p class="text-xs text-slate-400">Type the Manufacturer or Model. Click the autocomplete dropdown to auto-fill official C&R specifications and section citations.</p>
-        </div>
-
-        <div class="space-y-2 bg-gunmetal-950 p-4 border border-slate-800 rounded-xl">
-          <span class="text-xs font-bold font-mono text-amber-400">STEP 3</span>
-          <h4 class="font-bold text-slate-200">Save Entry</h4>
-          <p class="text-xs text-slate-400">Enter the Serial Number, Caliber, Acquisition Date, and Seller/Transferor Name and click <strong>"Save Acquisition Record"</strong>.</p>
-        </div>
-      </div>
+    <!-- Workflow 1 -->
+    <div class="space-y-4">
+      <h3 class="text-lg font-bold text-slate-100 flex items-baseline gap-2">
+        <span class="text-amber-400 font-mono text-sm">1.</span> Logging a new acquisition
+      </h3>
+      <p class="text-sm text-slate-400 -mt-2">
+        <a href="https://www.ecfr.gov/current/title-27/chapter-II/subchapter-B/part-478/subpart-H/section-478.125#p-478.125(f)" target="_blank" rel="noopener noreferrer" class="underline hover:text-amber-400">27 CFR § 478.125(f)</a> requires recording a firearm within 7 days of receipt.
+      </p>
+      <ol class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-slate-300">
+        <li class="border border-slate-800 rounded-lg p-4 space-y-1">
+          <span class="text-xs text-slate-500 font-mono">Step 1</span>
+          <p>Click "New Acquisition", or press <kbd class="px-1.5 py-0.5 bg-slate-800 rounded border border-slate-700 text-slate-300 font-mono text-[11px]">Ctrl/Cmd + K</kbd>.</p>
+        </li>
+        <li class="border border-slate-800 rounded-lg p-4 space-y-1">
+          <span class="text-xs text-slate-500 font-mono">Step 2</span>
+          <p>Type the manufacturer or model and pick it from the C&R autocomplete to fill in the official classification.</p>
+        </li>
+        <li class="border border-slate-800 rounded-lg p-4 space-y-1">
+          <span class="text-xs text-slate-500 font-mono">Step 3</span>
+          <p>Enter the serial number, caliber, acquisition date, and seller/transferor, then save.</p>
+        </li>
+      </ol>
     </div>
 
-    <!-- Workflow 2: Logging a Disposition -->
-    <div class="bg-gunmetal-900 border border-slate-800 rounded-2xl p-6 md:p-8 space-y-6 shadow-xl">
-      <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
-        <div class="p-3 bg-purple-500/10 border border-purple-500/30 rounded-xl text-purple-400">
-          <i data-lucide="lock" class="w-6 h-6"></i>
-        </div>
-        <div>
-          <h3 class="text-xl md:text-2xl font-bold text-slate-100">2. Transferring or Disposing a Firearm</h3>
-          <p class="text-xs md:text-sm text-slate-400">When selling or transferring a C&R firearm to another collector or FFL dealer.</p>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="space-y-2 bg-gunmetal-950 p-4 border border-slate-800 rounded-xl">
-          <span class="text-xs font-bold font-mono text-purple-400">STEP 1</span>
-          <h4 class="font-bold text-slate-200">Select the Firearm</h4>
-          <p class="text-xs text-slate-400">Click on the firearm row in your Bound Book table to open the right-hand Inspection Drawer.</p>
-        </div>
-
-        <div class="space-y-2 bg-gunmetal-950 p-4 border border-slate-800 rounded-xl">
-          <span class="text-xs font-bold font-mono text-purple-400">STEP 2</span>
-          <h4 class="font-bold text-slate-200">Click "Log Disposition"</h4>
-          <p class="text-xs text-slate-400">Click the purple <strong>"Log Disposition"</strong> button at the bottom of the inspection panel.</p>
-        </div>
-
-        <div class="space-y-2 bg-gunmetal-950 p-4 border border-slate-800 rounded-xl">
-          <span class="text-xs font-bold font-mono text-purple-400">STEP 3</span>
-          <h4 class="font-bold text-slate-200">Enter Buyer Details</h4>
-          <p class="text-xs text-slate-400">Enter the Buyer's Name, Address, FFL Number (if applicable), and Transfer Date. The record will be permanently locked against non-audit edits.</p>
-        </div>
-      </div>
+    <!-- Workflow 2 -->
+    <div class="space-y-4">
+      <h3 class="text-lg font-bold text-slate-100 flex items-baseline gap-2">
+        <span class="text-amber-400 font-mono text-sm">2.</span> Transferring or disposing of a firearm
+      </h3>
+      <p class="text-sm text-slate-400 -mt-2">When you sell or transfer a C&R firearm to another collector or dealer.</p>
+      <ol class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-slate-300">
+        <li class="border border-slate-800 rounded-lg p-4 space-y-1">
+          <span class="text-xs text-slate-500 font-mono">Step 1</span>
+          <p>Click the firearm's row in your bound book to open its detail panel.</p>
+        </li>
+        <li class="border border-slate-800 rounded-lg p-4 space-y-1">
+          <span class="text-xs text-slate-500 font-mono">Step 2</span>
+          <p>Click "Log Disposition" at the bottom of the panel.</p>
+        </li>
+        <li class="border border-slate-800 rounded-lg p-4 space-y-1">
+          <span class="text-xs text-slate-500 font-mono">Step 3</span>
+          <p>Enter the buyer's name, address, FFL number (if any), and the transfer date. The record is then permanently locked against non-audit edits.</p>
+        </li>
+      </ol>
     </div>
 
-    <!-- Workflow 3: Printing ATF Bound Book PDF -->
-    <div class="bg-gunmetal-900 border border-slate-800 rounded-2xl p-6 md:p-8 space-y-6 shadow-xl">
-      <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
-        <div class="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-emerald-400">
-          <i data-lucide="printer" class="w-6 h-6"></i>
-        </div>
-        <div>
-          <h3 class="text-xl md:text-2xl font-bold text-slate-100">3. Printing Bound Book for Compliance Audit</h3>
-          <p class="text-xs md:text-sm text-slate-400">
-            Generate a clean, official PDF matching 
-            <a href="https://www.atf.gov/firearms/docs/ruling/2016-1-requirements-keep-firearms-records-electronically/download" target="_blank" rel="noopener noreferrer" class="underline hover:text-emerald-300">ATF Ruling 2016-1</a> table formats.
-          </p>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="space-y-2 bg-gunmetal-950 p-4 border border-slate-800 rounded-xl">
-          <span class="text-xs font-bold font-mono text-emerald-400">STEP 1</span>
-          <h4 class="font-bold text-slate-200">Click "Print PDF"</h4>
-          <p class="text-xs text-slate-400">Click the <strong>"Print PDF"</strong> button in the top action header bar to open the compliance export dialog.</p>
-        </div>
-
-        <div class="space-y-2 bg-gunmetal-950 p-4 border border-slate-800 rounded-xl">
-          <span class="text-xs font-bold font-mono text-emerald-400">STEP 2</span>
-          <h4 class="font-bold text-slate-200">Enter Licensee Info</h4>
-          <p class="text-xs text-slate-400">Enter your <strong>Licensee/Collector Name</strong> and <strong>FFL License Number</strong> for the header block.</p>
-        </div>
-
-        <div class="space-y-2 bg-gunmetal-950 p-4 border border-slate-800 rounded-xl">
-          <span class="text-xs font-bold font-mono text-emerald-400">STEP 3</span>
-          <h4 class="font-bold text-slate-200">Download Printable PDF</h4>
-          <p class="text-xs text-slate-400">Click <strong>"Download Printable PDF"</strong>. Your system's native save dialog will open to save or print your landscape compliance report.</p>
-        </div>
-      </div>
+    <!-- Workflow 3 -->
+    <div class="space-y-4">
+      <h3 class="text-lg font-bold text-slate-100 flex items-baseline gap-2">
+        <span class="text-amber-400 font-mono text-sm">3.</span> Printing your bound book for an inspection
+      </h3>
+      <p class="text-sm text-slate-400 -mt-2">
+        Generates a PDF formatted to match
+        <a href="https://www.atf.gov/firearms/docs/ruling/2016-1-requirements-keep-firearms-records-electronically/download" target="_blank" rel="noopener noreferrer" class="underline hover:text-amber-400">ATF Ruling 2016-1</a> table layouts.
+      </p>
+      <ol class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-slate-300">
+        <li class="border border-slate-800 rounded-lg p-4 space-y-1">
+          <span class="text-xs text-slate-500 font-mono">Step 1</span>
+          <p>Click "Print PDF" in the top action bar.</p>
+        </li>
+        <li class="border border-slate-800 rounded-lg p-4 space-y-1">
+          <span class="text-xs text-slate-500 font-mono">Step 2</span>
+          <p>Enter your licensee name and FFL number for the header.</p>
+        </li>
+        <li class="border border-slate-800 rounded-lg p-4 space-y-1">
+          <span class="text-xs text-slate-500 font-mono">Step 3</span>
+          <p>Click "Download Printable PDF" and choose where to save it.</p>
+        </li>
+      </ol>
     </div>
 
-    <!-- Workflow 4: ATF C&R Reference Library & CSV Import/Replace -->
-    <div class="bg-gunmetal-900 border border-slate-800 rounded-2xl p-6 md:p-8 space-y-6 shadow-xl">
-      <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
-        <div class="p-3 bg-cyan-500/10 border border-cyan-500/30 rounded-xl text-cyan-400">
-          <i data-lucide="database" class="w-6 h-6"></i>
-        </div>
-        <div>
-          <h3 class="text-xl md:text-2xl font-bold text-slate-100">4. ATF C&R Reference Library & Drop-and-Replace CSV Import</h3>
-          <p class="text-xs md:text-sm text-slate-400">
-            Search 4,200+ pre-loaded historical classifications or drop-in updated CSV lists published by the ATF without upgrading the application.
-          </p>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="space-y-2 bg-gunmetal-950 p-4 border border-slate-800 rounded-xl">
-          <span class="text-xs font-bold font-mono text-cyan-400">STEP 1</span>
-          <h4 class="font-bold text-slate-200">Open Reference Library</h4>
-          <p class="text-xs text-slate-400">Click the <strong>"ATF Master C&R Reference Library"</strong> tab in the navigation bar or search for it via <kbd class="px-1.5 py-0.5 bg-slate-800 rounded border border-slate-700 text-slate-200 font-mono text-[10px]">Ctrl + K</kbd> / <kbd class="px-1.5 py-0.5 bg-slate-800 rounded border border-slate-700 text-slate-200 font-mono text-[10px]">Cmd + K</kbd>.</p>
-        </div>
-
-        <div class="space-y-2 bg-gunmetal-950 p-4 border border-slate-800 rounded-xl">
-          <span class="text-xs font-bold font-mono text-cyan-400">STEP 2</span>
-          <h4 class="font-bold text-slate-200">Click "Import Updated CSV"</h4>
-          <p class="text-xs text-slate-400">Drag and drop any updated official ATF C&R Master CSV file (e.g. from the repository's extraction tooling) into the drop zone.</p>
-        </div>
-
-        <div class="space-y-2 bg-gunmetal-950 p-4 border border-slate-800 rounded-xl">
-          <span class="text-xs font-bold font-mono text-cyan-400">STEP 3</span>
-          <h4 class="font-bold text-slate-200">Apply & Replace</h4>
-          <p class="text-xs text-slate-400">Click <strong>"Apply & Replace C&R List"</strong>. The active database and acquisition autocomplete are updated instantly. You can revert to default at any time.</p>
-        </div>
-      </div>
+    <!-- Workflow 4 -->
+    <div class="space-y-4">
+      <h3 class="text-lg font-bold text-slate-100 flex items-baseline gap-2">
+        <span class="text-amber-400 font-mono text-sm">4.</span> Updating the C&R reference library
+      </h3>
+      <p class="text-sm text-slate-400 -mt-2">
+        Search 4,200+ pre-loaded classifications, or drop in a newer ATF-published list without waiting for an app update.
+      </p>
+      <ol class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-slate-300">
+        <li class="border border-slate-800 rounded-lg p-4 space-y-1">
+          <span class="text-xs text-slate-500 font-mono">Step 1</span>
+          <p>Open the "ATF Master C&R Reference Library" tab.</p>
+        </li>
+        <li class="border border-slate-800 rounded-lg p-4 space-y-1">
+          <span class="text-xs text-slate-500 font-mono">Step 2</span>
+          <p>Click "Import Updated CSV" and drop in an updated master list file.</p>
+        </li>
+        <li class="border border-slate-800 rounded-lg p-4 space-y-1">
+          <span class="text-xs text-slate-500 font-mono">Step 3</span>
+          <p>Click "Apply & Replace C&R List". The library and autocomplete update immediately — you can revert to the default list any time.</p>
+        </li>
+      </ol>
     </div>
   </section>
 
-  <!-- Bonus Collector Features Section -->
-  <section id="bonus-features" class="py-16 px-4 md:px-8 max-w-6xl mx-auto space-y-8 border-t border-slate-800">
-    <div class="text-center space-y-2">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-semibold font-mono">
-        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Collector Value Additions
-      </div>
-      <h2 class="text-2xl md:text-4xl font-extrabold text-slate-100 flex items-center justify-center gap-3">
-        <i data-lucide="sparkles" class="w-8 h-8 text-cyan-400"></i>
-        Bonus Collector Features
-      </h2>
-      <p class="text-sm md:text-base text-slate-400 max-w-2xl mx-auto">
-        While not required by federal statute, these built-in management tools help Type 03 collectors preserve the mechanical history, range performance, and industry contacts of their collection.
+  <!-- Other Features -->
+  <section id="more-features" class="py-14 px-4 md:px-8 max-w-5xl mx-auto space-y-6 border-t border-slate-800">
+    <div class="space-y-1">
+      <h2 class="text-xl md:text-2xl font-bold text-slate-100">Other features</h2>
+      <p class="text-sm text-slate-400 max-w-2xl">
+        Not required by federal statute, but useful for tracking the rest of a collection's history.
       </p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      
-      <!-- Feature 1: Maintenance Log -->
-      <div class="bg-gunmetal-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between shadow-xl space-y-4 hover:border-cyan-500/40 transition-all">
-        <div class="space-y-3">
-          <div class="w-10 h-10 bg-amber-500/10 border border-amber-500/30 rounded-xl flex items-center justify-center text-amber-400">
-            <i data-lucide="wrench" class="w-5 h-5"></i>
-          </div>
-          <h3 class="text-xl font-bold text-slate-100">Firearm Maintenance Log</h3>
-          <p class="text-xs text-slate-300 leading-relaxed">
-            Track cleaning history, oiling dates, cosmoline removal steps, parts replacement, and gunsmith restoration work for every firearm in your logbook.
-          </p>
-          <ul class="text-xs text-slate-400 space-y-1.5 list-disc list-inside">
-            <li>Log maintenance type & work performed</li>
-            <li>Track costs & gunsmith notes</li>
-            <li>Filter history by specific firearm</li>
-          </ul>
-        </div>
-        <div class="pt-2 border-t border-slate-800/80 text-[11px] text-amber-400/90 font-mono">
-          Tab: "Maintenance Log"
-        </div>
+
+      <div class="border border-slate-800 rounded-xl p-5 space-y-2">
+        <h3 class="font-bold text-slate-100">Maintenance log</h3>
+        <p class="text-sm text-slate-400 leading-relaxed">
+          Cleaning history, cosmoline removal, parts replacement, and gunsmith work, tracked per firearm with cost and notes.
+        </p>
+        <p class="text-xs text-slate-500 font-mono pt-1">Tab: "Maintenance Log"</p>
       </div>
 
-      <!-- Feature 2: Range & Ammo Log -->
-      <div class="bg-gunmetal-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between shadow-xl space-y-4 hover:border-cyan-500/40 transition-all">
-        <div class="space-y-3">
-          <div class="w-10 h-10 bg-cyan-500/10 border border-cyan-500/30 rounded-xl flex items-center justify-center text-cyan-400">
-            <i data-lucide="target" class="w-5 h-5"></i>
-          </div>
-          <h3 class="text-xl font-bold text-slate-100">Range & Ammunition Logs</h3>
-          <p class="text-xs text-slate-300 leading-relaxed">
-            Record round counts, ammo brand/grain weights, velocity, and group sizes. Monitor barrel wear and shooting logs for historical surplus rifles.
-          </p>
-          <ul class="text-xs text-slate-400 space-y-1.5 list-disc list-inside">
-            <li>Auto-calculates total rounds fired per firearm</li>
-            <li>Log distance, grain weight & group accuracy</li>
-            <li>Filter shooting history by serial number</li>
-          </ul>
-        </div>
-        <div class="pt-2 border-t border-slate-800/80 text-[11px] text-cyan-400/90 font-mono">
-          Tab: "Range & Ammo Log"
-        </div>
+      <div class="border border-slate-800 rounded-xl p-5 space-y-2">
+        <h3 class="font-bold text-slate-100">Range & ammunition log</h3>
+        <p class="text-sm text-slate-400 leading-relaxed">
+          Round counts, ammo brand and grain weight, group sizes, and total rounds fired — a way to keep an eye on barrel wear over time.
+        </p>
+        <p class="text-xs text-slate-500 font-mono pt-1">Tab: "Range & Ammo Log"</p>
       </div>
 
-      <!-- Feature 3: FFL Contacts & Media Gallery -->
-      <div class="bg-gunmetal-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between shadow-xl space-y-4 hover:border-cyan-500/40 transition-all">
-        <div class="space-y-3">
-          <div class="w-10 h-10 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex items-center justify-center text-emerald-400">
-            <i data-lucide="users" class="w-5 h-5"></i>
-          </div>
-          <h3 class="text-xl font-bold text-slate-100">FFL Contacts & Media Gallery</h3>
-          <p class="text-xs text-slate-300 leading-relaxed">
-            Manage your network of preferred FFL transfer dealers, collectors, and auction houses. Attach photo notes of receiver rollmarks, crests, and cartouches.
-          </p>
-          <ul class="text-xs text-slate-400 space-y-1.5 list-disc list-inside">
-            <li>Address book for frequent transferors & buyers</li>
-            <li>Store proof marks, inspector stamp & cartouche photos</li>
-            <li>100% offline local media storage</li>
-          </ul>
-        </div>
-        <div class="pt-2 border-t border-slate-800/80 text-[11px] text-emerald-400/90 font-mono">
-          Tabs: "FFL Contacts" & "Media Gallery"
-        </div>
+      <div class="border border-slate-800 rounded-xl p-5 space-y-2">
+        <h3 class="font-bold text-slate-100">FFL contacts & photos</h3>
+        <p class="text-sm text-slate-400 leading-relaxed">
+          An address book for dealers, collectors, and auction houses you work with, plus a place to attach photos of proof marks, crests, and cartouches — stored locally.
+        </p>
+        <p class="text-xs text-slate-500 font-mono pt-1">Tabs: "FFL Contacts" & "Media Gallery"</p>
       </div>
 
     </div>
   </section>
 
-  <!-- BIP-39 Encrypted Vault Section -->
-  <section id="vault" class="py-16 px-4 md:px-8 max-w-6xl mx-auto space-y-8">
-    <div class="bg-gunmetal-900 border border-slate-800 rounded-2xl p-6 md:p-8 space-y-6 shadow-xl">
-      
-      <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
-        <div class="p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-amber-400">
-          <i data-lucide="shield-alert" class="w-6 h-6"></i>
-        </div>
-        <div>
-          <h2 class="text-2xl font-bold text-slate-100">Backing Up Your Bound Book Records</h2>
-          <p class="text-xs md:text-sm text-slate-400">
-            Because this logbook operates 100% offline on your device, regular backups are your responsibility.
-          </p>
+  <!-- Backups -->
+  <section id="backups" class="py-14 px-4 md:px-8 max-w-5xl mx-auto space-y-6 border-t border-slate-800">
+    <div class="space-y-1">
+      <h2 class="text-xl md:text-2xl font-bold text-slate-100">Backing up your records</h2>
+      <p class="text-sm text-slate-400">Everything is stored on your own device, so backups are on you.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="space-y-3">
+        <h3 class="font-bold text-slate-100">What's a 12-word seed phrase?</h3>
+        <p class="text-sm text-slate-400 leading-relaxed">
+          When you create a backup, the app generates a 12-word phrase that encrypts it — think of it as the combination to a lock. You'll need the exact same 12 words, in order, to restore that backup later.
+        </p>
+        <div class="p-3.5 border border-amber-500/30 rounded-lg text-xs text-amber-300/90 leading-relaxed">
+          Write the 12 words down on paper and keep them somewhere safe. Anyone with those words can open your backup file.
         </div>
       </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        
-        <!-- Left: Seed Phrase Explanation -->
-        <div class="space-y-4">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono">
-            BIP-39 AES-256-GCM Vault
-          </div>
-          <h3 class="text-xl font-bold text-slate-100">What is a 12-Word Seed Phrase?</h3>
-          <p class="text-sm text-slate-300 leading-relaxed">
-            Think of your 12-word seed phrase like a digital combination lock for a safe. When you generate a backup, the application creates a 12-word phrase (e.g. <em>"alpha bravo charlie delta..."</em>).
-          </p>
-          <div class="p-4 bg-gunmetal-950 border border-amber-500/30 rounded-xl space-y-2 text-xs text-amber-300 font-mono">
-            <p class="font-bold flex items-center gap-1.5"><i data-lucide="alert-triangle" class="w-4 h-4"></i> IMPORTANT SAFEGUARD:</p>
-            <p>Write your 12 words down on a piece of paper and keep them in a safe place. Anyone with your 12 words can restore your backup vault file.</p>
-          </div>
-        </div>
-
-        <!-- Right: Step-by-Step Backup -->
-        <div class="space-y-4">
-          <h3 class="text-xl font-bold text-slate-100">How to Create an Encrypted Backup (`.crbk`)</h3>
-          <ol class="text-sm text-slate-300 space-y-3 list-decimal list-inside">
-            <li>Click <strong>"Vault (.crbk)"</strong> in the top action bar.</li>
-            <li>Click <strong>"Generate New 12-Word Seed Phrase"</strong>.</li>
-            <li>Write down the 12 words in exact order on paper.</li>
-            <li>Click <strong>"Download Encrypted Archive"</strong> and save your `.crbk` backup file to a USB flash drive or external drive.</li>
-          </ol>
-        </div>
-
+      <div class="space-y-3">
+        <h3 class="font-bold text-slate-100">Creating a backup</h3>
+        <ol class="text-sm text-slate-400 space-y-2 list-decimal list-inside">
+          <li>Click "Vault (.crbk)" in the top action bar.</li>
+          <li>Click "Generate New 12-Word Seed Phrase".</li>
+          <li>Write the 12 words down, in order.</li>
+          <li>Click "Download Encrypted Archive" and save the file somewhere other than this computer — a USB drive works well.</li>
+        </ol>
       </div>
     </div>
   </section>
 
-  <!-- Dynamic FAQ Section -->
-  <section id="faq" class="py-16 px-4 md:px-8 max-w-5xl mx-auto space-y-8">
-    <div class="text-center space-y-2">
-      <h2 class="text-2xl md:text-4xl font-extrabold text-slate-100 flex items-center justify-center gap-3">
-        <i data-lucide="help-circle" class="w-8 h-8 text-amber-400"></i>
-        Frequently Asked Questions (FAQ)
-      </h2>
-      <p class="text-sm md:text-base text-slate-400">Clear answers to common questions for Type 03 collectors.</p>
+  <!-- FAQ -->
+  <section id="faq" class="py-14 px-4 md:px-8 max-w-4xl mx-auto space-y-6 border-t border-slate-800">
+    <div class="space-y-1">
+      <h2 class="text-xl md:text-2xl font-bold text-slate-100">Frequently asked questions</h2>
     </div>
 
-    <!-- FAQ Search Input Filter -->
     <div class="relative">
-      <i data-lucide="search" class="w-5 h-5 absolute left-4 top-3.5 text-slate-400"></i>
-      <input 
-        type="text" 
-        id="faqFilter" 
-        placeholder="Filter FAQ questions (e.g. 'free', 'coffee', 'privacy', 'ATF inspection', 'computer crash')..." 
-        class="w-full bg-gunmetal-900 border border-slate-800 rounded-xl pl-12 pr-4 py-3 text-slate-100 text-sm focus:outline-none focus:border-amber-500/50"
+      <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-3 text-slate-500"></i>
+      <input
+        type="text"
+        id="faqFilter"
+        placeholder="Filter these questions..."
+        class="w-full bg-gunmetal-900 border border-slate-800 rounded-lg pl-10 pr-4 py-2.5 text-slate-100 text-sm focus:outline-none focus:border-amber-500/50"
       >
     </div>
 
-    <!-- FAQ Accordions Container -->
-    <div class="space-y-4" id="faqAccordionContainer">
-      
-      <!-- FAQ 0: Is this app really 100% free to use? -->
-      <div class="faq-item bg-gunmetal-900 border border-amber-500/40 rounded-xl overflow-hidden shadow-lg transition-all" data-keywords="free price cost subscription fee trial money coffee donation hobby">
-        <button class="w-full p-5 text-left flex items-center justify-between font-bold text-amber-400 text-base md:text-lg focus:outline-none hover:bg-slate-800/50 transition-colors" onclick="toggleFaq(this)">
-          <span class="flex items-center gap-3">
-            <i data-lucide="gift" class="w-5 h-5 text-amber-400 shrink-0"></i>
-            Is this application really 100% free to use?
-          </span>
-          <i data-lucide="chevron-down" class="w-5 h-5 text-amber-400 transition-transform faq-icon"></i>
+    <div class="space-y-3" id="faqAccordionContainer">
+
+      <div class="faq-item border border-slate-800 rounded-lg overflow-hidden" data-keywords="free price cost subscription fee trial money donation hobby license">
+        <button class="w-full p-4 text-left flex items-center justify-between font-semibold text-slate-100 text-sm md:text-base focus:outline-none hover:bg-slate-800/40 transition-colors" onclick="toggleFaq(this)">
+          <span>Is this application really free to use?</span>
+          <i data-lucide="chevron-down" class="w-4 h-4 text-slate-500 transition-transform faq-icon"></i>
         </button>
-        <div class="faq-answer px-5 pb-5 pt-2 text-sm text-slate-300 border-t border-slate-800/60 space-y-4 leading-relaxed">
+        <div class="faq-answer px-4 pb-4 text-sm text-slate-400 border-t border-slate-800/60 pt-3 leading-relaxed">
+          Yes. No trial period, no subscription, no locked features, no account. It's open source under the
+          <a href="https://polyformproject.org/licenses/noncommercial/1.0.0" target="_blank" rel="noopener noreferrer" class="text-amber-400 underline hover:text-amber-300">PolyForm Noncommercial License 1.0.0</a>,
+          built for personal Type 03 collector use.
+        </div>
+      </div>
+
+      <div class="faq-item border border-slate-800 rounded-lg overflow-hidden" data-keywords="offline internet privacy cloud server security data">
+        <button class="w-full p-4 text-left flex items-center justify-between font-semibold text-slate-100 text-sm md:text-base focus:outline-none hover:bg-slate-800/40 transition-colors" onclick="toggleFaq(this)">
+          <span>Does it send my data anywhere?</span>
+          <i data-lucide="chevron-down" class="w-4 h-4 text-slate-500 transition-transform faq-icon"></i>
+        </button>
+        <div class="faq-answer hidden px-4 pb-4 text-sm text-slate-400 border-t border-slate-800/60 pt-3 leading-relaxed">
+          No. It runs entirely offline. Serial numbers, prices, seller addresses, and audit records stay on your computer's local storage — there's no server, no tracking, no sync.
+        </div>
+      </div>
+
+      <div class="faq-item border border-slate-800 rounded-lg overflow-hidden" data-keywords="atf compliance ruling 2016-1 2021r-05f 27 cfr 478.125 inspection bound book">
+        <button class="w-full p-4 text-left flex items-center justify-between font-semibold text-slate-100 text-sm md:text-base focus:outline-none hover:bg-slate-800/40 transition-colors" onclick="toggleFaq(this)">
+          <span>Is it compliant with 27 CFR § 478.125(f)?</span>
+          <i data-lucide="chevron-down" class="w-4 h-4 text-slate-500 transition-transform faq-icon"></i>
+        </button>
+        <div class="faq-answer hidden px-4 pb-4 text-sm text-slate-400 border-t border-slate-800/60 pt-3 leading-relaxed">
+          Yes, built to follow
+          <a href="https://www.ecfr.gov/current/title-27/chapter-II/subchapter-B/part-478/subpart-H/section-478.125#p-478.125(f)" target="_blank" rel="noopener noreferrer" class="underline text-amber-400 hover:text-amber-300">27 CFR § 478.125(f)</a>
+          and
+          <a href="https://www.atf.gov/firearms/docs/ruling/2016-1-requirements-keep-firearms-records-electronically/download" target="_blank" rel="noopener noreferrer" class="underline text-amber-400 hover:text-amber-300">ATF Ruling 2016-1 / 2021R-05F</a>.
+          It keeps an audit log, requires a reason for any correction, auto-increments line numbers, and locks records once disposed.
+        </div>
+      </div>
+
+      <div class="faq-item border border-slate-800 rounded-lg overflow-hidden" data-keywords="print pdf export atf inspection audit paper copy">
+        <button class="w-full p-4 text-left flex items-center justify-between font-semibold text-slate-100 text-sm md:text-base focus:outline-none hover:bg-slate-800/40 transition-colors" onclick="toggleFaq(this)">
+          <span>How do I print my bound book for an inspection?</span>
+          <i data-lucide="chevron-down" class="w-4 h-4 text-slate-500 transition-transform faq-icon"></i>
+        </button>
+        <div class="faq-answer hidden px-4 pb-4 text-sm text-slate-400 border-t border-slate-800/60 pt-3 leading-relaxed">
+          Click "Print PDF" in the top bar, enter your licensee name and FFL number, and click "Download Printable PDF" to save or print it.
+        </div>
+      </div>
+
+      <div class="faq-item border border-slate-800 rounded-lg overflow-hidden" data-keywords="computer crash hard drive failure restore backup seed phrase crbk usb">
+        <button class="w-full p-4 text-left flex items-center justify-between font-semibold text-slate-100 text-sm md:text-base focus:outline-none hover:bg-slate-800/40 transition-colors" onclick="toggleFaq(this)">
+          <span>What happens if my computer breaks?</span>
+          <i data-lucide="chevron-down" class="w-4 h-4 text-slate-500 transition-transform faq-icon"></i>
+        </button>
+        <div class="faq-answer hidden px-4 pb-4 text-sm text-slate-400 border-t border-slate-800/60 pt-3 leading-relaxed">
+          If you have a <code class="text-slate-300">.crbk</code> backup, install the app on a new computer, open "Vault (.crbk)" → "Restore from Backup", and enter your 12-word seed phrase.
+        </div>
+      </div>
+
+      <div class="faq-item border border-slate-800 rounded-lg overflow-hidden" data-keywords="search shortcut command palette ctrl+k cmd+k find">
+        <button class="w-full p-4 text-left flex items-center justify-between font-semibold text-slate-100 text-sm md:text-base focus:outline-none hover:bg-slate-800/40 transition-colors" onclick="toggleFaq(this)">
+          <span>How do I search my records or the C&R list quickly?</span>
+          <i data-lucide="chevron-down" class="w-4 h-4 text-slate-500 transition-transform faq-icon"></i>
+        </button>
+        <div class="faq-answer hidden px-4 pb-4 text-sm text-slate-400 border-t border-slate-800/60 pt-3 leading-relaxed">
+          Press <kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-xs font-mono text-slate-300">Ctrl + K</kbd> (Windows/Linux) or <kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-xs font-mono text-slate-300">Cmd + K</kbd> (Mac) anywhere in the app to search by manufacturer, model, or serial number.
+        </div>
+      </div>
+
+      <div class="faq-item border border-slate-800 rounded-lg overflow-hidden" data-keywords="update csv import atf cr list publication drop replace new list download cr_list">
+        <button class="w-full p-4 text-left flex items-center justify-between font-semibold text-slate-100 text-sm md:text-base focus:outline-none hover:bg-slate-800/40 transition-colors" onclick="toggleFaq(this)">
+          <span>How do I update the C&R list when the ATF publishes a new one?</span>
+          <i data-lucide="chevron-down" class="w-4 h-4 text-slate-500 transition-transform faq-icon"></i>
+        </button>
+        <div class="faq-answer hidden px-4 pb-4 text-sm text-slate-400 border-t border-slate-800/60 pt-3 space-y-3 leading-relaxed">
           <p>
-            <strong class="text-emerald-400 text-base">Yes, absolutely! It is 100% free to use forever.</strong>
+            You don't need a new app release. Pre-extracted CSV files are kept in the project's
+            <a href="https://github.com/weaverb/digital-cr-logbook/tree/main/cr_list" target="_blank" rel="noopener noreferrer" class="text-amber-400 underline hover:text-amber-300">cr_list/ folder on GitHub</a>.
           </p>
+          <ol class="space-y-1 list-decimal list-inside">
+            <li>Open the <a href="https://github.com/weaverb/digital-cr-logbook/tree/main/cr_list" target="_blank" rel="noopener noreferrer" class="text-amber-400 underline hover:text-amber-300">cr_list/ directory</a> on GitHub.</li>
+            <li>Open the latest master list CSV (e.g. <code class="text-slate-300">curios_and_relics_master_list_2026_08_06.csv</code>).</li>
+            <li>Click "Download raw file" to save it.</li>
+          </ol>
           <p>
-            There are zero trial periods, zero recurring subscription fees, zero locked features, and no credit card is ever required. It is an open-source tool custom-built for personal Type 03 C&R collectors under the 
-            <a href="https://polyformproject.org/licenses/noncommercial/1.0.0" target="_blank" rel="noopener noreferrer" class="text-amber-400 underline font-bold hover:text-amber-300">PolyForm Noncommercial License 1.0.0</a>.
-          </p>
-          <div class="p-4 bg-gunmetal-950 border border-slate-800 rounded-xl space-y-3">
-            <h4 class="font-bold text-slate-100 flex items-center gap-2">
-              <i data-lucide="heart" class="w-4 h-4 text-rose-400"></i>
-              Support the Project (Optional Hobby Donations)
-            </h4>
-            <p class="text-xs text-slate-400 leading-relaxed">
-              This application is a passion hobby project created for fellow firearm collectors. Donations are greatly appreciated to help cover ongoing development and maintenance, but are <strong>strictly voluntary and never required</strong>.
-            </p>
-            <div class="pt-1">
-              <a href="https://buymeacoffee.com/weaverb" target="_blank" rel="noopener noreferrer" class="inline-block hover:opacity-90 transition-opacity">
-                <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" class="h-10 rounded-lg shadow-md">
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- FAQ 1 -->
-      <div class="faq-item bg-gunmetal-900 border border-slate-800 rounded-xl overflow-hidden shadow-lg transition-all" data-keywords="offline internet privacy cloud server security data">
-        <button class="w-full p-5 text-left flex items-center justify-between font-bold text-slate-100 text-base md:text-lg focus:outline-none hover:bg-slate-800/50 transition-colors" onclick="toggleFaq(this)">
-          <span class="flex items-center gap-3">
-            <i data-lucide="wifi-off" class="w-5 h-5 text-emerald-400 shrink-0"></i>
-            Does this application send my firearm data to any online server or cloud?
-          </span>
-          <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform faq-icon"></i>
-        </button>
-        <div class="faq-answer hidden px-5 pb-5 pt-1 text-sm text-slate-300 border-t border-slate-800/60 leading-relaxed">
-          <strong class="text-emerald-400">No, absolutely not.</strong> The C&R Digital Logbook operates 100% offline. All of your firearm serial numbers, prices, seller addresses, and audit records remain stored exclusively on your computer's local hard drive. There are zero remote tracking scripts, external database connections, or cloud synchronization routines.
-        </div>
-      </div>
-
-      <!-- FAQ 2 -->
-      <div class="faq-item bg-gunmetal-900 border border-slate-800 rounded-xl overflow-hidden shadow-lg transition-all" data-keywords="atf compliance ruling 2016-1 2021r-05f 27 cfr 478.125 inspection bound book">
-        <button class="w-full p-5 text-left flex items-center justify-between font-bold text-slate-100 text-base md:text-lg focus:outline-none hover:bg-slate-800/50 transition-colors" onclick="toggleFaq(this)">
-          <span class="flex items-center gap-3">
-            <i data-lucide="shield-check" class="w-5 h-5 text-amber-400 shrink-0"></i>
-            Is this digital logbook compliant with 27 CFR § 478.125(f)?
-          </span>
-          <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform faq-icon"></i>
-        </button>
-        <div class="faq-answer hidden px-5 pb-5 pt-1 text-sm text-slate-300 border-t border-slate-800/60 leading-relaxed">
-          <strong class="text-amber-400">Yes.</strong> The software adheres strictly to 
-          <a href="https://www.ecfr.gov/current/title-27/chapter-II/subchapter-B/part-478/subpart-H/section-478.125#p-478.125(f)" target="_blank" rel="noopener noreferrer" class="underline font-bold text-amber-300 hover:text-amber-200">27 CFR § 478.125(f)</a> 
-          and 
-          <a href="https://www.atf.gov/firearms/docs/ruling/2016-1-requirements-keep-firearms-records-electronically/download" target="_blank" rel="noopener noreferrer" class="underline font-bold text-amber-300 hover:text-amber-200">ATF Ruling 2016-1 / 2021R-05F</a> guidelines. 
-          It features an immutable audit log (`ATF_AUDIT_LOG`), mandatory change reason prompts for any entry corrections, auto-incrementing line numbers, and locked disposition records.
-        </div>
-      </div>
-
-      <!-- FAQ 3 -->
-      <div class="faq-item bg-gunmetal-900 border border-slate-800 rounded-xl overflow-hidden shadow-lg transition-all" data-keywords="print pdf export atf inspection audit paper copy">
-        <button class="w-full p-5 text-left flex items-center justify-between font-bold text-slate-100 text-base md:text-lg focus:outline-none hover:bg-slate-800/50 transition-colors" onclick="toggleFaq(this)">
-          <span class="flex items-center gap-3">
-            <i data-lucide="printer" class="w-5 h-5 text-cyan-400 shrink-0"></i>
-            How do I print my bound book for an official compliance audit?
-          </span>
-          <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform faq-icon"></i>
-        </button>
-        <div class="faq-answer hidden px-5 pb-5 pt-1 text-sm text-slate-300 border-t border-slate-800/60 leading-relaxed">
-          Click the <strong>"Print PDF"</strong> button in the top navigation bar. Enter your Licensee Name and FFL Number, and click <strong>"Download Printable PDF"</strong>. Your system file picker will open allowing you to save or print a clean landscape PDF formatted specifically to 
-          <a href="https://www.atf.gov/firearms/docs/ruling/2016-1-requirements-keep-firearms-records-electronically/download" target="_blank" rel="noopener noreferrer" class="underline font-bold text-cyan-300">ATF Ruling 2016-1</a> inspection standards.
-        </div>
-      </div>
-
-      <!-- FAQ 4 -->
-      <div class="faq-item bg-gunmetal-900 border border-slate-800 rounded-xl overflow-hidden shadow-lg transition-all" data-keywords="computer crash hard drive failure restore backup seed phrase crbk usb">
-        <button class="w-full p-5 text-left flex items-center justify-between font-bold text-slate-100 text-base md:text-lg focus:outline-none hover:bg-slate-800/50 transition-colors" onclick="toggleFaq(this)">
-          <span class="flex items-center gap-3">
-            <i data-lucide="hard-drive" class="w-5 h-5 text-amber-400 shrink-0"></i>
-            What happens if my computer crashes or breaks?
-          </span>
-          <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform faq-icon"></i>
-        </button>
-        <div class="faq-answer hidden px-5 pb-5 pt-1 text-sm text-slate-300 border-t border-slate-800/60 leading-relaxed">
-          If you have created an encrypted backup (`.crbk`) file onto a USB flash drive or external drive, you can install the application on a new computer, select <strong>"Vault (.crbk)" -> "Restore from Backup"</strong>, enter your 12-word seed phrase, and all your records will be restored instantly!
-        </div>
-      </div>
-
-      <!-- FAQ 5 -->
-      <div class="faq-item bg-gunmetal-900 border border-slate-800 rounded-xl overflow-hidden shadow-lg transition-all" data-keywords="search shortcut command palette ctrl+k cmd+k find">
-        <button class="w-full p-5 text-left flex items-center justify-between font-bold text-slate-100 text-base md:text-lg focus:outline-none hover:bg-slate-800/50 transition-colors" onclick="toggleFaq(this)">
-          <span class="flex items-center gap-3">
-            <i data-lucide="command" class="w-5 h-5 text-amber-400 shrink-0"></i>
-            How do I quickly search across all 4,207 C&R firearms or my bound book?
-          </span>
-          <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform faq-icon"></i>
-        </button>
-        <div class="faq-answer hidden px-5 pb-5 pt-1 text-sm text-slate-300 border-t border-slate-800/60 leading-relaxed">
-          Press <kbd class="px-2 py-0.5 bg-slate-800 border border-slate-700 rounded text-xs font-mono text-slate-200">Ctrl + K</kbd> (Windows/Linux) or <kbd class="px-2 py-0.5 bg-slate-800 border border-slate-700 rounded text-xs font-mono text-slate-200">Cmd + K</kbd> (Mac) anywhere in the application to open the Global Command Palette & Instant Search. Type any Manufacturer, Model, or Serial Number to find records instantly.
-        </div>
-      </div>
-
-      <!-- FAQ 6: Updating ATF C&R CSV without software update -->
-      <div class="faq-item bg-gunmetal-900 border border-slate-800 rounded-xl overflow-hidden shadow-lg transition-all" data-keywords="update csv import atf cr list publication drop replace new list download cr_list">
-        <button class="w-full p-5 text-left flex items-center justify-between font-bold text-slate-100 text-base md:text-lg focus:outline-none hover:bg-slate-800/50 transition-colors" onclick="toggleFaq(this)">
-          <span class="flex items-center gap-3">
-            <i data-lucide="file-spreadsheet" class="w-5 h-5 text-cyan-400 shrink-0"></i>
-            How do I update the ATF C&R list when the ATF publishes new classifications?
-          </span>
-          <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform faq-icon"></i>
-        </button>
-        <div class="faq-answer hidden px-5 pb-5 pt-1 text-sm text-slate-300 border-t border-slate-800/60 space-y-3 leading-relaxed">
-          <p>
-            You do <strong>not</strong> need to convert PDFs to JSON or wait for a new app release. Pre-extracted, normalized CSV files are maintained directly in the project repository's <a href="https://github.com/weaverb/digital-cr-logbook/tree/main/cr_list" target="_blank" rel="noopener noreferrer" class="text-cyan-400 underline font-bold hover:text-cyan-300">cr_list/ folder on GitHub</a>.
-          </p>
-          <div class="p-3.5 bg-gunmetal-950 border border-slate-800 rounded-xl space-y-2 text-xs text-slate-300">
-            <p class="font-bold text-slate-100 flex items-center gap-1.5"><i data-lucide="download" class="w-4 h-4 text-cyan-400"></i> How to download the latest C&R CSV:</p>
-            <ol class="space-y-1 list-decimal list-inside text-slate-400">
-              <li>Visit the repository <a href="https://github.com/weaverb/digital-cr-logbook/tree/main/cr_list" target="_blank" rel="noopener noreferrer" class="text-cyan-400 underline hover:text-cyan-300">cr_list/ directory</a> on GitHub.</li>
-              <li>Click on the latest master list CSV file (e.g. <strong class="text-slate-200">`curios_and_relics_master_list_2026_08_06.csv`</strong>).</li>
-              <li>Click the <strong>Download raw file</strong> button (top right of the file viewer) to save the CSV file to your computer.</li>
-            </ol>
-          </div>
-          <p>
-            Next, inside the application, go to the <strong>ATF Master C&R Reference Library</strong> tab, click <strong>"Import Updated CSV"</strong>, drop in the downloaded CSV file, and click <strong>"Apply & Replace C&R List"</strong>. The new list is active immediately for your searches and acquisition autocomplete without modifying any of your existing bound book records. You can also restore the default bundled list at any time.
+            Then, in the app, open the ATF Master C&R Reference Library tab, click "Import Updated CSV", drop in the file, and click "Apply & Replace C&R List". Your existing bound book records aren't touched, and you can restore the default list any time.
           </p>
         </div>
       </div>
@@ -709,20 +484,23 @@
     </div>
   </section>
 
-  <!-- Footer Section -->
-  <footer class="mt-auto bg-gunmetal-900 border-t border-slate-800 py-8 px-4 text-center text-xs text-slate-400 space-y-3">
-    <div class="flex items-center justify-center gap-2">
-      <i data-lucide="book-open" class="w-4 h-4 text-amber-400"></i>
-      <span class="font-bold text-slate-200">C&R Collector Digital Logbook</span>
-    </div>
-    <p>Licensed under the PolyForm Noncommercial License 1.0.0. Designed for Type 03 FFL Collectors. 100% Free & Open Source.</p>
-    <p class="text-slate-500">
-      <a href="https://www.ecfr.gov/current/title-27/chapter-II/subchapter-B/part-478/subpart-H/section-478.125#p-478.125(f)" target="_blank" rel="noopener noreferrer" class="hover:text-slate-400 underline">27 CFR § 478.125(f)</a> 
-      &bull; 
-      <a href="https://www.atf.gov/firearms/docs/ruling/2016-1-requirements-keep-firearms-records-electronically/download" target="_blank" rel="noopener noreferrer" class="hover:text-slate-400 underline">ATF Ruling 2016-1</a> Compliant Architecture.
+  <!-- Footer -->
+  <footer class="mt-auto border-t border-slate-800 py-8 px-4 text-center text-xs text-slate-500 space-y-3">
+    <p class="font-semibold text-slate-300">C&R Collector Digital Logbook</p>
+    <p>Free and open source under the PolyForm Noncommercial License 1.0.0. Built for Type 03 FFL collectors.</p>
+    <p>
+      <a href="https://www.ecfr.gov/current/title-27/chapter-II/subchapter-B/part-478/subpart-H/section-478.125#p-478.125(f)" target="_blank" rel="noopener noreferrer" class="hover:text-slate-400 underline">27 CFR § 478.125(f)</a>
+      &bull;
+      <a href="https://www.atf.gov/firearms/docs/ruling/2016-1-requirements-keep-firearms-records-electronically/download" target="_blank" rel="noopener noreferrer" class="hover:text-slate-400 underline">ATF Ruling 2016-1</a>
     </p>
-    <p class="text-[11px] text-slate-500 max-w-3xl mx-auto italic">
-      Disclaimer: Not endorsed by, affiliated with, or sponsored by the U.S. Government or Bureau of Alcohol, Tobacco, Firearms and Explosives (ATF).
+    <p class="max-w-2xl mx-auto italic">
+      Not endorsed by, affiliated with, or sponsored by the U.S. Government or the Bureau of Alcohol, Tobacco, Firearms and Explosives.
+    </p>
+    <p class="pt-2 flex items-center justify-center gap-2">
+      <span>This is a hobby project. If it's useful to you, donations are welcome but never expected:</span>
+      <a href="https://buymeacoffee.com/weaverb" target="_blank" rel="noopener noreferrer" class="hover:opacity-90 transition-opacity">
+        <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" class="h-7 rounded">
+      </a>
     </p>
   </footer>
 
