@@ -1,5 +1,31 @@
 # Changelog
 
+## [1.3.4](https://github.com/weaverb/digital-cr-logbook/compare/v1.3.3...v1.3.4) (2026-08-30)
+
+
+### Bug Fixes
+
+* drop backward-compatibility fallback for pre-release backup vaults ([b189614](https://github.com/weaverb/digital-cr-logbook/commit/b18961456a0249a3bd2451fc32f55b91972c4056))
+* drop hang-prone File System Access API save path; disambiguate new e2e locators ([b3e68d2](https://github.com/weaverb/digital-cr-logbook/commit/b3e68d266486789bc5e8febb8df60bea8f386df5))
+* raise minimum readable type size app-wide ([26bc585](https://github.com/weaverb/digital-cr-logbook/commit/26bc5858f289a80d7ecc2de3bc5e32310f82613f))
+* require restore confirmation and remove fabricated SQLite/PRAGMA status claims ([c708be6](https://github.com/weaverb/digital-cr-logbook/commit/c708be6e6abd0918fcd8e0113ab717cc57f0dd47))
+* **test:** await generate12WordSeed() now that it's async ([b07335c](https://github.com/weaverb/digital-cr-logbook/commit/b07335c20ffec1b23aaded0ca2c74f699a1be05a))
+* use real BIP-39 wordlist+checksum and PBKDF2-600k for backup vault ([c190833](https://github.com/weaverb/digital-cr-logbook/commit/c1908339d8dd5b9ec7b04fd9824f0924f8506351))
+
+
+### BREAKING CHANGES
+
+* .crbk backup vaults created by any pre-release build
+of this app (anything using the 310-word, non-BIP-39-compliant
+wordlist and PBKDF2 at 100,000 iterations) can no longer be restored.
+There is no supported migration path for those files. This is
+acceptable pre-release, before there's a real installed user base to
+support; going forward, a change like this should instead bump the
+backup file format and support both, not silently drop compatibility.
+
+Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01EQE22tuzbGBGbaoNCHVTSY
+
 ## [1.3.3](https://github.com/weaverb/digital-cr-logbook/compare/v1.3.2...v1.3.3) (2026-08-30)
 
 
