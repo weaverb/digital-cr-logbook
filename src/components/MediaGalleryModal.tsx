@@ -58,7 +58,7 @@ export function MediaGalleryModal({ isOpen, record, onClose }: MediaGalleryModal
               <ImageIcon className="w-5 h-5 text-amber-500" />
               Proof Mark & Provenance Photo Gallery
             </h2>
-            <p className="text-xs text-slate-400 mt-0.5 font-mono">
+            <p className="text-sm text-slate-400 mt-0.5 font-mono">
               Line #{record.lineNumber} • {record.manufacturer} {record.model} ({record.serialNumber})
             </p>
           </div>
@@ -72,12 +72,12 @@ export function MediaGalleryModal({ isOpen, record, onClose }: MediaGalleryModal
 
         {/* Toolbar */}
         <div className="p-4 bg-slate-950 border-b border-slate-800 flex items-center justify-between">
-          <span className="text-xs text-slate-400 font-mono">
+          <span className="text-sm text-slate-400 font-mono">
             Attached Files: {firearmAttachments.length}
           </span>
           <button
             onClick={() => setIsUploading(!isUploading)}
-            className="px-3.5 py-1.5 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold rounded text-xs transition-colors flex items-center gap-1.5"
+            className="px-3.5 py-1.5 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold rounded text-sm transition-colors flex items-center gap-1.5"
           >
             <Plus className="w-4 h-4" />
             <span>{isUploading ? 'Cancel Upload' : 'Upload Proof / Provenance Photo'}</span>
@@ -85,7 +85,7 @@ export function MediaGalleryModal({ isOpen, record, onClose }: MediaGalleryModal
         </div>
 
         {/* Body */}
-        <div className="p-6 overflow-y-auto flex-1 space-y-4 text-xs">
+        <div className="p-6 overflow-y-auto flex-1 space-y-4 text-sm">
           {isUploading && (
             <form onSubmit={handleFileUpload} className="p-4 bg-slate-950 border border-amber-500/40 rounded-lg space-y-3">
               <div className="font-bold text-amber-400">Upload Photo or Document Scan</div>
@@ -124,7 +124,7 @@ export function MediaGalleryModal({ isOpen, record, onClose }: MediaGalleryModal
                     required
                     accept="image/*,.pdf"
                     onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
-                    className="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-slate-100 text-[11px]"
+                    className="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-slate-100 text-sm"
                   />
                 </div>
               </div>
@@ -132,7 +132,7 @@ export function MediaGalleryModal({ isOpen, record, onClose }: MediaGalleryModal
               <div className="flex justify-end pt-2">
                 <button
                   type="submit"
-                  className="px-4 py-1.5 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold rounded text-xs transition-colors"
+                  className="px-4 py-1.5 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold rounded text-sm transition-colors"
                 >
                   Save Photo Attachment
                 </button>
@@ -144,7 +144,7 @@ export function MediaGalleryModal({ isOpen, record, onClose }: MediaGalleryModal
             <div className="text-center py-12 text-slate-500 space-y-2">
               <ImageIcon className="w-8 h-8 mx-auto text-slate-700" />
               <div className="text-sm font-medium">No Photos or Scans Attached</div>
-              <div className="text-xs">Upload high-res receiver proof marks, serial numbers, or CMP certificates.</div>
+              <div className="text-sm">Upload high-res receiver proof marks, serial numbers, or CMP certificates.</div>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -154,8 +154,8 @@ export function MediaGalleryModal({ isOpen, record, onClose }: MediaGalleryModal
                     <img src={att.dataUrl} alt={att.title} className="w-full h-full object-cover" />
                   </div>
                   <div>
-                    <div className="font-bold text-slate-200 text-xs truncate" title={att.title}>{att.title}</div>
-                    <div className="flex items-center justify-between text-[10px] text-slate-400 font-mono mt-1">
+                    <div className="font-bold text-slate-200 text-sm truncate" title={att.title}>{att.title}</div>
+                    <div className="flex items-center justify-between text-xs text-slate-400 font-mono mt-1">
                       <span className="px-1.5 py-0.5 bg-slate-900 border border-slate-800 rounded">{att.category}</span>
                       <span>{new Date(att.createdAt).toLocaleDateString()}</span>
                     </div>

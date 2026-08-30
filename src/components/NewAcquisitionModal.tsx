@@ -126,7 +126,7 @@ export function NewAcquisitionModal({ isOpen, onClose, onSave, crRecords: propCR
               <Plus className="w-5 h-5 text-amber-500" />
               Record Firearm Acquisition
             </h2>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className="text-sm text-slate-400 mt-0.5">
               Enter mandatory acquisition details pursuant to <CfrLink className="underline hover:text-amber-400 transition-colors" />.
             </p>
           </div>
@@ -139,7 +139,7 @@ export function NewAcquisitionModal({ isOpen, onClose, onSave, crRecords: propCR
         </div>
 
         {/* Form Body */}
-        <form onSubmit={handleSubmit} className="p-6 overflow-y-auto space-y-6 flex-1 text-xs">
+        <form onSubmit={handleSubmit} className="p-6 overflow-y-auto space-y-6 flex-1 text-sm">
           {/* C&R Autocomplete Selector */}
           <div className="p-4 bg-slate-950/70 border border-slate-800 rounded-lg space-y-3">
             <div className="flex items-center justify-between">
@@ -148,7 +148,7 @@ export function NewAcquisitionModal({ isOpen, onClose, onSave, crRecords: propCR
                 ATF C&R Reference Database Autocomplete (Optional)
               </label>
               {selectedCR && (
-                <span className="px-2 py-0.5 bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 rounded text-[11px] font-mono flex items-center gap-1">
+                <span className="px-2 py-0.5 bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 rounded text-sm font-mono flex items-center gap-1">
                   <CheckCircle2 className="w-3 h-3" />
                   Matched: {selectedCR.record_id} ({selectedCR.section_code})
                 </span>
@@ -159,7 +159,7 @@ export function NewAcquisitionModal({ isOpen, onClose, onSave, crRecords: propCR
               <button
                 type="button"
                 onClick={() => setShowCrPicker(true)}
-                className="w-full bg-slate-900 border border-slate-700/80 hover:border-cyan-500/50 text-slate-300 py-2 px-3 rounded text-left flex items-center justify-between text-xs transition-colors"
+                className="w-full bg-slate-900 border border-slate-700/80 hover:border-cyan-500/50 text-slate-300 py-2 px-3 rounded text-left flex items-center justify-between text-sm transition-colors"
               >
                 <span>{selectedCR ? `${selectedCR.manufacturer_or_make} ${selectedCR.model}` : 'Search 4,207 pre-loaded ATF C&R entries to auto-fill specs...'}</span>
                 <Search className="w-4 h-4 text-slate-400" />
@@ -183,13 +183,13 @@ export function NewAcquisitionModal({ isOpen, onClose, onSave, crRecords: propCR
                       key={cr.record_id}
                       type="button"
                       onClick={() => handleSelectCR(cr)}
-                      className="w-full text-left p-2 hover:bg-slate-800/80 text-slate-300 hover:text-slate-100 text-[11px] flex justify-between items-center transition-colors"
+                      className="w-full text-left p-2 hover:bg-slate-800/80 text-slate-300 hover:text-slate-100 text-sm flex justify-between items-center transition-colors"
                     >
                       <div>
                         <span className="font-semibold text-cyan-400">{cr.manufacturer_or_make}</span> {cr.model}
-                        <div className="text-[10px] text-slate-400 line-clamp-1 font-sans">{cr.atf_classification_details}</div>
+                        <div className="text-sm text-slate-400 line-clamp-1 font-sans">{cr.atf_classification_details}</div>
                       </div>
-                      <span className="text-[10px] px-1.5 py-0.5 bg-slate-800 text-slate-400 rounded shrink-0">{cr.section_code}</span>
+                      <span className="text-xs px-1.5 py-0.5 bg-slate-800 text-slate-400 rounded shrink-0">{cr.section_code}</span>
                     </button>
                   ))}
                 </div>
@@ -198,7 +198,7 @@ export function NewAcquisitionModal({ isOpen, onClose, onSave, crRecords: propCR
 
             {/* Selected C&R Reference Verification Box */}
             {selectedCR && (
-              <div className="p-3.5 bg-cyan-950/40 border border-cyan-500/40 rounded-lg space-y-2 text-xs">
+              <div className="p-3.5 bg-cyan-950/40 border border-cyan-500/40 rounded-lg space-y-2 text-sm">
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-cyan-300 flex items-center gap-1.5">
                     <CheckCircle2 className="w-4 h-4 text-cyan-400" />
@@ -207,28 +207,28 @@ export function NewAcquisitionModal({ isOpen, onClose, onSave, crRecords: propCR
                   <button
                     type="button"
                     onClick={() => setSelectedCR(null)}
-                    className="text-[11px] text-slate-400 hover:text-rose-400 underline font-mono flex items-center gap-1"
+                    className="text-sm text-slate-400 hover:text-rose-400 underline font-mono flex items-center gap-1"
                   >
                     <RotateCcw className="w-3 h-3" />
                     Clear / Re-select
                   </button>
                 </div>
                 <p className="text-slate-300 font-sans leading-relaxed">{selectedCR.atf_classification_details}</p>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 pt-1 font-mono text-[11px]">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 pt-1 font-mono text-sm">
                   <div className="bg-slate-900/90 p-2 rounded border border-slate-800">
-                    <span className="text-slate-400 block text-[10px]">MANUFACTURER</span>
+                    <span className="text-slate-400 block text-xs">MANUFACTURER</span>
                     <span className="text-cyan-300 font-semibold">{selectedCR.manufacturer_or_make || 'N/A'}</span>
                   </div>
                   <div className="bg-slate-900/90 p-2 rounded border border-slate-800">
-                    <span className="text-slate-400 block text-[10px]">MODEL</span>
+                    <span className="text-slate-400 block text-xs">MODEL</span>
                     <span className="text-cyan-300 font-semibold">{selectedCR.model || 'N/A'}</span>
                   </div>
                   <div className="bg-slate-900/90 p-2 rounded border border-slate-800">
-                    <span className="text-slate-400 block text-[10px]">CALIBER</span>
+                    <span className="text-slate-400 block text-xs">CALIBER</span>
                     <span className="text-cyan-300 font-semibold">{selectedCR.caliber_or_gauge || 'N/A'}</span>
                   </div>
                   <div className="bg-slate-900/90 p-2 rounded border border-slate-800">
-                    <span className="text-slate-400 block text-[10px]">SECTION</span>
+                    <span className="text-slate-400 block text-xs">SECTION</span>
                     <span className="text-cyan-300 font-semibold">{selectedCR.section_code}</span>
                   </div>
                 </div>
@@ -238,7 +238,7 @@ export function NewAcquisitionModal({ isOpen, onClose, onSave, crRecords: propCR
 
           {/* Firearm Description Fields */}
           <div>
-            <h3 className="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-3 pb-1 border-b border-slate-800">
+            <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-3 pb-1 border-b border-slate-800">
               Firearm Identification
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -322,7 +322,7 @@ export function NewAcquisitionModal({ isOpen, onClose, onSave, crRecords: propCR
 
           {/* Acquisition Details */}
           <div>
-            <h3 className="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-3 pb-1 border-b border-slate-800">
+            <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-3 pb-1 border-b border-slate-800">
               Acquisition Information (Seller / Transferor)
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -390,13 +390,13 @@ export function NewAcquisitionModal({ isOpen, onClose, onSave, crRecords: propCR
             <button
               type="button"
               onClick={handleClose}
-              className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded font-medium text-xs transition-colors"
+              className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded font-medium text-sm transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-5 py-2 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold rounded text-xs transition-colors shadow-lg shadow-amber-950/20 flex items-center gap-1.5"
+              className="px-5 py-2 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold rounded text-sm transition-colors shadow-lg shadow-amber-950/20 flex items-center gap-1.5"
             >
               <Plus className="w-4 h-4" />
               Save Bound Book Acquisition Record

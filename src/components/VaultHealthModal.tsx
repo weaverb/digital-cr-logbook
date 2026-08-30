@@ -50,7 +50,7 @@ export function VaultHealthModal({ isOpen, records, auditLogs, onClose }: VaultH
               <ShieldCheck className="w-5 h-5 text-cyan-400" />
               Vault Integrity & Database Diagnostics
             </h2>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className="text-sm text-slate-400 mt-0.5">
               Run PRAGMA integrity checks & bound book line continuity tests.
             </p>
           </div>
@@ -63,7 +63,7 @@ export function VaultHealthModal({ isOpen, records, auditLogs, onClose }: VaultH
         </div>
 
         {/* Body */}
-        <div className="p-6 space-y-4 text-xs">
+        <div className="p-6 space-y-4 text-sm">
           <div className="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-3 font-mono">
             <div className="flex items-center justify-between">
               <span className="text-slate-300">SQLite Storage WAL Mode:</span>
@@ -95,14 +95,14 @@ export function VaultHealthModal({ isOpen, records, auditLogs, onClose }: VaultH
             <button
               onClick={handleRunHealthCheck}
               disabled={isRunningCheck}
-              className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium rounded text-xs transition-colors flex items-center gap-1.5"
+              className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium rounded text-sm transition-colors flex items-center gap-1.5"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isRunningCheck ? 'animate-spin text-cyan-400' : ''}`} />
               <span>{isRunningCheck ? 'Running PRAGMA Check...' : 'Re-Run Diagnostics'}</span>
             </button>
 
             {checkCompleted && (
-              <span className="text-emerald-400 text-xs flex items-center gap-1 font-semibold">
+              <span className="text-emerald-400 text-sm flex items-center gap-1 font-semibold">
                 <CheckCircle2 className="w-4 h-4" /> All Vault Diagnostics Passed
               </span>
             )}

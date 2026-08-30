@@ -83,7 +83,7 @@ export function EditRecordModal({ isOpen, record, onClose, onSave }: EditRecordM
               <Edit3 className="w-5 h-5 text-amber-500" />
               Amend Bound Book Entry #{record.lineNumber}
             </h2>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className="text-sm text-slate-400 mt-0.5">
               ATF <AtfRulingLink text="Ruling 2016-1" className="underline hover:text-amber-400 transition-colors" /> compliant record editing with immutable audit trail.
             </p>
           </div>
@@ -96,18 +96,18 @@ export function EditRecordModal({ isOpen, record, onClose, onSave }: EditRecordM
         </div>
 
         {/* Mandatory Reason Prompt */}
-        <div className="p-4 bg-amber-500/10 border-b border-amber-500/30 flex items-start space-x-3 text-xs">
+        <div className="p-4 bg-amber-500/10 border-b border-amber-500/30 flex items-start space-x-3 text-sm">
           <ShieldAlert className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
           <div className="text-amber-200 space-y-1">
             <div className="font-semibold">ATF Audit Trail Log Requirement</div>
-            <div className="text-[11px] text-amber-300">
+            <div className="text-sm text-amber-300">
               Any modifications to previously saved bound book records are logged in <code className="bg-slate-950 px-1 py-0.5 rounded text-amber-400 font-mono">ATF_AUDIT_LOG</code> along with the previous value, new value, timestamp, and your explicit explanation.
             </div>
           </div>
         </div>
 
         {/* Form Body */}
-        <form onSubmit={handleSubmit} className="p-6 overflow-y-auto space-y-4 flex-1 text-xs">
+        <form onSubmit={handleSubmit} className="p-6 overflow-y-auto space-y-4 flex-1 text-sm">
           {/* Reason input at top */}
           <div className="p-3 bg-slate-950 border border-amber-500/40 rounded-lg space-y-1.5">
             <label className="block text-amber-400 font-semibold">
@@ -210,13 +210,13 @@ export function EditRecordModal({ isOpen, record, onClose, onSave }: EditRecordM
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded font-medium text-xs transition-colors"
+              className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded font-medium text-sm transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-5 py-2 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold rounded text-xs transition-colors shadow-lg shadow-amber-950/20"
+              className="px-5 py-2 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold rounded text-sm transition-colors shadow-lg shadow-amber-950/20"
             >
               Save Amendment & Log Audit Event
             </button>

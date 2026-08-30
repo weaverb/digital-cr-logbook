@@ -74,7 +74,7 @@ export function ContactsRolodexModal({ isOpen, onClose }: ContactsRolodexModalPr
               <Users className="w-5 h-5 text-amber-500" />
               FFL Contacts & Transferee Rolodex
             </h2>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className="text-sm text-slate-400 mt-0.5">
               Directory of FFL Dealers, Manufacturers, Gunsmiths, and Licensees for quick bound book logging.
             </p>
           </div>
@@ -93,12 +93,12 @@ export function ContactsRolodexModal({ isOpen, onClose }: ContactsRolodexModalPr
             placeholder="Search contacts by Name, FFL #, or Address..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="flex-1 bg-slate-900 border border-slate-800 rounded px-3 py-1.5 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-500/50 font-mono"
+            className="flex-1 bg-slate-900 border border-slate-800 rounded px-3 py-1.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-500/50 font-mono"
           />
 
           <button
             onClick={() => setIsAddingNew(!isAddingNew)}
-            className="px-3.5 py-1.5 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold rounded text-xs transition-colors flex items-center gap-1.5"
+            className="px-3.5 py-1.5 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold rounded text-sm transition-colors flex items-center gap-1.5"
           >
             <Plus className="w-4 h-4" />
             <span>{isAddingNew ? 'Cancel New Contact' : 'Add New Contact'}</span>
@@ -106,7 +106,7 @@ export function ContactsRolodexModal({ isOpen, onClose }: ContactsRolodexModalPr
         </div>
 
         {/* Form or List Body */}
-        <div className="p-6 overflow-y-auto flex-1 space-y-4 text-xs">
+        <div className="p-6 overflow-y-auto flex-1 space-y-4 text-sm">
           {isAddingNew && (
             <form onSubmit={handleAddSubmit} className="p-4 bg-slate-950 border border-amber-500/40 rounded-lg space-y-3">
               <div className="font-bold text-amber-400">Add New Contact to Rolodex</div>
@@ -186,7 +186,7 @@ export function ContactsRolodexModal({ isOpen, onClose }: ContactsRolodexModalPr
               <div className="flex justify-end pt-2">
                 <button
                   type="submit"
-                  className="px-4 py-1.5 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold rounded text-xs transition-colors"
+                  className="px-4 py-1.5 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold rounded text-sm transition-colors"
                 >
                   Save Contact
                 </button>
@@ -202,13 +202,13 @@ export function ContactsRolodexModal({ isOpen, onClose }: ContactsRolodexModalPr
                     <Building2 className="w-3.5 h-3.5 text-amber-400" />
                     {c.name}
                   </span>
-                  <span className="text-[10px] px-2 py-0.5 bg-slate-900 border border-slate-800 text-slate-400 rounded-full font-mono">
+                  <span className="text-xs px-2 py-0.5 bg-slate-900 border border-slate-800 text-slate-400 rounded-full font-mono">
                     {c.category}
                   </span>
                 </div>
 
                 {c.fflNumber && (
-                  <div className="p-1.5 bg-slate-900 border border-slate-800 rounded flex items-center justify-between text-[11px] font-mono">
+                  <div className="p-1.5 bg-slate-900 border border-slate-800 rounded flex items-center justify-between text-sm font-mono">
                     <span className="text-amber-400 font-bold">FFL: {c.fflNumber}</span>
                     <button
                       onClick={() => handleCopyFFL(c.id, c.fflNumber)}
@@ -220,7 +220,7 @@ export function ContactsRolodexModal({ isOpen, onClose }: ContactsRolodexModalPr
                   </div>
                 )}
 
-                <div className="space-y-1 text-[11px] text-slate-400">
+                <div className="space-y-1 text-sm text-slate-400">
                   {c.address && (
                     <div className="flex items-center gap-1.5">
                       <MapPin className="w-3 h-3 text-slate-500 shrink-0" />

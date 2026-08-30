@@ -78,19 +78,19 @@ export function CommandPaletteModal({
             placeholder="Type a command or search firearms by Manufacturer, Serial #..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="w-full bg-transparent text-slate-100 placeholder-slate-500 text-xs focus:outline-none font-mono"
+            className="w-full bg-transparent text-slate-100 placeholder-slate-500 text-sm focus:outline-none font-mono"
             autoFocus
           />
-          <kbd className="px-2 py-0.5 bg-slate-800 border border-slate-700 rounded text-[10px] text-slate-400 font-mono">
+          <kbd className="px-2 py-0.5 bg-slate-800 border border-slate-700 rounded text-xs text-slate-400 font-mono">
             ESC
           </kbd>
         </div>
 
         {/* Results Body */}
-        <div className="p-3 max-h-[60vh] overflow-y-auto space-y-4 text-xs">
+        <div className="p-3 max-h-[60vh] overflow-y-auto space-y-4 text-sm">
           {/* Quick Actions Section */}
           <div className="space-y-1">
-            <div className="text-[10px] font-bold text-slate-500 uppercase px-2 font-mono">
+            <div className="text-xs font-bold text-slate-500 uppercase px-2 font-mono">
               Quick Actions
             </div>
             {actionCommands.map((cmd) => {
@@ -108,7 +108,7 @@ export function CommandPaletteModal({
                     <Icon className="w-4 h-4 text-amber-400 group-hover:scale-110 transition-transform" />
                     <span className="font-semibold text-slate-200">{cmd.title}</span>
                   </div>
-                  <span className="text-[10px] text-slate-500 font-mono">Command</span>
+                  <span className="text-xs text-slate-500 font-mono">Command</span>
                 </button>
               );
             })}
@@ -116,7 +116,7 @@ export function CommandPaletteModal({
 
           {/* Bound Book Records Search Section */}
           <div className="space-y-1 pt-2 border-t border-slate-800/80">
-            <div className="text-[10px] font-bold text-slate-500 uppercase px-2 font-mono flex items-center justify-between">
+            <div className="text-xs font-bold text-slate-500 uppercase px-2 font-mono flex items-center justify-between">
               <span>Bound Book Firearms</span>
               <span>{recordResults.length} Matches</span>
             </div>
@@ -133,12 +133,12 @@ export function CommandPaletteModal({
                   <BookOpen className="w-4 h-4 text-cyan-400" />
                   <div>
                     <div className="font-bold text-slate-100">{r.manufacturer} {r.model}</div>
-                    <div className="text-[11px] text-slate-400 font-mono">
+                    <div className="text-sm text-slate-400 font-mono">
                       Line #{r.lineNumber} • Serial: <span className="text-amber-400 font-bold">{r.serialNumber}</span>
                     </div>
                   </div>
                 </div>
-                <span className="px-2 py-0.5 bg-slate-950 border border-slate-800 text-slate-300 rounded text-[10px] font-mono">
+                <span className="px-2 py-0.5 bg-slate-950 border border-slate-800 text-slate-300 rounded text-sm font-mono">
                   {r.status}
                 </span>
               </button>
@@ -147,7 +147,7 @@ export function CommandPaletteModal({
         </div>
 
         {/* Footer */}
-        <div className="px-4 py-2 bg-slate-950 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-500 font-mono">
+        <div className="px-4 py-2 bg-slate-950 border-t border-slate-800 flex items-center justify-between text-xs text-slate-500 font-mono">
           <span className="flex items-center gap-1">
             <Command className="w-3 h-3 text-slate-400" /> Global Palette Active ({hotkeyLabel})
           </span>

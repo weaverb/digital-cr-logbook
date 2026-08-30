@@ -47,7 +47,7 @@ export function LogDispositionModal({ isOpen, record, onClose, onSave }: LogDisp
               <Lock className="w-5 h-5 text-purple-400" />
               Log Firearm Disposition
             </h2>
-            <p className="text-xs text-slate-400 mt-0.5 font-mono">
+            <p className="text-sm text-slate-400 mt-0.5 font-mono">
               Line #{record.lineNumber} • {record.manufacturer} {record.model} ({record.serialNumber})
             </p>
           </div>
@@ -60,18 +60,18 @@ export function LogDispositionModal({ isOpen, record, onClose, onSave }: LogDisp
         </div>
 
         {/* Warning Banner */}
-        <div className="p-4 bg-purple-500/10 border-b border-purple-500/30 flex items-start space-x-3 text-xs">
+        <div className="p-4 bg-purple-500/10 border-b border-purple-500/30 flex items-start space-x-3 text-sm">
           <AlertTriangle className="w-5 h-5 text-purple-400 shrink-0 mt-0.5" />
           <div className="text-purple-200 space-y-1">
             <div className="font-semibold">ATF <CfrLink text="27 CFR § 478.125(f)" className="underline hover:text-purple-300 transition-colors" /> Compliance Lock</div>
-            <div className="text-[11px] text-purple-300">
+            <div className="text-sm text-purple-300">
               Recording a disposition marks this firearm as transferred out of your collection. Once saved, this record will be permanently locked against deletion to satisfy ATF audit regulations.
             </div>
           </div>
         </div>
 
         {/* Form Body */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-4 text-xs">
+        <form onSubmit={handleSubmit} className="p-6 space-y-4 text-sm">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-slate-300 mb-1">Disposition Date *</label>
@@ -123,13 +123,13 @@ export function LogDispositionModal({ isOpen, record, onClose, onSave }: LogDisp
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded font-medium text-xs transition-colors"
+              className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded font-medium text-sm transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-5 py-2 bg-purple-400 hover:bg-purple-300 text-purple-950 font-bold rounded text-xs transition-colors shadow-lg shadow-purple-950/20 flex items-center gap-1.5"
+              className="px-5 py-2 bg-purple-400 hover:bg-purple-300 text-purple-950 font-bold rounded text-sm transition-colors shadow-lg shadow-purple-950/20 flex items-center gap-1.5"
             >
               <Lock className="w-4 h-4" />
               Confirm & Lock Disposition Record

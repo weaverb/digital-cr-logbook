@@ -126,7 +126,7 @@ export function BackupVaultModal({ isOpen, onClose, onRestoreSuccess }: BackupVa
               <ShieldCheck className="w-5 h-5 text-amber-500" />
               BIP-39 Encrypted Backup & Restore Vault
             </h2>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className="text-sm text-slate-400 mt-0.5">
               100% offline AES-256-GCM encrypted backup archives (`.crbk`).
             </p>
           </div>
@@ -142,7 +142,7 @@ export function BackupVaultModal({ isOpen, onClose, onRestoreSuccess }: BackupVa
         <div className="bg-slate-950 px-6 pt-3 border-b border-slate-800 flex space-x-2">
           <button
             onClick={() => setActiveMode('backup')}
-            className={`px-4 py-2 text-xs font-semibold rounded-t-lg transition-colors flex items-center gap-1.5 ${
+            className={`px-4 py-2 text-sm font-semibold rounded-t-lg transition-colors flex items-center gap-1.5 ${
               activeMode === 'backup'
                 ? 'bg-slate-900 text-amber-400 border-t border-x border-slate-800'
                 : 'text-slate-400 hover:text-slate-200'
@@ -153,7 +153,7 @@ export function BackupVaultModal({ isOpen, onClose, onRestoreSuccess }: BackupVa
           </button>
           <button
             onClick={() => setActiveMode('restore')}
-            className={`px-4 py-2 text-xs font-semibold rounded-t-lg transition-colors flex items-center gap-1.5 ${
+            className={`px-4 py-2 text-sm font-semibold rounded-t-lg transition-colors flex items-center gap-1.5 ${
               activeMode === 'restore'
                 ? 'bg-slate-900 text-cyan-400 border-t border-x border-slate-800'
                 : 'text-slate-400 hover:text-slate-200'
@@ -167,12 +167,12 @@ export function BackupVaultModal({ isOpen, onClose, onRestoreSuccess }: BackupVa
         {/* Body */}
         <div className="p-6 overflow-y-auto max-h-[75vh]">
           {activeMode === 'backup' ? (
-            <div className="space-y-5 text-xs">
+            <div className="space-y-5 text-sm">
               <div className="p-4 bg-amber-500/10 border border-amber-500/30 rounded-lg space-y-2">
                 <div className="font-bold text-amber-400 flex items-center gap-2">
                   <Key className="w-4 h-4" /> 12-Word BIP-39 Vault Seed Key
                 </div>
-                <p className="text-amber-200 text-[11px]">
+                <p className="text-amber-200 text-sm">
                   Write down or copy these 12 seed words. You will need this exact seed phrase to restore your encrypted bound book backup on another computer.
                 </p>
               </div>
@@ -181,17 +181,17 @@ export function BackupVaultModal({ isOpen, onClose, onRestoreSuccess }: BackupVa
                 <div className="text-center py-6">
                   <button
                     onClick={handleGenerateNewSeed}
-                    className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold rounded-lg text-xs transition-colors shadow-lg shadow-amber-950/20"
+                    className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold rounded-lg text-sm transition-colors shadow-lg shadow-amber-950/20"
                   >
                     Generate 12-Word BIP-39 Seed Key
                   </button>
                 </div>
               ) : (
                 <div className="space-y-4">
-                  <div className="grid grid-cols-3 gap-2 bg-slate-950 p-4 border border-slate-800 rounded-lg font-mono text-xs">
+                  <div className="grid grid-cols-3 gap-2 bg-slate-950 p-4 border border-slate-800 rounded-lg font-mono text-sm">
                     {seedWords.map((word, idx) => (
                       <div key={idx} className="p-2 bg-slate-900 border border-slate-800 rounded flex items-center space-x-2">
-                        <span className="text-slate-500 text-[10px] w-4">{idx + 1}.</span>
+                        <span className="text-slate-500 text-xs w-4">{idx + 1}.</span>
                         <span className="text-amber-300 font-bold">{word}</span>
                       </div>
                     ))}
@@ -200,7 +200,7 @@ export function BackupVaultModal({ isOpen, onClose, onRestoreSuccess }: BackupVa
                   <div className="flex items-center justify-between">
                     <button
                       onClick={handleCopySeed}
-                      className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded font-medium text-xs flex items-center gap-1.5 transition-colors"
+                      className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded font-medium text-sm flex items-center gap-1.5 transition-colors"
                     >
                       {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                       <span>{copied ? 'Copied to Clipboard' : 'Copy Seed Phrase'}</span>
@@ -209,7 +209,7 @@ export function BackupVaultModal({ isOpen, onClose, onRestoreSuccess }: BackupVa
                     <button
                       onClick={handleExportBackup}
                       disabled={isProcessing}
-                      className="px-5 py-2 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold rounded text-xs transition-colors shadow-lg shadow-amber-950/20 flex items-center gap-1.5"
+                      className="px-5 py-2 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold rounded text-sm transition-colors shadow-lg shadow-amber-950/20 flex items-center gap-1.5"
                     >
                       <Download className="w-4 h-4" />
                       Download Encrypted Archive (.crbk)
@@ -220,12 +220,12 @@ export function BackupVaultModal({ isOpen, onClose, onRestoreSuccess }: BackupVa
             </div>
           ) : (
             /* Restore Mode */
-            <form onSubmit={handleRestoreSubmit} className="space-y-4 text-xs">
+            <form onSubmit={handleRestoreSubmit} className="space-y-4 text-sm">
               <div className="p-4 bg-cyan-500/10 border border-cyan-500/30 rounded-lg space-y-1.5">
                 <div className="font-bold text-cyan-400 flex items-center gap-2">
                   <Upload className="w-4 h-4" /> Decrypt & Restore Vault Archive
                 </div>
-                <p className="text-cyan-200 text-[11px]">
+                <p className="text-cyan-200 text-sm">
                   Select a saved `.crbk` encrypted file and provide the 12-word seed phrase used during backup.
                 </p>
               </div>
@@ -243,7 +243,7 @@ export function BackupVaultModal({ isOpen, onClose, onRestoreSuccess }: BackupVa
                   type="file"
                   accept=".crbk"
                   onChange={(e) => setSelectedRestoreFile(e.target.files?.[0] || null)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-slate-100 text-xs font-mono"
+                  className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-slate-100 text-sm font-mono"
                 />
               </div>
 
@@ -254,7 +254,7 @@ export function BackupVaultModal({ isOpen, onClose, onRestoreSuccess }: BackupVa
                   placeholder="Enter all 12 words separated by spaces (e.g. abandon ability able about above...)"
                   value={restoreInputSeed}
                   onChange={(e) => setRestoreInputSeed(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded p-3 text-amber-300 font-mono text-xs focus:outline-none focus:border-cyan-500/50"
+                  className="w-full bg-slate-950 border border-slate-800 rounded p-3 text-amber-300 font-mono text-sm focus:outline-none focus:border-cyan-500/50"
                 />
               </div>
 
@@ -262,7 +262,7 @@ export function BackupVaultModal({ isOpen, onClose, onRestoreSuccess }: BackupVa
                 <button
                   type="submit"
                   disabled={isProcessing}
-                  className="px-5 py-2.5 bg-cyan-500 hover:bg-cyan-400 text-cyan-950 font-bold rounded text-xs transition-colors flex items-center gap-1.5"
+                  className="px-5 py-2.5 bg-cyan-500 hover:bg-cyan-400 text-cyan-950 font-bold rounded text-sm transition-colors flex items-center gap-1.5"
                 >
                   <ShieldCheck className="w-4 h-4" />
                   Decrypt & Load Vault Data
