@@ -71,6 +71,21 @@ bun run tauri:dev    # native desktop window (needs GTK/webkit2gtk deps, see REA
 bun run tauri:build  # standalone desktop binary
 ```
 
+**`bun run test:e2e` (Playwright) cannot run in this machine's sandboxed Bash
+tool** — headless Chromium fatally crashes on launch
+(`SkFontMgr_FontConfigInterface.cpp: Not implemented`), reproducible even on
+an unmodified checkout, across every launch flag combination tried. It's an
+environment issue, not an app issue. The `dev` distrobox container (Fedora,
+already set up per the README for native Tauri builds) has working
+font/display libs and runs the suite cleanly — from the repo root:
+```bash
+distrobox enter dev -- bash -c "bun run test:e2e"
+```
+Use that whenever e2e results actually matter (before merging a PR, chasing
+a real UI regression) rather than trusting an agent's unverified claim that
+e2e "couldn't be run in this sandbox" — it usually just needs to run there
+instead.
+
 ## Repo map
 
 - `src/components/` — modals & UI (acquisition, disposition, audit log,

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { X, Edit3, ShieldAlert } from 'lucide-react';
+import { X, Edit3, ShieldAlert, AlertTriangle } from 'lucide-react';
 import type { BoundBookRecord, FirearmType } from '../types/logbook';
 import { useEscapeKey } from '../hooks/useEscapeKey';
 import { AtfRulingLink } from '../lib/legalLinks';
@@ -25,6 +25,7 @@ export function EditRecordModal({ isOpen, record, onClose, onSave }: EditRecordM
   const [acqFFL, setAcqFFL] = useState('');
   const [notes, setNotes] = useState('');
   const [auditReason, setAuditReason] = useState('');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     if (record) {
@@ -40,6 +41,7 @@ export function EditRecordModal({ isOpen, record, onClose, onSave }: EditRecordM
       setAcqFFL(record.acqFFL || '');
       setNotes(record.notes || '');
       setAuditReason('');
+      setErrorMessage(null);
     }
   }, [record]);
 
@@ -47,8 +49,9 @@ export function EditRecordModal({ isOpen, record, onClose, onSave }: EditRecordM
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage(null);
     if (!auditReason.trim()) {
-      alert('ATF 2016-1 audit rules require a mandatory reason for amending bound book entries (e.g. Typo correction in serial number, corrected manufacturer name).');
+      setErrorMessage('ATF 2016-1 audit rules require a mandatory reason for amending bound book entries (e.g. Typo correction in serial number, corrected manufacturer name).');
       return;
     }
 
@@ -87,8 +90,9 @@ export function EditRecordModal({ isOpen, record, onClose, onSave }: EditRecordM
               ATF <AtfRulingLink text="Ruling 2016-1" className="underline hover:text-amber-400 transition-colors" /> compliant record editing with immutable audit trail.
             </p>
           </div>
-          <button 
+          <button
             onClick={onClose}
+            aria-label="Close"
             className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors"
           >
             <X className="w-5 h-5" />
@@ -108,6 +112,17 @@ export function EditRecordModal({ isOpen, record, onClose, onSave }: EditRecordM
 
         {/* Form Body */}
         <form onSubmit={handleSubmit} className="p-6 overflow-y-auto space-y-4 flex-1 text-xs">
+          {/* Validation Error Banner */}
+          {errorMessage && (
+            <div className="p-4 bg-rose-950/40 border border-rose-500/40 rounded-xl flex items-start space-x-3 text-rose-300">
+              <AlertTriangle className="w-5 h-5 shrink-0 text-rose-400 mt-0.5" />
+              <div>
+                <strong className="font-semibold block">Audit Reason Required</strong>
+                <span className="text-xs">{errorMessage}</span>
+              </div>
+            </div>
+          )}
+
           {/* Reason input at top */}
           <div className="p-3 bg-slate-950 border border-amber-500/40 rounded-lg space-y-1.5">
             <label className="block text-amber-400 font-semibold">
