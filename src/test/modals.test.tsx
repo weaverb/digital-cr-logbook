@@ -268,6 +268,6 @@ describe('Modals & Tactical UI Dialogs', () => {
         auditLogs={[]}
       />
     );
-    expect(screen.getByText(/Vault Integrity & Database Diagnostics/i)).toBeInTheDocument();
+    expect(screen.getByText(/Vault Integrity & Data Diagnostics/i)).toBeInTheDocument();
   });
 });

@@ -1,7 +1,8 @@
-import { X, ShieldCheck, BookOpen, Lock, FileText, CheckCircle2 } from 'lucide-react';
+import { X, ShieldCheck, BookOpen, Lock, FileText, CheckCircle2, AlertTriangle } from 'lucide-react';
 import type { BoundBookRecord, AuditLogEntry } from '../types/logbook';
 import { useEscapeKey } from '../hooks/useEscapeKey';
 import { CfrLink, AtfRulingLink } from '../lib/legalLinks';
+import { runComplianceChecks } from '../lib/vaultIntegrity';
 
 interface AuditDashboardModalProps {
   isOpen: boolean;
@@ -18,6 +19,14 @@ export function AuditDashboardModal({ isOpen, records, auditLogs, onClose }: Aud
   const inCollection = records.filter(r => r.status === 'In Collection').length;
   const disposed = records.filter(r => r.status === 'Disposed').length;
   const lockedCount = records.filter(r => r.isLocked).length;
+
+  // Real checks against current record/audit-log data — see src/lib/vaultIntegrity.ts.
+  const complianceChecks = runComplianceChecks(records, auditLogs);
+  const passedCount = complianceChecks.filter(c => c.pass).length;
+  const allChecksPass = passedCount === complianceChecks.length;
+  const scorePercent = complianceChecks.length > 0
+    ? Math.round((passedCount / complianceChecks.length) * 100)
+    : 100;
 
   return (
     <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
@@ -84,44 +93,46 @@ export function AuditDashboardModal({ isOpen, records, auditLogs, onClose }: Aud
           </div>
 
           {/* ATF 27 CFR 478.125 Compliance Verification Box */}
-          <div className="p-5 bg-slate-950 border border-emerald-500/30 rounded-xl space-y-3">
+          <div className={`p-5 bg-slate-950 border rounded-xl space-y-3 ${allChecksPass ? 'border-emerald-500/30' : 'border-amber-500/30'}`}>
             <div className="flex items-center justify-between">
-              <div className="font-bold text-emerald-400 text-sm flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                <AtfRulingLink text="ATF Ruling 2016-1" className="underline hover:text-emerald-300 transition-colors font-bold" /> Compliance Scorecard: 100% PASS
+              <div className={`font-bold text-sm flex items-center gap-2 ${allChecksPass ? 'text-emerald-400' : 'text-amber-400'}`}>
+                {allChecksPass ? (
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                ) : (
+                  <AlertTriangle className="w-4 h-4 text-amber-400" />
+                )}
+                <AtfRulingLink text="ATF Ruling 2016-1" className={`underline transition-colors font-bold ${allChecksPass ? 'hover:text-emerald-300' : 'hover:text-amber-300'}`} /> Compliance Scorecard: {scorePercent}% PASS
               </div>
-              <span className="px-2.5 py-0.5 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded-full font-mono text-[11px]">
-                Inspection Ready
+              <span className={`px-2.5 py-0.5 border rounded-full font-mono text-[11px] ${
+                allChecksPass
+                  ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
+                  : 'bg-amber-500/10 border-amber-500/30 text-amber-400'
+              }`}>
+                {allChecksPass ? 'Inspection Ready' : 'Review Needed'}
               </span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-slate-300 text-[11px]">
-              <div className="p-2.5 bg-slate-900/80 border border-slate-800 rounded flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>Auto-incrementing line numbering without gaps</span>
-              </div>
-
-              <div className="p-2.5 bg-slate-900/80 border border-slate-800 rounded flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>Mandatory acquisition source & date logging</span>
-              </div>
-
-              <div className="p-2.5 bg-slate-900/80 border border-slate-800 rounded flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>Permanent lock on transferred/disposed entries</span>
-              </div>
-
-              <div className="p-2.5 bg-slate-900/80 border border-slate-800 rounded flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>Immutable reason tracking on all record edits</span>
-              </div>
+              {complianceChecks.map(check => (
+                <div key={check.id} className="p-2.5 bg-slate-900/80 border border-slate-800 rounded flex items-center gap-2">
+                  {check.pass ? (
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                  ) : (
+                    <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
+                  )}
+                  <span>{check.label}</span>
+                  <span className={`ml-auto font-mono font-bold text-[10px] ${check.pass ? 'text-emerald-400' : 'text-amber-400'}`}>
+                    {check.pass ? 'PASS' : 'REVIEW'}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
 
         {/* Footer */}
         <div className="px-6 py-3 border-t border-slate-800 bg-slate-950/60 flex items-center justify-between text-slate-400 text-xs">
-          <span>Logbook Vault Status: Normal (WAL Mode)</span>
+          <span>Logbook Vault Status: {allChecksPass ? 'Normal' : 'Review Needed'} (Local Storage)</span>
           <button
             onClick={onClose}
             className="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded font-medium transition-colors"
