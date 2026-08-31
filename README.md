@@ -17,7 +17,7 @@ Pursuant to **27 CFR § 478.125(f)** and **ATF Rulings 2016-1 / 2021R-05F**, col
 - **Frontend Framework**: React 18 + TypeScript + Vite
 - **Styling**: Tailwind CSS v4 + Custom Dark Gunmetal & Slate Tactical Theme
 - **Desktop Engine**: Tauri v2 + Rust Core + SQLite (WAL mode)
-- **Encryption Vault**: BIP-39 12-Word Seed Phrase + AES-256-GCM / Argon2id (`.crbk` archives)
+- **Encryption Vault**: BIP-39 12-Word Seed Phrase + AES-256-GCM / PBKDF2-SHA256 (600,000 iterations) (`.crbk` archives)
 
 ---
 
