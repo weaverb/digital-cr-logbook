@@ -69,6 +69,9 @@ bun run test:coverage
 bun run test:e2e     # playwright
 bun run tauri:dev    # native desktop window (needs GTK/webkit2gtk deps, see README)
 bun run tauri:build  # standalone desktop binary
+
+dagger call ci       # run lint+test+build+e2e in Dagger containers (needs the dagger CLI + podman/docker)
+dagger check         # same checks, run concurrently — mirrors what Dagger Cloud Checks runs on push
 ```
 
 **`bun run test:e2e` (Playwright) cannot run in this machine's sandboxed Bash
@@ -84,7 +87,12 @@ distrobox enter dev -- bash -c "bun run test:e2e"
 Use that whenever e2e results actually matter (before merging a PR, chasing
 a real UI regression) rather than trusting an agent's unverified claim that
 e2e "couldn't be run in this sandbox" — it usually just needs to run there
-instead.
+instead. `dagger call e-2-e` (note the CLI's kebab-case name for `e2e`) is
+an additional way to get a clean e2e run: it executes Playwright inside the
+official `mcr.microsoft.com/playwright` container image, which ships its own
+font/GTK libs and sidesteps the sandbox crash the same way distrobox does —
+use whichever is set up on the machine at hand, this doesn't replace
+distrobox as the documented fallback.
 
 ## Repo map
 

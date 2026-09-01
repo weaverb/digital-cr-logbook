@@ -174,6 +174,16 @@ Releases are fully automated via [semantic-release](https://semantic-release.org
 4. **Git Commit & Asset Push**: `@semantic-release/git` commits updated release files (`package.json`, `src-tauri/tauri.conf.json`, `CHANGELOG.md`, `docs/index.html`) with message `chore(release): ${nextRelease.version} [skip ci]`.
 5. **GitHub Release & Assets**: `@semantic-release/github` tags the release, creates the GitHub Release, and attaches all 4 multi-platform desktop binaries (`.exe`, `.msi`, `.dmg`, `.AppImage`, `.deb`).
 
+### 🛫 Local CI (Dagger)
+
+`dagger call ci` (or `dagger check`) runs lint, unit tests, the build, and
+Playwright e2e in the same containers Dagger Cloud runs on every push —
+one command, reproducible locally without setting up the app's full
+toolchain by hand. Requires the [Dagger CLI](https://docs.dagger.io/) and a
+container runtime (Podman or Docker). This is in addition to, not instead
+of, `bun run test && bun run build` — see [CLAUDE.md](./CLAUDE.md) for
+details.
+
 ---
 
 ## 🔒 License & Compliance
