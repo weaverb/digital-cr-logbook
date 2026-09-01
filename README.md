@@ -184,6 +184,11 @@ container runtime (Podman or Docker). This is in addition to, not instead
 of, `bun run test && bun run build` — see [CLAUDE.md](./CLAUDE.md) for
 details.
 
+With Dagger Cloud's GitHub App installed and Git Sources scanning enabled
+for this repo, the same four checks (`lint`, `test`, `buildCheck`, `e2e`)
+also run automatically on every push and report back to GitHub as commit
+statuses — no extra workflow file required for that.
+
 ---
 
 ## 🔒 License & Compliance
